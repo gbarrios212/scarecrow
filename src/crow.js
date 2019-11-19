@@ -23,7 +23,7 @@ Crow.prototype.collideWith = function (otherObject) {
         otherObject.relocate();
     } else if (otherObject instanceof Bullet) {
         this.game.removeCrow(this);
-        // this.game.removeBullet(otherObject);
+        this.game.removeBullet(otherObject);
     }
 }
 

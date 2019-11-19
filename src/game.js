@@ -104,7 +104,7 @@ Game.prototype.removeCrow = function(movingObj) {
     // this.crows[idx].height = 2;
 }
 
-Game.prototype.removBullet = function (movingObj) {
+Game.prototype.removeBullet = function (movingObj) {
     let idx = this.bullets.indexOf(movingObj);
     this.bullets.splice(idx, 1);
 }
