@@ -36,6 +36,7 @@ MovingObject.prototype.isCollidedWith = function (otherObject) {
 
 MovingObject.prototype.relocate = function(){
     this.pos = [this.pos[0] + Math.floor(Math.random() * 100), this.pos[1] + Math.floor(Math.random() * 100)];
+    this.vel = [0, 0];
 }
 
 // MovingObject.prototype.collideWith = function (otherObject) {

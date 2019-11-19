@@ -8,6 +8,11 @@ function Scarecrow(options) {
     MovingObject.call(this, { pos: [400, 400], vel: [0, 0], width: 60, height: 60, image: scarecrowImage, game: options.game })
 }
 
+
 Util.inherits(Scarecrow, MovingObject);
+
+Scarecrow.prototype.power = function(acc) {
+    this.vel = [this.vel[0] + acc[0], this.vel[1] + acc[1]];
+}
 
 module.exports = Scarecrow;
