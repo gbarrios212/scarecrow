@@ -1,4 +1,5 @@
 const MovingObject = require("./moving_object.js");
+const Scarecrow = require("./scarecrow.js");
 const Util = require("./utils.js");
 
 
@@ -16,13 +17,13 @@ function Crow(options) {
 
 Util.inherits(Crow, MovingObject);
 
-// Crow.prototype.collideWith = function (otherObject) {
-//     if (otherObject instanceof scare) {
-//         otherObject.relocate();
-//     } else if (otherObject instanceof Bullet) {
-//         this.game.removeCrow(this);
-//         this.game.removeBullet(otherObject);
-//     }
-// }
+Crow.prototype.collideWith = function (otherObject) {
+    if (otherObject instanceof Scarecrow) {
+        otherObject.relocate();
+    } else if (otherObject instanceof Bullet) {
+        this.game.removeCrow(this);
+        this.game.removeBullet(otherObject);
+    }
+}
 
 module.exports = Crow; 

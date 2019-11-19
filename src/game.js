@@ -82,8 +82,11 @@ Game.prototype.checkCollisions = function () {
     this.allObjects().forEach((movingObj, i) => {
         this.allObjects().forEach((movingObj2, j) => {
             if (i !== j && movingObj.isCollidedWith(movingObj2)){
-                this.remove(movingObj);
-                this.remove(movingObj2);
+                if (movingObj instanceof Crow && movingObj2 instanceof Scarecrow ) {
+                    movingObj.collideWith(movingObj2)
+                } else if (movingObj2 instanceof Crow && movingObj instanceof Scarecrow) {
+                    movingObj2.collideWith(movingObj)
+                }
             }
         });
     });

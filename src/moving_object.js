@@ -34,6 +34,10 @@ MovingObject.prototype.isCollidedWith = function (otherObject) {
     // return true;
 }
 
+MovingObject.prototype.relocate = function(){
+    this.pos = [this.pos[0] + Math.floor(Math.random() * 100), this.pos[1] + Math.floor(Math.random() * 100)];
+}
+
 // MovingObject.prototype.collideWith = function (otherObject) {
 //   this.game.remove(otherObject);
 //   this.game.remove(this);
