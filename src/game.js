@@ -6,9 +6,9 @@ const Corn = require("./corn.js");
 const CONSTANTS = {
     DIM_X: 700,
     DIM_Y: 450,
-    VEL_X: 10,
-    VEL_Y: 10,
-    NUM_CROWS: 10,
+    VEL_X: 2,
+    VEL_Y: 2,
+    NUM_CROWS: 5,
     NUM_CORNS: 10
 };
 
