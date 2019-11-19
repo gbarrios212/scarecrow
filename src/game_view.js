@@ -15,6 +15,7 @@ GameView.prototype.start = function(){
         // this.game.moveObjects();
         this.game.step();
         this.game.draw(this.ctx);
+        //raf here 
     }, 20);
 }
 
@@ -23,10 +24,17 @@ GameView.prototype.bindKeyHandlers = function () {
     // key('a', () => { this.game.scarecrow.power([-CONSTANTS.POWER, 0]) });
     // key('s', () => { this.game.scarecrow.power([0, CONSTANTS.POWER]) });
     // key('d', () => { this.game.scarecrow.power([CONSTANTS.POWER, 0]) });
+
     key('w', () => { this.game.scarecrow.vel = [0, -3] });
     key('a', () => { this.game.scarecrow.vel = [-3, 0] });
     key('s', () => { this.game.scarecrow.vel = [0, 3] });
     key('d', () => { this.game.scarecrow.vel = [3, 0] });
+
+    // key('w', () => { this.game.scarecrow.posChange([0, -30]) });
+    // key('a', () => { this.game.scarecrow.posChange([-30, 0]) });
+    // key('s', () => { this.game.scarecrow.posChange([0, 30]) });
+    // key('d', () => { this.game.scarecrow.posChange([30, 0]) });
+
     key('space', () => { this.game.scarecrow.fireBullet() });
 }
 
