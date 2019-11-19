@@ -1,5 +1,6 @@
 const Crow = require("./crow.js");
 const Scarecrow = require("./scarecrow.js");
+const Bullet = require("./bullet.js");
 
 const CONSTANTS = {
     DIM_X: 1200,
@@ -11,6 +12,7 @@ const CONSTANTS = {
 
 function Game() {
     this.crows = [];
+    this.bullets = [];
     this.scarecrow = new Scarecrow({ game: this });
     this.addCrows();
     this.img = new Image();
@@ -44,8 +46,7 @@ Game.prototype.randomVelocity = function () {
 
 Game.prototype.allObjects = function () {
     return this.crows
-    .concat(this.scarecrow);
-    // .concat(this.bullets, this.scare);
+    .concat(this.scarecrow, this.bullets);
 }
 
 Game.prototype.draw = function (ctx) {
@@ -86,6 +87,11 @@ Game.prototype.checkCollisions = function () {
                     movingObj.collideWith(movingObj2)
                 } else if (movingObj2 instanceof Crow && movingObj instanceof Scarecrow) {
                     movingObj2.collideWith(movingObj)
+                // } else if (movingObj instanceof Bullet && movingObj2 instanceof Crow ) {
+                //     movingObj2.collideWith(movingObj)
+                // }
+                // } else if (movingObj instanceof Crow && movingObj2 instanceof Bullet) {
+                //     movingObj.collideWith(movingObj2)
                 }
             }
         });
@@ -97,9 +103,14 @@ Game.prototype.step = function(){
     this.checkCollisions();
 }
 
-Game.prototype.remove = function(movingObj) {
+Game.prototype.removeCrow = function(movingObj) {
     let idx = this.crows.indexOf(movingObj);
     this.crows.splice(idx,1);
+}
+
+Game.prototype.removBullet = function (movingObj) {
+    let idx = this.bullets.indexOf(movingObj);
+    this.bullets.splice(idx, 1);
 }
 
 

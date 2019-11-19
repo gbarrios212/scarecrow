@@ -1,4 +1,5 @@
 const MovingObject = require("./moving_object");
+const Bullet = require("./bullet.js");
 const Util = require("./utils.js");
 
 const scarecrowImage = new Image ();
@@ -15,4 +16,8 @@ Scarecrow.prototype.power = function(acc) {
     this.vel = [this.vel[0] + acc[0], this.vel[1] + acc[1]];
 }
 
+Scarecrow.prototype.fireBullet = () => {
+    let bullet = new Bullet({ pos: this.pos, vel: [2, 2], game: this.game});
+    this.game.bullets.push(bullet);
+}
 module.exports = Scarecrow;

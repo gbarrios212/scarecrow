@@ -24,7 +24,7 @@ GameView.prototype.bindKeyHandlers = function () {
     key('a', () => { this.game.scarecrow.power([-CONSTANTS.POWER, 0]) });
     key('s', () => { this.game.scarecrow.power([0, CONSTANTS.POWER]) });
     key('d', () => { this.game.scarecrow.power([CONSTANTS.POWER, 0]) });
-    // key('space', () => { this.game.scarecrow.fireBullet() });
+    key('space', () => { this.game.scarecrow.fireBullet() });
 }
 
 module.exports = GameView;
