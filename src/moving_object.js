@@ -30,7 +30,9 @@ MovingObject.prototype.move = function () {
 
 MovingObject.prototype.isCollidedWith = function (otherObject) {
     let dist = Math.sqrt((this.pos[0] - otherObject.pos[0]) ** 2 + (this.pos[1] - otherObject.pos[1]) ** 2);
-    return dist <= 40;
+    // fine for crow to scarecrow; too big for heart  
+    // return dist <= 40;
+    return dist <= 30;
     // return true;
 }
 

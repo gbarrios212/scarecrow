@@ -1,20 +1,24 @@
 const Crow = require("./crow.js");
 const Scarecrow = require("./scarecrow.js");
 const Bullet = require("./bullet.js");
+const Corn = require("./corn.js");
 
 const CONSTANTS = {
     DIM_X: 700,
     DIM_Y: 450,
     VEL_X: 10,
     VEL_Y: 10,
-    NUM_CROWS: 10
+    NUM_CROWS: 10,
+    NUM_CORNS: 10
 };
 
 function Game() {
     this.crows = [];
     this.bullets = [];
+    this.corns = [];
     this.scarecrow = new Scarecrow({ game: this });
     this.addCrows();
+    this.addCorns();
     this.img = new Image();
     this.img.src = "green-stuff.jpg";
 }
@@ -26,6 +30,12 @@ function Game() {
 Game.prototype.addCrows = function () {
     while (this.crows.length < CONSTANTS.NUM_CROWS) {
         this.crows.push(new Crow({ pos: this.randomPosition(), vel: this.randomVelocity(), game: this}))
+    }
+}
+
+Game.prototype.addCorns = function () {
+    while (this.corns.length < CONSTANTS.NUM_CORNS) {
+        this.corns.push(new Corn({ pos: this.randomPosition(), game: this }))
     }
 }
 
@@ -46,7 +56,7 @@ Game.prototype.randomVelocity = function () {
 
 Game.prototype.allObjects = function () {
     return this.crows
-    .concat(this.scarecrow, this.bullets);
+    .concat(this.scarecrow, this.bullets, this.corns);
 }
 
 Game.prototype.draw = function (ctx) {
@@ -87,6 +97,9 @@ Game.prototype.checkCollisions = function () {
                     movingObj.collideWith(movingObj2)
                 } else if (movingObj instanceof Bullet && movingObj2 instanceof Crow ) {
                     movingObj2.collideWith(movingObj)
+                } 
+                else if (movingObj instanceof Crow && movingObj2 instanceof Corn) {
+                    movingObj.collideWith(movingObj2)
                 }
             }
         });
@@ -101,12 +114,16 @@ Game.prototype.step = function(){
 Game.prototype.removeCrow = function(movingObj) {
     let idx = this.crows.indexOf(movingObj);
     this.crows.splice(idx,1);
-    // this.crows[idx].height = 2;
 }
 
 Game.prototype.removeBullet = function (movingObj) {
     let idx = this.bullets.indexOf(movingObj);
     this.bullets.splice(idx, 1);
+}
+
+Game.prototype.removeCorn = function (movingObj) {
+    let idx = this.corns.indexOf(movingObj);
+    this.corns.splice(idx, 1);
 }
 
 
