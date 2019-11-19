@@ -1,4 +1,5 @@
 const Crow = require("./crow.js");
+const Scarecrow = require("./scarecrow.js");
 
 const CONSTANTS = {
     DIM_X: 1200,
@@ -10,6 +11,7 @@ const CONSTANTS = {
 
 function Game() {
     this.crows = [];
+    this.scarecrow = new Scarecrow({ game: this });
     this.addCrows();
     this.img = new Image();
     this.img.src = "green-stuff.jpg";
@@ -42,6 +44,7 @@ Game.prototype.randomVelocity = function () {
 
 Game.prototype.allObjects = function () {
     return this.crows
+    .concat(this.scarecrow);
     // .concat(this.bullets, this.scare);
 }
 
