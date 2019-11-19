@@ -11,6 +11,7 @@ function GameView (ctx) {
 
 GameView.prototype.start = function(){
     this.bindKeyHandlers();
+    
     setInterval(() => {
         // this.game.moveObjects();
         this.game.step();
