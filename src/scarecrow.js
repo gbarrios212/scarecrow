@@ -44,18 +44,26 @@ const cycleLoop = [
     // 640
 ];
 let currentLoopIndex = 0;
+let frameCount = 0;
 
 
 
 Scarecrow.prototype.step = function() {
-
+    // frameCount ++;
+    // if (frameCount < 6){
+    //     debugger;
+    //     window.requestAnimationFrame(this.step.bind(this));
+    //     return;
+    // }
     // ctx.clearRect(0, 0, 700, 450);
+    frameCount = 0;
     ctx.drawImage(this.image, cycleLoop[currentLoopIndex], 0, this.width, this.height, this.pos[0], this.pos[1], this.width * 2, this.height * 2);
     // drawFrame(cycleLoop[currentLoopIndex], 0, 0, 0);
     currentLoopIndex++;
     if (currentLoopIndex >= cycleLoop.length) {
         currentLoopIndex = 0;
     }
+    // window.requestAnimationFrame(this.step.bind(this));
     window.requestAnimationFrame(this.step);
 }
 
