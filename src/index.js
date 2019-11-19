@@ -9,19 +9,11 @@ document.addEventListener("DOMContentLoaded", function () {
     const canvas = document.getElementById("scarecrow-canvas");
     const ctx = canvas.getContext('2d');
     ctx.imageSmoothingEnabled = false;
-    // ctx.fillStyle = "gray";
-    // ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-   
-
+    
     gameView = new GameView(ctx);
     gameView.start();
-    //for test
 
     window.ctx = ctx;
-    // co = new Crow ({pos:[100, 100]});
-    // co.draw(ctx);
-    //for test 
 });
 
 

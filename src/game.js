@@ -6,10 +6,12 @@ const Corn = require("./corn.js");
 const CONSTANTS = {
     DIM_X: 700,
     DIM_Y: 450,
+    CORN_X: 200,
+    CORN_Y: 200,
     VEL_X: 2,
     VEL_Y: 2,
     NUM_CROWS: 5,
-    NUM_CORNS: 10
+    NUM_CORNS: 20
 };
 
 function Game() {
@@ -35,8 +37,16 @@ Game.prototype.addCrows = function () {
 
 Game.prototype.addCorns = function () {
     while (this.corns.length < CONSTANTS.NUM_CORNS) {
-        this.corns.push(new Corn({ pos: this.randomPosition(), game: this }))
+        this.corns.push(new Corn({ pos: this.cornPosition(), game: this }))
     }
+}
+
+Game.prototype.cornPosition = function () {
+    let position = [];
+    position.push(Math.floor(Math.random() * CONSTANTS.CORN_X) + 200);
+    position.push(Math.floor(Math.random() * CONSTANTS.CORN_Y) + 150);
+    return position;
+
 }
 
 Game.prototype.randomPosition = function () {
