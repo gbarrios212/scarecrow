@@ -25,10 +25,6 @@ function Game() {
     this.img.src = "green-stuff.jpg";
 }
 
-// Game.prototype.allObjects = function(){
-//     returi
-// }
-
 Game.prototype.addCrows = function () {
     while (this.crows.length < CONSTANTS.NUM_CROWS) {
         this.crows.push(new Crow({ pos: this.randomPosition(), vel: this.randomVelocity(), game: this}))

@@ -47,53 +47,6 @@ Scarecrow.prototype.draw = function () {
     if (currentLoopIndex >= cycleLoop.length) {
         currentLoopIndex = 0;
     }
-
-    // ctx.drawImage(this.image, 0, 0, this.width, this.height, this.pos[0], this.pos[1], this.width * 2, this.height * 2); 
-    // ctx.drawImage(this.image, 0, 64, this.width, this.height, this.pos[0], this.pos[1], this.width * 2, this.height * 2);
-    // ctx.drawImage(this.image, 0, 128, this.width, this.height, this.pos[0], this.pos[1], this.width * 2, this.height * 2);
-    // ctx.drawImage(this.image, 0, 192, this.width, this.height, this.pos[0], this.pos[1], this.width * 2, this.height * 2);
-    // ctx.drawImage(this.image, 0, 0, this.width, this.height, this.pos[0], this.pos[1], this.width * 2, this.height * 2);
-    // ctx.drawImage(this.image, 64, 0, this.width, this.height, this.pos[0], this.pos[1], this.width * 2, this.height * 2);
-    // ctx.drawImage(this.image, 128, 0, this.width, this.height, this.pos[0], this.pos[1], this.width * 2, this.height * 2);
-    // ctx.drawImage(this.image, 192, 0, this.width, this.height, this.pos[0], this.pos[1], this.width * 2, this.height * 2);
-
-    //correct below
-    // ctx.drawImage(this.image, 0, 0, this.width, this.height, this.pos[0], this.pos[1], this.width * 2, this.height * 2);
-    // ctx.drawImage(this.image, 64, 0, this.width, this.height, this.pos[0], this.pos[1], this.width * 2, this.height * 2);
-    // ctx.drawImage(this.image, 128, 0, this.width, this.height, this.pos[0], this.pos[1], this.width * 2, this.height * 2);
-
-    // ctx.drawImage(this.image, 0, 64, this.width, this.height, this.pos[0], this.pos[1], this.width * 2, this.height * 2);
-    // ctx.drawImage(this.image, 64, 64, this.width, this.height, this.pos[0], this.pos[1], this.width * 2, this.height * 2);
-    // ctx.drawImage(this.image, 128, 64, this.width, this.height, this.pos[0], this.pos[1], this.width * 2, this.height * 2);
-
-    // ctx.drawImage(this.image, 0, 128, this.width, this.height, this.pos[0], this.pos[1], this.width * 2, this.height * 2);
-    // ctx.drawImage(this.image, 64, 128, this.width, this.height, this.pos[0], this.pos[1], this.width * 2, this.height * 2);
-    // ctx.drawImage(this.image, 128, 128, this.width, this.height, this.pos[0], this.pos[1], this.width * 2, this.height * 2);
-
-    // ctx.drawImage(this.image, 0, 192, this.width, this.height, this.pos[0], this.pos[1], this.width * 2, this.height * 2);
-
-    //attempted dry 
-    // let one = 0;
-    // let two = 64; 
-    // let three = 128; 
-    // let four = 192;
-
-    // ctx.drawImage(this.image, one, one, this.width, this.height, this.pos[0], this.pos[1], this.width * 2, this.height * 2);
-    // ctx.drawImage(this.image, two, one, this.width, this.height, this.pos[0], this.pos[1], this.width * 2, this.height * 2);
-    // ctx.drawImage(this.image, three, one, this.width, this.height, this.pos[0], this.pos[1], this.width * 2, this.height * 2);
-
-    // ctx.drawImage(this.image, one, two, this.width, this.height, this.pos[0], this.pos[1], this.width * 2, this.height * 2);
-    // ctx.drawImage(this.image, two, two, this.width, this.height, this.pos[0], this.pos[1], this.width * 2, this.height * 2);
-    // ctx.drawImage(this.image, three, two, this.width, this.height, this.pos[0], this.pos[1], this.width * 2, this.height * 2);
-
-    // ctx.drawImage(this.image, one, three, this.width, this.height, this.pos[0], this.pos[1], this.width * 2, this.height * 2);
-    // ctx.drawImage(this.image, two, three, this.width, this.height, this.pos[0], this.pos[1], this.width * 2, this.height * 2);
-    // ctx.drawImage(this.image, three, three, this.width, this.height, this.pos[0], this.pos[1], this.width * 2, this.height * 2);
-
-    // ctx.drawImage(this.image, one, four, this.width, this.height, this.pos[0], this.pos[1], this.width * 2, this.height * 2);
-
-    // window.requestAnimationFrame(this.step.bind(this));
-    // this.step();
 }
 
 module.exports = Scarecrow;
