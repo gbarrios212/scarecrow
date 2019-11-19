@@ -5,7 +5,7 @@ function MovingObject(options) {
     this.height = options.height;
     this.image = options.image;
     this.game = options.game;
-    // this.isWrappable = true;
+    this.isWrappable = options.isWrappable;
 }
 
 //mo.draw(ctx)
@@ -20,11 +20,11 @@ MovingObject.prototype.draw = function (ctx) {
 MovingObject.prototype.move = function () {
     this.pos = [this.pos[0] + this.vel[0], this.pos[1] + this.vel[1]];
     if (this.game.isOutOfBounds(this.pos)) {
-    //     if (this.isWrappable) {
+        if (this.isWrappable) {
             this.pos = this.game.wrap(this.pos);
-    //     } else {
-    //         this.game.removeBullet(this);
-    //     }
+        } else {
+            this.game.removeBullet(this);
+        }
     }
 }
 

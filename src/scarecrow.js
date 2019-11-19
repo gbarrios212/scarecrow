@@ -6,7 +6,7 @@ const scarecrowImage = new Image ();
 scarecrowImage.src = "../dist/scarecrow03.png";
 
 function Scarecrow(options) {
-    MovingObject.call(this, { pos: [400, 400], vel: [0, 0], width: 60, height: 60, image: scarecrowImage, game: options.game })
+    MovingObject.call(this, { pos: [400, 400], vel: [0, 0], width: 60, height: 60, image: scarecrowImage, game: options.game, isWrappable: true })
 }
 
 
@@ -17,7 +17,7 @@ Scarecrow.prototype.power = function(acc) {
 }
 
 Scarecrow.prototype.fireBullet = function() {
-    let bullet = new Bullet({ pos: this.pos, vel: [2, 2], game: this.game});
+    let bullet = new Bullet({ pos: this.pos, vel: [2, 2], game: this.game, isWrappable: false });
     this.game.bullets.push(bullet);
 }
 module.exports = Scarecrow;

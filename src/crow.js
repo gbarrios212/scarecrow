@@ -13,7 +13,7 @@ const CONSTANTS = {
 };
 
 function Crow(options) {
-    MovingObject.call(this, { pos: options.pos, vel: options.vel, width: 60, height: 60, image: crowImage, game: options.game })
+    MovingObject.call(this, { pos: options.pos, vel: options.vel, width: 60, height: 60, image: crowImage, game: options.game, isWrappable: true })
 }
 
 Util.inherits(Crow, MovingObject);
