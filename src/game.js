@@ -3,11 +3,11 @@ const Scarecrow = require("./scarecrow.js");
 const Bullet = require("./bullet.js");
 
 const CONSTANTS = {
-    DIM_X: 1200,
-    DIM_Y: 800,
+    DIM_X: 700,
+    DIM_Y: 450,
     VEL_X: 10,
     VEL_Y: 10,
-    NUM_CROWS: 40
+    NUM_CROWS: 10
 };
 
 function Game() {
@@ -85,13 +85,8 @@ Game.prototype.checkCollisions = function () {
             if (i !== j && movingObj.isCollidedWith(movingObj2)){
                 if (movingObj instanceof Crow && movingObj2 instanceof Scarecrow ) {
                     movingObj.collideWith(movingObj2)
-                } else if (movingObj2 instanceof Crow && movingObj instanceof Scarecrow) {
+                } else if (movingObj instanceof Bullet && movingObj2 instanceof Crow ) {
                     movingObj2.collideWith(movingObj)
-                // } else if (movingObj instanceof Bullet && movingObj2 instanceof Crow ) {
-                //     movingObj2.collideWith(movingObj)
-                // }
-                // } else if (movingObj instanceof Crow && movingObj2 instanceof Bullet) {
-                //     movingObj.collideWith(movingObj2)
                 }
             }
         });
@@ -106,6 +101,7 @@ Game.prototype.step = function(){
 Game.prototype.removeCrow = function(movingObj) {
     let idx = this.crows.indexOf(movingObj);
     this.crows.splice(idx,1);
+    // this.crows[idx].height = 2;
 }
 
 Game.prototype.removBullet = function (movingObj) {

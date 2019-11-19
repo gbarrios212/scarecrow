@@ -1,5 +1,6 @@
 const MovingObject = require("./moving_object.js");
 const Scarecrow = require("./scarecrow.js");
+const Bullet = require("./bullet.js");
 const Util = require("./utils.js");
 
 
@@ -22,7 +23,7 @@ Crow.prototype.collideWith = function (otherObject) {
         otherObject.relocate();
     } else if (otherObject instanceof Bullet) {
         this.game.removeCrow(this);
-        this.game.removeBullet(otherObject);
+        // this.game.removeBullet(otherObject);
     }
 }
 

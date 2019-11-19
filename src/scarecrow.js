@@ -16,7 +16,7 @@ Scarecrow.prototype.power = function(acc) {
     this.vel = [this.vel[0] + acc[0], this.vel[1] + acc[1]];
 }
 
-Scarecrow.prototype.fireBullet = () => {
+Scarecrow.prototype.fireBullet = function() {
     let bullet = new Bullet({ pos: this.pos, vel: [2, 2], game: this.game});
     this.game.bullets.push(bullet);
 }

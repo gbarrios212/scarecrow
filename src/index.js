@@ -13,8 +13,8 @@ document.addEventListener("DOMContentLoaded", function () {
     // canvas.setAttribute('width', window.innerWidth);
     // canvas.setAttribute('height', window.innerHeight);
     ctx.imageSmoothingEnabled = false;
-    ctx.fillStyle = "gray";
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    // ctx.fillStyle = "gray";
+    // ctx.fillRect(0, 0, canvas.width, canvas.height);
 
     gameView = new GameView(ctx);
     gameView.start();

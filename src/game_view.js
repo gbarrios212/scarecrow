@@ -19,11 +19,14 @@ GameView.prototype.start = function(){
 }
 
 GameView.prototype.bindKeyHandlers = function () {
-    debugger;
-    key('w', () => { this.game.scarecrow.power([0, -CONSTANTS.POWER]) });
-    key('a', () => { this.game.scarecrow.power([-CONSTANTS.POWER, 0]) });
-    key('s', () => { this.game.scarecrow.power([0, CONSTANTS.POWER]) });
-    key('d', () => { this.game.scarecrow.power([CONSTANTS.POWER, 0]) });
+    // key('w', () => { this.game.scarecrow.power([0, -CONSTANTS.POWER]) });
+    // key('a', () => { this.game.scarecrow.power([-CONSTANTS.POWER, 0]) });
+    // key('s', () => { this.game.scarecrow.power([0, CONSTANTS.POWER]) });
+    // key('d', () => { this.game.scarecrow.power([CONSTANTS.POWER, 0]) });
+    key('w', () => { this.game.scarecrow.vel = [0, -3] });
+    key('a', () => { this.game.scarecrow.vel = [-3, 0] });
+    key('s', () => { this.game.scarecrow.vel = [0, 3] });
+    key('d', () => { this.game.scarecrow.vel = [3, 0] });
     key('space', () => { this.game.scarecrow.fireBullet() });
 }
 
