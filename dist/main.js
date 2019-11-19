@@ -86,14 +86,69 @@
 /************************************************************************/
 /******/ ({
 
+/***/ "./src/crow.js":
+/*!*********************!*\
+  !*** ./src/crow.js ***!
+  \*********************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+eval("const MovingObject = __webpack_require__(/*! ./moving_object.js */ \"./src/moving_object.js\");\nconst Util = __webpack_require__(/*! ./utils.js */ \"./src/utils.js\");\n\n\nconst crowImage = new Image ();\ncrowImage.src = \"../dist/crow0.png\";\n\nconst CONSTANTS = {\n    MAX_X: 10,\n    MAX_Y: 10,\n};\n\nfunction Crow(options) {\n    MovingObject.call(this, { pos: options.pos, vel: options.vel, width: 60, height: 60, image: crowImage, game: options.game })\n}\n\nUtil.inherits(Crow, MovingObject);\n\n// Crow.prototype.collideWith = function (otherObject) {\n//     if (otherObject instanceof scare) {\n//         otherObject.relocate();\n//     } else if (otherObject instanceof Bullet) {\n//         this.game.removeCrow(this);\n//         this.game.removeBullet(otherObject);\n//     }\n// }\n\nmodule.exports = Crow; \n\n//# sourceURL=webpack:///./src/crow.js?");
+
+/***/ }),
+
+/***/ "./src/game.js":
+/*!*********************!*\
+  !*** ./src/game.js ***!
+  \*********************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+eval("const Crow = __webpack_require__(/*! ./crow.js */ \"./src/crow.js\");\n\nconst CONSTANTS = {\n    DIM_X: 1200,\n    DIM_Y: 800,\n    VEL_X: 10,\n    VEL_Y: 10,\n    NUM_CROWS: 40\n};\n\nfunction Game() {\n    this.crows = [];\n    this.addCrows();\n    this.img = new Image();\n    this.img.src = \"green-stuff.jpg\";\n}\n\n// Game.prototype.allObjects = function(){\n//     returi\n// }\n\nGame.prototype.addCrows = function () {\n    while (this.crows.length < CONSTANTS.NUM_CROWS) {\n        this.crows.push(new Crow({ pos: this.randomPosition(), vel: this.randomVelocity(), game: this}))\n    }\n}\n\nGame.prototype.randomPosition = function () {\n    let position = [];\n    position.push(Math.floor(Math.random() * CONSTANTS.DIM_X));\n    position.push(Math.floor(Math.random() * CONSTANTS.DIM_Y));\n    return position;\n}\n\n\nGame.prototype.randomVelocity = function () {\n    let velocity = [];\n    velocity.push(Math.floor(Math.random() * CONSTANTS.VEL_X));\n    velocity.push(Math.floor(Math.random() * CONSTANTS.VEL_Y));\n    return velocity;\n}\n\nGame.prototype.allObjects = function () {\n    return this.crows\n    // .concat(this.bullets, this.scare);\n}\n\nGame.prototype.draw = function (ctx) {\n    ctx.clearRect(0, 0, CONSTANTS.DIM_X, CONSTANTS.DIM_Y);\n    ctx.drawImage(this.img, 0, 0, 1200, 800);\n    this.allObjects().forEach(movingObj => movingObj.draw(ctx));\n}\n\nGame.prototype.moveObjects = function () {\n    this.allObjects().forEach(movingObj => movingObj.move());\n}\n\nGame.prototype.wrap = function (pos) {\n    if (pos[0] > CONSTANTS.DIM_X) {\n        pos[0] = 0;\n    } else if (pos[0] < 0) {\n        pos[0] = CONSTANTS.DIM_X;\n    }\n\n    if (pos[1] > CONSTANTS.DIM_Y) {\n        pos[1] = 0;\n    } else if (pos[1] < 0) {\n        pos[1] = CONSTANTS.DIM_Y;\n    }\n\n    return pos;\n}\n\nGame.prototype.isOutOfBounds = function (pos) {\n    return pos[0] > CONSTANTS.DIM_X || pos[0] < 0 || pos[1] > CONSTANTS.DIM_Y || pos[1] < 0;\n}\n\nGame.prototype.checkCollisions = function () {\n    this.allObjects().forEach((movingObj, i) => {\n        this.allObjects().forEach((movingObj2, j) => {\n            if (i !== j && movingObj.isCollidedWith(movingObj2)){\n                this.remove(movingObj);\n                this.remove(movingObj2);\n            }\n        });\n    });\n}\n\nGame.prototype.step = function(){\n    this.moveObjects();\n    this.checkCollisions();\n}\n\nGame.prototype.remove = function(movingObj) {\n    let idx = this.crows.indexOf(movingObj);\n    this.crows.splice(idx,1);\n}\n\n\nmodule.exports = Game;\n\n//# sourceURL=webpack:///./src/game.js?");
+
+/***/ }),
+
+/***/ "./src/game_view.js":
+/*!**************************!*\
+  !*** ./src/game_view.js ***!
+  \**************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+eval("const Game = __webpack_require__(/*! ./game.js */ \"./src/game.js\"); \n\nfunction GameView (ctx) {\n    this.game = new Game;\n    this.ctx = ctx;\n}\n\nGameView.prototype.start = function(){\n    setInterval(() => {\n        // this.game.moveObjects();\n        this.game.step();\n        this.game.draw(this.ctx);\n    }, 20);\n}\n\n\nmodule.exports = GameView;\n\n//# sourceURL=webpack:///./src/game_view.js?");
+
+/***/ }),
+
 /***/ "./src/index.js":
 /*!**********************!*\
   !*** ./src/index.js ***!
   \**********************/
 /*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+eval("\nconst MovingObject = __webpack_require__(/*! ./moving_object.js */ \"./src/moving_object.js\");\nconst Crow = __webpack_require__(/*! ./crow.js */ \"./src/crow.js\");\nconst Game = __webpack_require__(/*! ./game.js */ \"./src/game.js\");\nconst GameView = __webpack_require__(/*! ./game_view.js */ \"./src/game_view.js\")\n// window.MovingObject = MovingObject;\n\n\n\ndocument.addEventListener(\"DOMContentLoaded\", function () {\n    const canvas = document.getElementById(\"scarecrow-canvas\");\n    const ctx = canvas.getContext('2d');\n    // canvas.setAttribute('width', window.innerWidth);\n    // canvas.setAttribute('height', window.innerHeight);\n    ctx.imageSmoothingEnabled = false;\n    ctx.fillStyle = \"gray\";\n    ctx.fillRect(0, 0, canvas.width, canvas.height);\n\n    gameView = new GameView(ctx);\n    gameView.start();\n    //for test\n    window.Crow = Crow;\n    window.ctx = ctx;\n    // co = new Crow ({pos:[100, 100]});\n    // co.draw(ctx);\n    //for test \n\n    var scare = new Image();\n    scare.src = \"../dist/scarecrow03.png\"\n    var crow = new Image();\n    crow.src = \"../dist/crow0.png\";\n    var corn = new Image();\n    corn.src = \"../dist/corn0.png\";\n    // const crow = document.getElementById(\"crow\");\n    // const corn = document.getElementById(\"corn\");\n    // const scare = document.getElementById(\"scare\");\n    ctx.drawImage(scare, 300, 30, 80, 80);\n    ctx.drawImage (crow, 10, 20, 80, 80);\n    ctx.drawImage(corn, 10, 100, 80, 80);\n    ctx.drawImage(corn, 10, 200, 80, 80);\n    ctx.drawImage(corn, 10, 300, 80, 80);\n    ctx.drawImage(corn, 100, 100, 80, 80);\n    ctx.drawImage(corn, 100, 200, 80, 80);\n    ctx.drawImage(corn, 100, 300, 80, 80);\n    // const Janice2 = new GameView(ctx);\n    // Janice2.start();\n});\n\n//want to draw and move and draw and move \n\n\n\n//# sourceURL=webpack:///./src/index.js?");
+
+/***/ }),
+
+/***/ "./src/moving_object.js":
+/*!******************************!*\
+  !*** ./src/moving_object.js ***!
+  \******************************/
+/*! no static exports found */
 /***/ (function(module, exports) {
 
-eval("\n// const MovingObject = require(\"./moving_object.js\");\n// const Asteroid = require(\"./asteroid.js\");\n// const Game = require(\"./game.js\");\n// const GameView = require(\"./game_view.js\")\n// window.MovingObject = MovingObject;\n\nconsole.log(\"Webpack these\")\n\ndocument.addEventListener(\"DOMContentLoaded\", function () {\n    // const canvas = document.getElementById(\"asteroids-canvas\");\n    // const ctx = canvas.getContext('2d');\n    // const Janice2 = new GameView(ctx);\n    // Janice2.start();\n});\n\n\n\n//# sourceURL=webpack:///./src/index.js?");
+eval("function MovingObject(options) {\n    this.pos = options.pos;\n    this.vel = options.vel;\n    this.width = options.width;\n    this.height = options.height;\n    this.image = options.image;\n    this.game = options.game;\n    // this.isWrappable = true;\n}\n\n//mo.draw(ctx)\n//ctx is the canvas 2d rendering context \n// mo is the moving objext\n// draw is the function that take sin canvas as an arg and creates a circle \n\nMovingObject.prototype.draw = function (ctx) {\n    ctx.drawImage(this.image, this.pos[0], this.pos[1], this.width, this.height);\n}\n\nMovingObject.prototype.move = function () {\n    this.pos = [this.pos[0] + this.vel[0], this.pos[1] + this.vel[1]];\n    if (this.game.isOutOfBounds(this.pos)) {\n    //     if (this.isWrappable) {\n            this.pos = this.game.wrap(this.pos);\n    //     } else {\n    //         this.game.removeBullet(this);\n    //     }\n    }\n}\n\nMovingObject.prototype.isCollidedWith = function (otherObject) {\n    let dist = Math.sqrt((this.pos[0] - otherObject.pos[0]) ** 2 + (this.pos[1] - otherObject.pos[1]) ** 2);\n    return dist <= 10;\n    // return true;\n}\n\n// MovingObject.prototype.collideWith = function (otherObject) {\n//   this.game.remove(otherObject);\n//   this.game.remove(this);\n// }\n\nmodule.exports = MovingObject;\n\n//# sourceURL=webpack:///./src/moving_object.js?");
+
+/***/ }),
+
+/***/ "./src/utils.js":
+/*!**********************!*\
+  !*** ./src/utils.js ***!
+  \**********************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+eval("const Util = {\n    inherits(childClass, parentClass) {\n        const Surrogate = function () { };\n        Surrogate.prototype = parentClass.prototype;\n        childClass.prototype = new Surrogate();\n        childClass.prototype.constructor = childClass;\n    }\n}\n\nmodule.exports = Util;\n\n\n//# sourceURL=webpack:///./src/utils.js?");
 
 /***/ })
 
