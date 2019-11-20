@@ -8,13 +8,8 @@ function MovingObject(options) {
     this.isWrappable = options.isWrappable;
 }
 
-//mo.draw(ctx)
-//ctx is the canvas 2d rendering context 
-// mo is the moving objext
-// draw is the function that take sin canvas as an arg and creates a circle 
-
 MovingObject.prototype.draw = function (ctx) {
-    ctx.drawImage(this.image, this.pos[0], this.pos[1], this.width, this.height);
+    ctx.drawImage(this.image, this.pos[0], this.pos[1], this.width / 2, this.height / 2);
 }
 
 MovingObject.prototype.move = function () {
@@ -29,11 +24,19 @@ MovingObject.prototype.move = function () {
 }
 
 MovingObject.prototype.isCollidedWith = function (otherObject) {
-    let dist = Math.sqrt((this.pos[0] - otherObject.pos[0]) ** 2 + (this.pos[1] - otherObject.pos[1]) ** 2);
-    // fine for crow to scarecrow; too big for heart  
-    // return dist <= 40;
-    return dist <= 30;
-    // return true;
+    // let dist = Math.sqrt((this.pos[0] - otherObject.pos[0]) ** 2 + (this.pos[1] - otherObject.pos[1]) ** 2);
+    // return dist <= 30;
+    // if (this.pos[0] < otherObject.pos[0] + otherObject.width && this.pos[0] + this.width > otherObject.pos[0] &&
+    //     this.pos[1] < otherObject.pos[1] + otherObject.height && this.pos[1] + this.height > otherObject.pos[1]) {
+    //         return true } 
+    if (this.pos[0] < otherObject.pos[0] + otherObject.width &&
+        this.pos[0] + this.width > otherObject.pos[0] &&
+        this.pos[1] < otherObject.pos[1] + otherObject.height &&
+        this.pos[1] + this.height > otherObject.pos[1]) {
+        // collision detected!
+        // debugger;
+        return true;
+    }
 }
 
 MovingObject.prototype.relocate = function(){

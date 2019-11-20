@@ -10,9 +10,26 @@ const CONSTANTS = {
     CORN_Y: 200,
     VEL_X: 2,
     VEL_Y: 2,
-    NUM_CROWS: 5,
-    NUM_CORNS: 20
+    NUM_CROWS: 0,
+    NUM_CORNS: 0
 };
+
+const tileWidth = 40, tileHeight = 40;
+const mapWidth = 20, mapHeight = 10;
+
+const gameMap = [
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+]
+
 
 function Game() {
     this.crows = [];
@@ -22,7 +39,32 @@ function Game() {
     this.addCrows();
     this.addCorns();
     this.img = new Image();
-    this.img.src = "green-stuff.jpg";
+    // this.img.src = "green-stuff.jpg";
+    this.img.src = "farmland_later.png";
+    this.gameMap = gameMap;
+}
+
+Game.prototype.draw = function (ctx) {
+    // for( let y = 0; y < mapHeight; y ++) {
+    //     for(let x = 0; x < mapWidth; x ++) {
+        for(let row = 0; row < 10; row ++ ) {
+            for(let col = 0; col < 20; col ++) {
+            // switch(gameMap[((y*mapWidth) + x)]) {
+
+                switch(gameMap[row][col]){
+                case 0: 
+                    ctx.fillStyle = "#999999";
+                    break;
+                default: 
+                    ctx.fillStyle = "#eeeeee";
+            }
+            ctx.fillRect(col*tileWidth, row*tileHeight, tileWidth, tileHeight);
+        }
+    }
+    // ctx.clearRect(0, 0, CONSTANTS.DIM_X, CONSTANTS.DIM_Y);
+    //looks better 750 x 450, also adjust wrap 
+    // ctx.drawImage(this.img, 0, 0, 800, 400);
+    this.allObjects().forEach(movingObj => movingObj.draw(ctx));
 }
 
 Game.prototype.addCrows = function () {
@@ -65,11 +107,7 @@ Game.prototype.allObjects = function () {
     .concat(this.scarecrow, this.bullets, this.corns);
 }
 
-Game.prototype.draw = function (ctx) {
-    ctx.clearRect(0, 0, CONSTANTS.DIM_X, CONSTANTS.DIM_Y);
-    ctx.drawImage(this.img, 0, 0, 1200, 800);
-    this.allObjects().forEach(movingObj => movingObj.draw(ctx));
-}
+
 
 Game.prototype.moveObjects = function () {
     this.allObjects().forEach(movingObj => movingObj.move());
@@ -106,6 +144,10 @@ Game.prototype.checkCollisions = function () {
                 } 
                 else if (movingObj instanceof Crow && movingObj2 instanceof Corn) {
                     movingObj.collideWith(movingObj2)
+                }
+                else if (movingObj instanceof Scarecrow && movingObj2 instanceof Corn) {
+                    
+                    movingObj.collideWith(movingObj2);
                 }
             }
         });

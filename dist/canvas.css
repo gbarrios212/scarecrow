@@ -5,6 +5,10 @@
     image-rendering: -o-crisp-edges;            
     image-rendering: pixelated;                 
     -ms-interpolation-mode: nearest-neighbor; 
+
+    display: grid;
+    grid-column: 1fr 1fr 1fr;
+    grid-row: auto;
 }
 
 .crow{
