@@ -14,7 +14,8 @@ function Scarecrow(options) {
             height: 40, 
             image: scarecrowImage, 
             game: options.game, 
-            isWrappable: true 
+            isWrappable: true, 
+            spooked: false
         })
    
 }
@@ -45,6 +46,12 @@ let frameCount = 0;
 Scarecrow.prototype.draw = function () {
     frameCount ++;
     this.scareMove();
+    if (this.spooked) {
+        let spookedImage = new Image();
+        spookedImage.src = "../dist/scarecrow_spooked.png";
+        return ctx.drawImage(spookedImage, cycleLoop[currentLoopIndex], 0, this.width, this.height, this.pos[0], this.pos[1], this.width, this.height)
+        // ctx.drawImage()
+    }
     if (frameCount < 6){
         return ctx.drawImage(this.image, cycleLoop[currentLoopIndex], 0, this.width, this.height, this.pos[0], this.pos[1], this.width, this.height)
     }
@@ -111,23 +118,23 @@ Scarecrow.prototype.scareMove = function () {
         if (this.game.gameMap[Math.ceil(this.pos[1] / 40)][Math.floor(this.pos[0] / 40) + 1] !== 1 ) {
             this.game.scarecrow.pos[0] += 3;
         } else {
-            // this.game.scarecrow.pos[0] -= 9;
+            this.game.scarecrow.pos[0] -= 9;
             console.log(`uh oh no right ${this.pos[0]}`)
         }
     } else if (leftPressed) {
         if (this.game.gameMap[Math.ceil(this.pos[1] / 40)][Math.floor(this.pos[0] / 40) + 1] !== 1) {
             this.game.scarecrow.pos[0] -= 3;
         } else {
-            // this.game.scarecrow.pos[0] += 9;
+            this.game.scarecrow.pos[0] += 12;
             console.log(`uh oh no left ${this.pos[0]}`)
         }
         // this.game.scarecrow.pos[0] -= 3;
 
     } else if (upPressed) {
-        if (this.game.gameMap[Math.ceil(this.pos[1] / 40)][Math.floor(this.pos[0] / 40) + 1] !== 1){
+        if (this.game.gameMap[Math.ceil(this.pos[1] / 40) - 1][Math.floor(this.pos[0] / 40) + 1] !== 1){
             this.game.scarecrow.pos[1] -= 3;
         } else {
-            this.game.scarecrow.pos[1] += 9;
+            this.game.scarecrow.pos[1] += 12;
             console.log(`uh oh no up ${this.pos[1]}`)
         }
     } else if (downPressed) {
@@ -146,6 +153,7 @@ Scarecrow.prototype.scareMove = function () {
 Scarecrow.prototype.paralyze = function() {
     this.pos[0] -= 9; 
     this.pos[1] -= 9;
+    this.spooked = true;
     for (let scare = 0; scare < 180; scare ++) {
         rightPressed = false;
         leftPressed = false;
@@ -153,6 +161,7 @@ Scarecrow.prototype.paralyze = function() {
         downPressed = false;
         console.log("EEP!")
     }
+    this.spooked = false;
 }
 
 // Scarecrow.prototype.collideWith = function(movingObject) {

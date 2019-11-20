@@ -10,8 +10,8 @@ const CONSTANTS = {
     CORN_Y: 120,
     VEL_X: 2,
     VEL_Y: 2,
-    NUM_CROWS: 10,
-    NUM_CORNS: 15
+    NUM_CROWS: 0,
+    NUM_CORNS: 0
 };
 
 const tileWidth = 40, tileHeight = 40;
