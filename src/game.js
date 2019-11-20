@@ -10,7 +10,7 @@ const CONSTANTS = {
     CORN_Y: 120,
     VEL_X: 2,
     VEL_Y: 2,
-    NUM_CROWS: 0,
+    NUM_CROWS: 10,
     NUM_CORNS: 15
 };
 
@@ -18,7 +18,7 @@ const tileWidth = 40, tileHeight = 40;
 const mapWidth = 20, mapHeight = 10;
 
 const gameMap = [
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -27,7 +27,7 @@ const gameMap = [
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
 ]
 
 
@@ -35,9 +35,9 @@ function Game() {
     this.crows = [];
     this.bullets = [];
     this.corns = [];
-    this.scarecrow = new Scarecrow({ game: this });
     this.addCrows();
     this.addCorns();
+    this.scarecrow = new Scarecrow({ game: this });
     this.img = new Image();
     
     // this.img.src = "green-stuff.jpg";
@@ -61,12 +61,15 @@ Game.prototype.draw = function (ctx) {
                 case 0: 
                     // ctx.drawImage(this.img, 0, 0, 40, 40);
                     ctx.fillStyle = pattern;
+                    
                     break;
                 default: 
                     ctx.fillStyle = pattern2;
                     // ctx.fillStyle = "#eeeeee";
             }
             ctx.fillRect(col*tileWidth, row*tileHeight, tileWidth, tileHeight);
+            // ctx.strokeStyle = 'red';
+            // ctx.stroke();
         }
     }
     // ctx.clearRect(0, 0, CONSTANTS.DIM_X, CONSTANTS.DIM_Y);

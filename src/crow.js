@@ -21,12 +21,13 @@ Util.inherits(Crow, MovingObject);
 
 Crow.prototype.collideWith = function (otherObject) {
     if (otherObject instanceof Scarecrow) {
-        otherObject.relocate();
+        otherObject.paralyze();
     } else if (otherObject instanceof Bullet) {
         this.game.removeCrow(this);
         this.game.removeBullet(otherObject);
     } else if (otherObject instanceof Corn) {
         this.game.removeCorn(otherObject);
+        this.game.gameMap[Math.ceil(this.pos[1] / 40) - 1][Math.ceil(this.pos[0] / 40) - 1] = 0;
     }
 }
 

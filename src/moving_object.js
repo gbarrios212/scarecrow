@@ -44,6 +44,7 @@ MovingObject.prototype.relocate = function(){
     this.vel = [0, 0];
 }
 
+
 // MovingObject.prototype.collideWith = function (otherObject) {
 //   this.game.remove(otherObject);
 //   this.game.remove(this);
