@@ -6,12 +6,12 @@ const Corn = require("./corn.js");
 const CONSTANTS = {
     DIM_X: 700,
     DIM_Y: 450,
-    CORN_X: 200,
-    CORN_Y: 200,
+    CORN_X: 280,
+    CORN_Y: 120,
     VEL_X: 2,
     VEL_Y: 2,
     NUM_CROWS: 0,
-    NUM_CORNS: 0
+    NUM_CORNS: 15
 };
 
 const tileWidth = 40, tileHeight = 40;
@@ -39,24 +39,32 @@ function Game() {
     this.addCrows();
     this.addCorns();
     this.img = new Image();
+    
     // this.img.src = "green-stuff.jpg";
-    this.img.src = "farmland_later.png";
+    this.img.src = "farmland_later_single.png";
     this.gameMap = gameMap;
 }
 
 Game.prototype.draw = function (ctx) {
     // for( let y = 0; y < mapHeight; y ++) {
     //     for(let x = 0; x < mapWidth; x ++) {
+        let pattern = ctx.createPattern(this.img, 'repeat');
+        let fieldPattern = new Image();
+        fieldPattern.src = "corn_field_later_single.png";
+        let pattern2 = ctx.createPattern(fieldPattern, 'repeat');
+    
         for(let row = 0; row < 10; row ++ ) {
             for(let col = 0; col < 20; col ++) {
             // switch(gameMap[((y*mapWidth) + x)]) {
 
                 switch(gameMap[row][col]){
                 case 0: 
-                    ctx.fillStyle = "#999999";
+                    // ctx.drawImage(this.img, 0, 0, 40, 40);
+                    ctx.fillStyle = pattern;
                     break;
                 default: 
-                    ctx.fillStyle = "#eeeeee";
+                    ctx.fillStyle = pattern2;
+                    // ctx.fillStyle = "#eeeeee";
             }
             ctx.fillRect(col*tileWidth, row*tileHeight, tileWidth, tileHeight);
         }
@@ -74,15 +82,30 @@ Game.prototype.addCrows = function () {
 }
 
 Game.prototype.addCorns = function () {
-    while (this.corns.length < CONSTANTS.NUM_CORNS) {
-        this.corns.push(new Corn({ pos: this.cornPosition(), game: this }))
+    // while (this.corns.length < CONSTANTS.NUM_CORNS) {
+    //     this.corns.push(new Corn({ pos: this.cornPosition(), game: this }))
+    // }
+    for (let row = 0; row < 10; row++) {
+        for (let col = 0; col < 20; col++) {
+            switch (gameMap[row][col]) {
+                case 1:
+                    this.corns.push(new Corn({ pos: [col * 40, row * 40], game: this}))
+                    // ctx.drawImage(this.img, 0, 0, 40, 40);
+                    break;
+                default:
+                    break;
+                    // ctx.fillStyle = pattern2;
+                // ctx.fillStyle = "#eeeeee";
+            }
+            // ctx.fillRect(col * tileWidth, row * tileHeight, tileWidth, tileHeight);
+        }
     }
 }
 
 Game.prototype.cornPosition = function () {
     let position = [];
     position.push(Math.floor(Math.random() * CONSTANTS.CORN_X) + 200);
-    position.push(Math.floor(Math.random() * CONSTANTS.CORN_Y) + 150);
+    position.push(Math.floor(Math.random() * CONSTANTS.CORN_Y) + 120);
     return position;
 
 }
@@ -145,10 +168,10 @@ Game.prototype.checkCollisions = function () {
                 else if (movingObj instanceof Crow && movingObj2 instanceof Corn) {
                     movingObj.collideWith(movingObj2)
                 }
-                else if (movingObj instanceof Scarecrow && movingObj2 instanceof Corn) {
+                // else if (movingObj instanceof Scarecrow && movingObj2 instanceof Corn) {
                     
-                    movingObj.collideWith(movingObj2);
-                }
+                //     movingObj.collideWith(movingObj2);
+                // }
             }
         });
     });
