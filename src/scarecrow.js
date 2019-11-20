@@ -108,14 +108,14 @@ function keyUpHandler(e) {
 
 Scarecrow.prototype.scareMove = function () {
     if (rightPressed) {
-        // debugger;
-        if (this.game.gameMap[((this.pos[0]/40 + 3))] !== 1 ||
-            this.game.gameMap[this.pos[0]/40 + 2] !== 1 ||
-            this.game.gameMap[this.pos[0]/40 + 1] !== 1
+        if (this.game.gameMap[Math.ceil(this.pos[1] / 40)][Math.floor(this.pos[0] / 40) + 1] !== 1 
+            // ||
+            // this.game.gameMap[this.pos[0] / 40 + 2][this.pos[1]] !== 1 ||
+            // this.game.gameMap[this.pos[0] / 40 + 1][this.pos[1]] !== 1
             ) {
             this.game.scarecrow.pos[0] += 3;
         } else {
-            window.alert(`uh oh ${this.pos[0]}`)
+            console.log(`uh oh ${this.pos[0]}`)
         }
     } else if (leftPressed &&!this.collided) {
         this.game.scarecrow.pos[0] -= 3;
