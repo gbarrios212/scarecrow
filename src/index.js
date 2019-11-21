@@ -11,6 +11,21 @@ document.addEventListener("DOMContentLoaded", function () {
     const ctx = canvas.getContext('2d');
     ctx.imageSmoothingEnabled = false;
 
+    document.addEventListener("click", () => {
+        const mainSheet = document.getElementById("main-content-sheet");
+        const start = document.getElementById("start-button");
+        const texts = document.querySelectorAll("#text");
+        mainSheet.classList.add("story");
+        start.classList.add("off");
+        texts.forEach(text => {
+            text.classList.toggle("off");
+        })
+            
+
+        // mainSheet.innerHTML = "Two years since they've been gone."
+
+    })
+
    window.clock = document.getElementById("clock");
    clock.innerHTML = "2:30";
 
@@ -19,7 +34,6 @@ document.addEventListener("DOMContentLoaded", function () {
         time -= 1;
         let convertMins = Math.floor(time / 60);
         let convertSecs = time % 60;
-        debugger;
         if (convertSecs === 0) {
             clock.innerHTML = convertMins + " : " + convertSecs + "0";
         } else if (convertSecs < 10) {

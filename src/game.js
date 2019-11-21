@@ -10,7 +10,7 @@ const CONSTANTS = {
     CORN_Y: 120,
     VEL_X: 2,
     VEL_Y: 2,
-    NUM_CROWS: 100,
+    NUM_CROWS: 10,
     //NUM_CROWS: 13 seems fine for difficulty
     NUM_CORNS: 1
 };
@@ -181,7 +181,6 @@ Game.prototype.removeCorn = function (movingObj) {
 }
 
 Game.prototype.didLose = function() {
-    debugger;
   if (this.corns.length === 0) {
     return true;
   } else {
@@ -190,7 +189,6 @@ Game.prototype.didLose = function() {
 };
 
 Game.prototype.end = function(result) {
-    debugger;
     switch(result) {
         case "win":
             clearInterval(window.clockFunc);
