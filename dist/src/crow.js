@@ -3,6 +3,7 @@ const Scarecrow = require("./scarecrow.js");
 const Bullet = require("./bullet.js");
 const Corn = require("./corn.js");
 const Util = require("./utils.js");
+const FatBullet = require("./fat_bullet.js");
 
 
 const crowImage = new Image ();
@@ -40,6 +41,15 @@ Crow.prototype.collideWith = function (otherObject) {
         } else {
             this.game.removeBullet(otherObject);
             this.hp -= 10;
+            console.log(`bird hp is ${this.hp}`)
+        }
+    } else if (otherObject instanceof FatBullet) {
+        if (this.hp <= 50 ) {
+            this.game.removeCrow(this);
+            this.game.removeBullet(this);
+        } else {
+            this.game.removeBullet(otherObject);
+            this.hp -= 50;
             console.log(`bird hp is ${this.hp}`)
         }
         // this.game.removeCrow(this);

@@ -86,6 +86,99 @@
 /************************************************************************/
 /******/ ({
 
+/***/ "./dist/src/angry_tower.js":
+/*!*********************************!*\
+  !*** ./dist/src/angry_tower.js ***!
+  \*********************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+const MovingObject = __webpack_require__(/*! ./moving_object */ "./dist/src/moving_object.js");
+const FatBullet = __webpack_require__(/*! ./fat_bullet.js */ "./dist/src/fat_bullet.js");
+const Util = __webpack_require__(/*! ./utils.js */ "./dist/src/utils.js");
+
+const angryImage = new Image();
+
+angryImage.src = "angry_boy.png";
+
+function AngryTower(options) {
+  MovingObject.call(this, {
+    pos: [350, 50],
+    vel: [0, 0],
+    width: 64,
+    height: 64,
+    image: angryImage,
+    game: options.game,
+    isWrappable: false
+  });
+
+  setInterval(() => {
+      this.fireBullet();
+  }, 3000)
+}
+
+Util.inherits(AngryTower, MovingObject);
+
+AngryTower.prototype.fireBullet = function() {
+    let bullet = new FatBullet({
+      pos: [this.pos[0] + 25, this.pos[1]],
+      vel: [1,0],
+      game: this.game,
+      isWrappable: false
+    });
+    this.game.bullets.push(bullet);
+};
+
+
+
+const cycleLoop = [0, 64, 128, 192, 256, 320, 384, 448];
+let currentLoopIndex = 0;
+let frameCount = 0;
+
+AngryTower.prototype.draw = function() {
+  frameCount++;
+
+    if (frameCount < 6) {
+        return ctx.drawImage(
+            this.image,
+            cycleLoop[currentLoopIndex],
+            0,
+            this.width,
+            this.height,
+            this.pos[0],
+            this.pos[1],
+            this.width / 2,
+            this.height / 2
+        );
+        }
+        frameCount = 0;
+
+        ctx.drawImage(
+        this.image,
+        cycleLoop[currentLoopIndex],
+        0,
+        this.width,
+        this.height,
+        this.pos[0],
+        this.pos[1],
+        this.width / 2,
+        this.height / 2
+        );
+        currentLoopIndex++;
+        if (currentLoopIndex >= cycleLoop.length) {
+        currentLoopIndex = 0;
+
+    ctx.strokeStyle = "#f00"; // some color/style
+    ctx.lineWidth = 2; // thickness
+    ctx.strokeRect(this.pos[0], this.pos[1], this.width / 2, this.height / 2);
+    };
+}
+
+module.exports = AngryTower;
+
+
+/***/ }),
+
 /***/ "./dist/src/bullet.js":
 /*!****************************!*\
   !*** ./dist/src/bullet.js ***!
@@ -179,6 +272,7 @@ const Scarecrow = __webpack_require__(/*! ./scarecrow.js */ "./dist/src/scarecro
 const Bullet = __webpack_require__(/*! ./bullet.js */ "./dist/src/bullet.js");
 const Corn = __webpack_require__(/*! ./corn.js */ "./dist/src/corn.js");
 const Util = __webpack_require__(/*! ./utils.js */ "./dist/src/utils.js");
+const FatBullet = __webpack_require__(/*! ./fat_bullet.js */ "./dist/src/fat_bullet.js");
 
 
 const crowImage = new Image ();
@@ -218,6 +312,15 @@ Crow.prototype.collideWith = function (otherObject) {
             this.hp -= 10;
             console.log(`bird hp is ${this.hp}`)
         }
+    } else if (otherObject instanceof FatBullet) {
+        if (this.hp <= 50 ) {
+            this.game.removeCrow(this);
+            this.game.removeBullet(this);
+        } else {
+            this.game.removeBullet(otherObject);
+            this.hp -= 50;
+            console.log(`bird hp is ${this.hp}`)
+        }
         // this.game.removeCrow(this);
     } else if (otherObject instanceof Corn) {
         if (otherObject.hp === 10) {
@@ -234,6 +337,51 @@ module.exports = Crow;
 
 /***/ }),
 
+/***/ "./dist/src/fat_bullet.js":
+/*!********************************!*\
+  !*** ./dist/src/fat_bullet.js ***!
+  \********************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+const MovingObject = __webpack_require__(/*! ./moving_object */ "./dist/src/moving_object.js");
+const Corn = __webpack_require__(/*! ./corn.js */ "./dist/src/corn.js");
+const Util = __webpack_require__(/*! ./utils.js */ "./dist/src/utils.js");
+const Bullet = __webpack_require__(/*! ./utils.js */ "./dist/src/utils.js")
+
+const FatBulletImage = new Image();
+// bulletImage.src = "../dist/bullet.png"
+FatBulletImage.src = "./angry_heart.png";
+
+function FatBullet(options) {
+  MovingObject.call(this, {
+    pos: options.pos,
+    vel: [1, 0],
+    height: 30,
+    width: 30,
+    image: FatBulletImage,
+    game: options.game,
+    isWrappable: false
+  });
+}
+
+Util.inherits(FatBullet, MovingObject);
+
+FatBullet.prototype.collideWith = function(otherObject) {
+  if (otherObject instanceof Corn) {
+    if (otherObject.hp <= 780) {
+      otherObject.hp += 100;
+      console.log(`corn hp is ${otherObject.hp}`);
+    }
+    this.game.removeBullet(this);
+  }
+};
+
+module.exports = FatBullet;
+
+
+/***/ }),
+
 /***/ "./dist/src/game.js":
 /*!**************************!*\
   !*** ./dist/src/game.js ***!
@@ -244,7 +392,9 @@ module.exports = Crow;
 const Crow = __webpack_require__(/*! ./crow.js */ "./dist/src/crow.js");
 const Scarecrow = __webpack_require__(/*! ./scarecrow.js */ "./dist/src/scarecrow.js");
 const Bullet = __webpack_require__(/*! ./bullet.js */ "./dist/src/bullet.js");
+const FatBullet = __webpack_require__(/*! ./fat_bullet.js */ "./dist/src/fat_bullet.js");
 const Corn = __webpack_require__(/*! ./corn.js */ "./dist/src/corn.js");
+const AngryTower = __webpack_require__(/*! ./angry_tower.js */ "./dist/src/angry_tower.js");
 
 const CONSTANTS = {
     DIM_X: 800,
@@ -280,6 +430,7 @@ function Game() {
     this.bullets = [];
     this.corns = [];
     this.scarecrow = new Scarecrow({ game: this });
+    this.angryTower = new AngryTower({ game: this });
     this.addCrows();
     this.addCorns();
     this.img = new Image();
@@ -346,7 +497,7 @@ Game.prototype.randomVelocity = function () {
 
 Game.prototype.allObjects = function () {
     return this.crows
-    .concat(this.scarecrow, this.bullets, this.corns);
+    .concat(this.scarecrow, this.bullets, this.corns, this.angryTower);
 }
 
 
@@ -383,7 +534,9 @@ Game.prototype.checkCollisions = function () {
                     movingObj.collideWith(movingObj2)
                 } else if (movingObj instanceof Crow && movingObj2 instanceof Bullet ) {
                     movingObj.collideWith(movingObj2)
-                } 
+                } else if (movingObj instanceof Crow && movingObj2 instanceof FatBullet ) {
+                    movingObj.collideWith(movingObj2)
+                }
                 else if (movingObj instanceof Crow && movingObj2 instanceof Corn) {
                     movingObj.collideWith(movingObj2)
                 }
@@ -755,9 +908,9 @@ Scarecrow.prototype.draw = function () {
         currentLoopIndex = 0;
     }
 
-    ctx.strokeStyle = "#f00"; // some color/style
-    ctx.lineWidth = 2; // thickness
-    ctx.strokeRect(this.pos[0], this.pos[1], this.width, this.height);
+    // ctx.strokeStyle = "#f00"; // some color/style
+    // ctx.lineWidth = 2; // thickness
+    // ctx.strokeRect(this.pos[0], this.pos[1], this.width, this.height);
 }
 
 
@@ -847,21 +1000,11 @@ Scarecrow.prototype.scareMove = function() {
     // let mapState = this.game.gameMap[Math.ceil(this.pos[0]/40) - 1][Math.ceil(this.pos[1]/40) - 1]
     // // debugger;
     // while (!mapState === 1){
-        if (rightPressed) {
-            if (!rightCollide) {
-                this.game.scarecrow.pos[0] += 3;
-            }
-            //  else if (rightCollide) {
-            //     this.game.scarecrow.pos[0] -= 7;
-            // }
-            // this.game.scarecrow.pos[0] += 3;
-        } else if (leftPressed && !leftCollide) {
+        if (rightPressed & !rightCollide) {
+            this.game.scarecrow.pos[0] += 3;
+        }
+        else if (leftPressed && !leftCollide) {
             this.game.scarecrow.pos[0] -= 3;
-            // if (!leftCollide){
-            //     this.game.scarecrow.pos[0] -= 3;
-            // } else {
-            //     this.game.scarecrow.pos[0] += 0;
-            // }
         } else if (downPressed && !downCollide) {
             this.game.scarecrow.pos[1] += 3;
         } else if (upPressed && !upCollide) {
@@ -880,14 +1023,18 @@ Scarecrow.prototype.paralyze = function() {
 }
 
 Scarecrow.prototype.collideWith = function(movingObject, result) {
-    debugger;
+
 //    if (leftPressed && Math.abs(result.left) <= 3 && Math.abs(result.down) > 3 ) {
     if (leftPressed && Math.abs(result.left) <= 3 && Math.abs(result.left) < Math.abs(result.down)) {
-       leftCollide = true;
+       
+        leftCollide = true;
    } 
 //    else if (leftPressed && Math.abs(result.left) <= 3 && Math.abs(result.down) <= 3 ) {
      else if (leftPressed && Math.abs(result.left) <= 3 && Math.abs(result.left) > Math.abs(result.down)) {
-       leftCollide = false;
+       console.log(result.left, result.down);
+        leftCollide = false;
+        console.log(leftCollide)
+        console.log(leftPressed)
    }
    if (leftPressed && Math.abs(result.left) <= 3 && Math.abs(result.up) >=3 ) {
        leftCollide = true;

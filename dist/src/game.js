@@ -1,7 +1,9 @@
 const Crow = require("./crow.js");
 const Scarecrow = require("./scarecrow.js");
 const Bullet = require("./bullet.js");
+const FatBullet = require("./fat_bullet.js");
 const Corn = require("./corn.js");
+const AngryTower = require("./angry_tower.js");
 
 const CONSTANTS = {
     DIM_X: 800,
@@ -37,6 +39,7 @@ function Game() {
     this.bullets = [];
     this.corns = [];
     this.scarecrow = new Scarecrow({ game: this });
+    this.angryTower = new AngryTower({ game: this });
     this.addCrows();
     this.addCorns();
     this.img = new Image();
@@ -103,7 +106,7 @@ Game.prototype.randomVelocity = function () {
 
 Game.prototype.allObjects = function () {
     return this.crows
-    .concat(this.scarecrow, this.bullets, this.corns);
+    .concat(this.scarecrow, this.bullets, this.corns, this.angryTower);
 }
 
 
@@ -140,7 +143,9 @@ Game.prototype.checkCollisions = function () {
                     movingObj.collideWith(movingObj2)
                 } else if (movingObj instanceof Crow && movingObj2 instanceof Bullet ) {
                     movingObj.collideWith(movingObj2)
-                } 
+                } else if (movingObj instanceof Crow && movingObj2 instanceof FatBullet ) {
+                    movingObj.collideWith(movingObj2)
+                }
                 else if (movingObj instanceof Crow && movingObj2 instanceof Corn) {
                     movingObj.collideWith(movingObj2)
                 }

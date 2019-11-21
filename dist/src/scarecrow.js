@@ -126,9 +126,9 @@ Scarecrow.prototype.draw = function () {
         currentLoopIndex = 0;
     }
 
-    ctx.strokeStyle = "#f00"; // some color/style
-    ctx.lineWidth = 2; // thickness
-    ctx.strokeRect(this.pos[0], this.pos[1], this.width, this.height);
+    // ctx.strokeStyle = "#f00"; // some color/style
+    // ctx.lineWidth = 2; // thickness
+    // ctx.strokeRect(this.pos[0], this.pos[1], this.width, this.height);
 }
 
 
@@ -218,21 +218,11 @@ Scarecrow.prototype.scareMove = function() {
     // let mapState = this.game.gameMap[Math.ceil(this.pos[0]/40) - 1][Math.ceil(this.pos[1]/40) - 1]
     // // debugger;
     // while (!mapState === 1){
-        if (rightPressed) {
-            if (!rightCollide) {
-                this.game.scarecrow.pos[0] += 3;
-            }
-            //  else if (rightCollide) {
-            //     this.game.scarecrow.pos[0] -= 7;
-            // }
-            // this.game.scarecrow.pos[0] += 3;
-        } else if (leftPressed && !leftCollide) {
+        if (rightPressed & !rightCollide) {
+            this.game.scarecrow.pos[0] += 3;
+        }
+        else if (leftPressed && !leftCollide) {
             this.game.scarecrow.pos[0] -= 3;
-            // if (!leftCollide){
-            //     this.game.scarecrow.pos[0] -= 3;
-            // } else {
-            //     this.game.scarecrow.pos[0] += 0;
-            // }
         } else if (downPressed && !downCollide) {
             this.game.scarecrow.pos[1] += 3;
         } else if (upPressed && !upCollide) {
@@ -251,14 +241,18 @@ Scarecrow.prototype.paralyze = function() {
 }
 
 Scarecrow.prototype.collideWith = function(movingObject, result) {
-    debugger;
+
 //    if (leftPressed && Math.abs(result.left) <= 3 && Math.abs(result.down) > 3 ) {
     if (leftPressed && Math.abs(result.left) <= 3 && Math.abs(result.left) < Math.abs(result.down)) {
-       leftCollide = true;
+       
+        leftCollide = true;
    } 
 //    else if (leftPressed && Math.abs(result.left) <= 3 && Math.abs(result.down) <= 3 ) {
      else if (leftPressed && Math.abs(result.left) <= 3 && Math.abs(result.left) > Math.abs(result.down)) {
-       leftCollide = false;
+       console.log(result.left, result.down);
+        leftCollide = false;
+        console.log(leftCollide)
+        console.log(leftPressed)
    }
    if (leftPressed && Math.abs(result.left) <= 3 && Math.abs(result.up) >=3 ) {
        leftCollide = true;
