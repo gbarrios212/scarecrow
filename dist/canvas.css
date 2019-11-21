@@ -74,7 +74,7 @@
 .clock{
     opacity: 0;
     margin-bottom: 20px;
-    /* animation: open 2s; */
+    animation: open 2s;
     animation-delay: 2s;
     animation-fill-mode: forwards;
 }
