@@ -252,25 +252,63 @@ Scarecrow.prototype.paralyze = function() {
 
 Scarecrow.prototype.collideWith = function(movingObject, result) {
     debugger;
-   if (leftPressed && Math.abs(result.left) <= 3) {
-    //    debugger;
+//    if (leftPressed && Math.abs(result.left) <= 3 && Math.abs(result.down) > 3 ) {
+    if (leftPressed && Math.abs(result.left) <= 3 && Math.abs(result.left) < Math.abs(result.down)) {
        leftCollide = true;
-       console.log("left")
    } 
-   else if (rightPressed && Math.abs(result.right) <= 3) {
-    //    debugger;
-       console.log ("right");
+//    else if (leftPressed && Math.abs(result.left) <= 3 && Math.abs(result.down) <= 3 ) {
+     else if (leftPressed && Math.abs(result.left) <= 3 && Math.abs(result.left) > Math.abs(result.down)) {
+       leftCollide = false;
+   }
+   if (leftPressed && Math.abs(result.left) <= 3 && Math.abs(result.up) >=3 ) {
+       leftCollide = true;
+   } 
+   else if (leftPressed && Math.abs(result.left) <= 3 && Math.abs(result.up) <=3 ) {
+       leftCollide = false;
+   }
+
+
+
+   else if (rightPressed && Math.abs(result.right) <= 3  && Math.abs(result.down) >3 ) {
        rightCollide = true;
    }
-   else if (upPressed && Math.abs(result.up) <= 3) {
-    //    debugger;
-       console.log("up")
+   else if (rightPressed && Math.abs(result.right) <= 3 && Math.abs(result.down) <=3 ) {
+       rightCollide = false;
+   }
+   else if (rightPressed && Math.abs(result.right) <= 3  && Math.abs(result.up) >3 ) {
+       rightCollide = true;
+   }
+   else if (rightPressed && Math.abs(result.right) <= 3 && Math.abs(result.up) <=3 ) {
+       rightCollide = false;
+   }
+
+   
+
+   else if (upPressed && Math.abs(result.up) <= 3 && Math.abs(result.up) < Math.abs(result.left)) {
        upCollide = true;
    }
-   else if (downPressed&& Math.abs(result.down) <= 3) {
-    //    debugger;
-       console.log("down");
+   else if (upPressed && Math.abs(result.up) <= 3 && Math.abs(result.up) > Math.abs(result.left)) {
+       upCollide = false;
+   }
+   else if (upPressed && Math.abs(result.up) <= 3 && Math.abs(result.up) < Math.abs(result.right)) {
+       upCollide = true;
+   }
+   else if (upPressed && Math.abs(result.up) <= 3 && Math.abs(result.up) > Math.abs(result.right)) {
+       upCollide = false;
+   }
+
+
+   else if (downPressed && Math.abs(result.down) <= 3 && Math.abs(result.down) < Math.abs(result.left)) {
        downCollide = true;
+   }
+   else if (downPressed && Math.abs(result.down) <= 3 && Math.abs(result.down) > Math.abs(result.left)) {
+       downCollide = false;
+   }
+   else if (downPressed && Math.abs(result.down) <= 3 && Math.abs(result.down) < Math.abs(result.right)) {
+       downCollide = true;
+   }
+   else if (downPressed && Math.abs(result.down) <= 3 && Math.abs(result.down) > Math.abs(result.right)) {
+       downCollide = false;
    }
     // return true;
 }
