@@ -10,7 +10,7 @@ const CONSTANTS = {
     CORN_Y: 120,
     VEL_X: 2,
     VEL_Y: 2,
-    // NUM_CROWS: 50,
+    NUM_CROWS: 30,
     NUM_CORNS: 10
 };
 

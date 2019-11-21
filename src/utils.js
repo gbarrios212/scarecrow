@@ -18,7 +18,6 @@ const Util = {
                 return [0, 4];
             default: 
                 return [4, 0];
-
         }
     }
 }
