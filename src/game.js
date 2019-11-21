@@ -4,15 +4,32 @@ const Bullet = require("./bullet.js");
 const Corn = require("./corn.js");
 
 const CONSTANTS = {
-    DIM_X: 700,
-    DIM_Y: 450,
-    CORN_X: 200,
-    CORN_Y: 200,
+    DIM_X: 800,
+    DIM_Y: 400,
+    CORN_X: 280,
+    CORN_Y: 120,
     VEL_X: 2,
     VEL_Y: 2,
-    NUM_CROWS: 5,
-    NUM_CORNS: 20
+    // NUM_CROWS: 50,
+    NUM_CORNS: 10
 };
+
+const tileWidth = 40, tileHeight = 40;
+const mapWidth = 20, mapHeight = 10;
+
+const gameMap = [
+    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+]
+
 
 function Game() {
     this.crows = [];
@@ -22,7 +39,37 @@ function Game() {
     this.addCrows();
     this.addCorns();
     this.img = new Image();
-    this.img.src = "green-stuff.jpg";
+    this.img.src = "farmland_later_single.png";
+    this.gameMap = gameMap;
+    setInterval(() => {
+        console.log(this);
+    }, 3000)
+}
+
+Game.prototype.draw = function (ctx) {
+        let pattern = ctx.createPattern(this.img, 'repeat');
+        let fieldPattern = new Image();
+        fieldPattern.src = "corn_field_later_single.png";
+        let pattern2 = ctx.createPattern(fieldPattern, 'repeat');
+    
+        for(let row = 0; row < 10; row ++ ) {
+            for(let col = 0; col < 20; col ++) {
+                switch(gameMap[row][col]){
+                case 0: 
+                    ctx.fillStyle = pattern;
+                    
+                    break;
+                default: 
+                    ctx.fillStyle = pattern2;
+            }
+            ctx.fillRect(col*tileWidth, row*tileHeight, tileWidth, tileHeight);
+        }
+    }
+
+    // ctx.clearRect(0, 0, CONSTANTS.DIM_X, CONSTANTS.DIM_Y);
+    //looks better 750 x 450, also adjust wrap 
+    // ctx.drawImage(this.img, 0, 0, 800, 400);
+    this.allObjects().forEach(movingObj => movingObj.draw(ctx));
 }
 
 Game.prototype.addCrows = function () {
@@ -32,15 +79,25 @@ Game.prototype.addCrows = function () {
 }
 
 Game.prototype.addCorns = function () {
-    while (this.corns.length < CONSTANTS.NUM_CORNS) {
-        this.corns.push(new Corn({ pos: this.cornPosition(), game: this }))
+    // while (this.corns.length < CONSTANTS.NUM_CORNS) {
+    //     this.corns.push(new Corn({ pos: this.cornPosition(), game: this }))
+    // }
+    for (let row = 0; row < 10; row++) {
+        for (let col = 0; col < 20; col++) {
+            switch (gameMap[row][col]) {
+                case 1:
+                    this.corns.push(new Corn({ pos: [col * 40, row * 40], game: this}))
+                    break;
+            }
+            // ctx.fillRect(col * tileWidth, row * tileHeight, tileWidth, tileHeight);
+        }
     }
 }
 
 Game.prototype.cornPosition = function () {
     let position = [];
     position.push(Math.floor(Math.random() * CONSTANTS.CORN_X) + 200);
-    position.push(Math.floor(Math.random() * CONSTANTS.CORN_Y) + 150);
+    position.push(Math.floor(Math.random() * CONSTANTS.CORN_Y) + 120);
     return position;
 
 }
@@ -65,11 +122,7 @@ Game.prototype.allObjects = function () {
     .concat(this.scarecrow, this.bullets, this.corns);
 }
 
-Game.prototype.draw = function (ctx) {
-    ctx.clearRect(0, 0, CONSTANTS.DIM_X, CONSTANTS.DIM_Y);
-    ctx.drawImage(this.img, 0, 0, 1200, 800);
-    this.allObjects().forEach(movingObj => movingObj.draw(ctx));
-}
+
 
 Game.prototype.moveObjects = function () {
     this.allObjects().forEach(movingObj => movingObj.move());
@@ -107,13 +160,23 @@ Game.prototype.checkCollisions = function () {
                 else if (movingObj instanceof Crow && movingObj2 instanceof Corn) {
                     movingObj.collideWith(movingObj2)
                 }
+                // else if (movingObj instanceof Scarecrow && movingObj2 instanceof Corn) {
+                    
+                //     movingObj.collideWith(movingObj2);
+                // }
             }
         });
     });
 }
 
 Game.prototype.step = function(){
+    if (this.bullets.length ){
+        console.log("Present before move")
+    }
     this.moveObjects();
+    if (this.bullets.length ){
+        console.log(" PRESENT AFTER MOVE");
+    }
     this.checkCollisions();
 }
 

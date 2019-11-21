@@ -9,7 +9,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const canvas = document.getElementById("scarecrow-canvas");
     const ctx = canvas.getContext('2d');
     ctx.imageSmoothingEnabled = false;
-    
+
     gameView = new GameView(ctx);
     gameView.start();
 
