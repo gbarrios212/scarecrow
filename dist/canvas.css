@@ -9,8 +9,26 @@
     display: grid;
     grid-column: 1fr 1fr 1fr;
     grid-row: auto;
+
+    border-radius: 2px;
+    /* border: 1px solid gold; */
+    border: 1px solid #a99215;
 }
 
 .crow{
     display: none;
+}
+
+.clock{
+    margin-bottom: 20px;
+}
+
+body { 
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: #4c1c1c;
+    font-family: 'Kaushan Script', cursive;
+    color: gold;
+    text-align: center;
 }

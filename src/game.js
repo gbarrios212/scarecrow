@@ -10,8 +10,9 @@ const CONSTANTS = {
     CORN_Y: 120,
     VEL_X: 2,
     VEL_Y: 2,
-    // NUM_CROWS: 50,
-    NUM_CORNS: 10
+    NUM_CROWS: 100,
+    //NUM_CROWS: 13 seems fine for difficulty
+    NUM_CORNS: 1
 };
 
 const tileWidth = 40, tileHeight = 40;
@@ -41,9 +42,9 @@ function Game() {
     this.img = new Image();
     this.img.src = "farmland_later_single.png";
     this.gameMap = gameMap;
-    setInterval(() => {
-        console.log(this);
-    }, 3000)
+    // setInterval(() => {
+    //     console.log(this);
+    // }, 3000)
 }
 
 Game.prototype.draw = function (ctx) {
@@ -57,7 +58,6 @@ Game.prototype.draw = function (ctx) {
                 switch(gameMap[row][col]){
                 case 0: 
                     ctx.fillStyle = pattern;
-                    
                     break;
                 default: 
                     ctx.fillStyle = pattern2;
@@ -65,10 +65,6 @@ Game.prototype.draw = function (ctx) {
             ctx.fillRect(col*tileWidth, row*tileHeight, tileWidth, tileHeight);
         }
     }
-
-    // ctx.clearRect(0, 0, CONSTANTS.DIM_X, CONSTANTS.DIM_Y);
-    //looks better 750 x 450, also adjust wrap 
-    // ctx.drawImage(this.img, 0, 0, 800, 400);
     this.allObjects().forEach(movingObj => movingObj.draw(ctx));
 }
 
@@ -79,9 +75,6 @@ Game.prototype.addCrows = function () {
 }
 
 Game.prototype.addCorns = function () {
-    // while (this.corns.length < CONSTANTS.NUM_CORNS) {
-    //     this.corns.push(new Corn({ pos: this.cornPosition(), game: this }))
-    // }
     for (let row = 0; row < 10; row++) {
         for (let col = 0; col < 20; col++) {
             switch (gameMap[row][col]) {
@@ -89,17 +82,8 @@ Game.prototype.addCorns = function () {
                     this.corns.push(new Corn({ pos: [col * 40, row * 40], game: this}))
                     break;
             }
-            // ctx.fillRect(col * tileWidth, row * tileHeight, tileWidth, tileHeight);
         }
     }
-}
-
-Game.prototype.cornPosition = function () {
-    let position = [];
-    position.push(Math.floor(Math.random() * CONSTANTS.CORN_X) + 200);
-    position.push(Math.floor(Math.random() * CONSTANTS.CORN_Y) + 120);
-    return position;
-
 }
 
 Game.prototype.randomPosition = function () {
@@ -112,8 +96,8 @@ Game.prototype.randomPosition = function () {
 
 Game.prototype.randomVelocity = function () {
     let velocity = [];
-    velocity.push(Math.floor(Math.random() * CONSTANTS.VEL_X));
-    velocity.push(Math.floor(Math.random() * CONSTANTS.VEL_Y));
+    velocity.push(Math.ceil(Math.random() * CONSTANTS.VEL_X));
+    velocity.push(Math.ceil(Math.random() * CONSTANTS.VEL_Y));
     return velocity;
 }
 
@@ -154,30 +138,31 @@ Game.prototype.checkCollisions = function () {
             if (i !== j && movingObj.isCollidedWith(movingObj2)){
                 if (movingObj instanceof Crow && movingObj2 instanceof Scarecrow ) {
                     movingObj.collideWith(movingObj2)
-                } else if (movingObj instanceof Bullet && movingObj2 instanceof Crow ) {
-                    movingObj2.collideWith(movingObj)
+                } else if (movingObj instanceof Crow && movingObj2 instanceof Bullet ) {
+                    movingObj.collideWith(movingObj2)
                 } 
                 else if (movingObj instanceof Crow && movingObj2 instanceof Corn) {
                     movingObj.collideWith(movingObj2)
                 }
-                // else if (movingObj instanceof Scarecrow && movingObj2 instanceof Corn) {
-                    
-                //     movingObj.collideWith(movingObj2);
-                // }
+                else if (movingObj instanceof Scarecrow && movingObj2 instanceof Corn) {
+                    movingObj.collideWith(movingObj2);
+                } else if (movingObj instanceof Bullet && movingObj2 instanceof Corn) {
+                    movingObj.collideWith(movingObj2);
+                }
             }
         });
     });
 }
 
 Game.prototype.step = function(){
-    if (this.bullets.length ){
-        console.log("Present before move")
-    }
     this.moveObjects();
-    if (this.bullets.length ){
-        console.log(" PRESENT AFTER MOVE");
-    }
     this.checkCollisions();
+    let result = this.didLose();
+    if (result){
+        this.end("lose");
+    } else if (window.time === 0) {
+        this.end("win");
+    }
 }
 
 Game.prototype.removeCrow = function(movingObj) {
@@ -194,6 +179,31 @@ Game.prototype.removeCorn = function (movingObj) {
     let idx = this.corns.indexOf(movingObj);
     this.corns.splice(idx, 1);
 }
+
+Game.prototype.didLose = function() {
+    debugger;
+  if (this.corns.length === 0) {
+    return true;
+  } else {
+    return false;
+  }
+};
+
+Game.prototype.end = function(result) {
+    debugger;
+    switch(result) {
+        case "win":
+            clearInterval(window.clockFunc);
+            clearInterval(window.gameFunc);
+            console.log("win");
+            break;
+        case "lose":
+            clearInterval(window.clockFunc);
+            clearInterval(window.gameFunc);
+            console.log("lose");
+            break;
+  }
+};
 
 
 module.exports = Game;
