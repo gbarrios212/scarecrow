@@ -221,7 +221,6 @@ Crow.prototype.collideWith = function (otherObject) {
         // this.game.removeCrow(this);
     } else if (otherObject instanceof Corn) {
         if (otherObject.hp === 10) {
-            console.log("crow to corn")
             this.game.gameMap[otherObject.pos[1]/40][otherObject.pos[0]/40] = 0;
             this.game.removeCorn(otherObject);
         } else {
@@ -253,7 +252,7 @@ const CONSTANTS = {
     CORN_Y: 120,
     VEL_X: 2,
     VEL_Y: 2,
-    NUM_CROWS: 1,
+    NUM_CROWS: 10,
     //NUM_CROWS: 13 seems fine for difficulty
     NUM_CORNS: 1
 };
@@ -388,8 +387,7 @@ Game.prototype.checkCollisions = function () {
                     movingObj.collideWith(movingObj2)
                 }
                 else if (movingObj instanceof Scarecrow && movingObj2 instanceof Corn) {
-                    let result = movingObj.isCollidedWith(movingObj2);
-                    movingObj.collideWith(movingObj2, result);
+                    movingObj.collideWith(movingObj2);
                 } else if (movingObj instanceof Bullet && movingObj2 instanceof Corn) {
                     movingObj.collideWith(movingObj2);
                 }
@@ -571,9 +569,6 @@ function MovingObject(options) {
 
 MovingObject.prototype.draw = function (ctx) {
     ctx.drawImage(this.image, this.pos[0], this.pos[1], this.width, this.height);
-    ctx.strokeStyle = "#f00"; // some color/style
-    ctx.lineWidth = 2; // thickness
-    ctx.strokeRect(this.pos[0], this.pos[1], this.width, this.height);
 }
 
 MovingObject.prototype.move = function () {
@@ -588,31 +583,8 @@ MovingObject.prototype.move = function () {
 }
 
 MovingObject.prototype.isCollidedWith = function (otherObject) {
-    // let dist = Math.sqrt((this.pos[0] - 6 - otherObject.pos[0]) ** 2 + (this.pos[1] - otherObject.pos[1]) ** 2);
-    // return dist <= 30;
-    let result = {true: "", right: "", left: "", down: "", up: ""}
-    // let result;
-    // let right;
-    // let left;
-    // let down;
-    // let up;
-    if (this.pos[0] < otherObject.pos[0] + otherObject.width &&
-    this.pos[0] + this.width > otherObject.pos[0] &&
-    this.pos[1] < otherObject.pos[1] + otherObject.height &&
-    this.pos[1] + this.height > otherObject.pos[1])
-    {
-        result.true = true;
-        result.right = this.pos[0] + this.width - otherObject.pos[0];
-        result.left = this.pos[0] - (otherObject.pos[0] + otherObject.width);
-        result.down = this.pos[1] + this.height - otherObject.pos[1]; 
-        result.up = this.pos[1] - (otherObject.height + otherObject.pos[1]);
-        return result;
-    }
-
-    // this.pos[1] < otherObject.pos[1] + otherObject.width &&
-    //   this.pos[1] + this.width > otherObject.pos[1] &&
-    //   this.pos[0] < otherObject.pos[0] + otherObject.height &&
-    //   this.pos[0] + this.height > otherObject.pos[0];
+    let dist = Math.sqrt((this.pos[0] - 6 - otherObject.pos[0]) ** 2 + (this.pos[1] - otherObject.pos[1]) ** 2);
+    return dist <= 30;
 }
 
 
@@ -633,7 +605,7 @@ const Util = __webpack_require__(/*! ./utils.js */ "./dist/src/utils.js");
 
 const scarecrowImage = new Image ();
 // scarecrowImage.src = "../dist/scarecrow_flying_wide.png";
-scarecrowImage.src = "scarecrow_flying_OPT.png";
+scarecrowImage.src = "../scarecrow_flying_wide.png";
 
 function Scarecrow(options) {
     MovingObject.call(this, 
@@ -711,7 +683,7 @@ Scarecrow.prototype.draw = function () {
     if (this.spooked) {
         let spookedImage = new Image();
         // spookedImage.src = "../dist/scarecrow_spooked_FINAL.png";
-        spookedImage.src = "scarecrow_spooked_FINAL.png";
+        spookedImage.src = "../scarecrow_spooked_FINAL.png";
         return ctx.drawImage(
             spookedImage, 
             0, 
@@ -754,10 +726,6 @@ Scarecrow.prototype.draw = function () {
     if (currentLoopIndex >= cycleLoop.length) {
         currentLoopIndex = 0;
     }
-
-    ctx.strokeStyle = "#f00"; // some color/style
-    ctx.lineWidth = 2; // thickness
-    ctx.strokeRect(this.pos[0], this.pos[1], this.width, this.height);
 }
 
 
@@ -850,10 +818,9 @@ Scarecrow.prototype.scareMove = function() {
         if (rightPressed) {
             if (!rightCollide) {
                 this.game.scarecrow.pos[0] += 3;
+            // } else if (rightCollide) {
+            //     this.game.scarecrow.pos[0] += 0;
             }
-            //  else if (rightCollide) {
-            //     this.game.scarecrow.pos[0] -= 7;
-            // }
             // this.game.scarecrow.pos[0] += 3;
         } else if (leftPressed && !leftCollide) {
             this.game.scarecrow.pos[0] -= 3;
@@ -879,30 +846,47 @@ Scarecrow.prototype.paralyze = function() {
     }, 3500);
 }
 
-Scarecrow.prototype.collideWith = function(movingObject, result) {
-    debugger;
-   if (leftPressed && Math.abs(result.left) <= 3) {
-    //    debugger;
+Scarecrow.prototype.collideWith = function(movingObject) {
+   if (leftPressed) {
        leftCollide = true;
        console.log("left")
    } 
-   else if (rightPressed && Math.abs(result.right) <= 3) {
-    //    debugger;
+   else if (rightPressed) {
        console.log ("right");
        rightCollide = true;
    }
-   else if (upPressed && Math.abs(result.up) <= 3) {
-    //    debugger;
+   else if (upPressed) {
        console.log("up")
        upCollide = true;
    }
-   else if (downPressed&& Math.abs(result.down) <= 3) {
-    //    debugger;
+   else if (downPressed) {
        console.log("down");
        downCollide = true;
    }
     // return true;
 }
+// Scarecrow.prototype.collideWith = function (movingObject) {
+//     if (this.pos[0] - movingObject.pos[0] < 0) {
+        
+//         rightPressed = false;
+//     }
+//     else if (this.pos[0] - movingObject.pos[0] === 0) {
+//         debugger;
+//         leftPressed = false;
+//     }
+//     else if (this.pos[1] - movingObject.pos[1] > 0) {
+//         debugger;
+//         upPressed = false;
+//     }
+//     else if (this.pos[1] - movingObject.pos[1] < 0) {
+//         debugger;
+//         downPressed = false;
+//     }
+    // if (this.pos[0] - movingObject.pos[0] < 0) {
+    //     debugger;
+    //     this.pos[0] = movingObject.pos[0];
+    // }
+
 
 module.exports = Scarecrow;
 

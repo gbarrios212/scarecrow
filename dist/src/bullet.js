@@ -3,7 +3,8 @@ const Corn = require("./corn.js");
 const Util = require("./utils.js");
 
 const bulletImage = new Image ();
-bulletImage.src = "../dist/bullet.png"
+// bulletImage.src = "../dist/bullet.png"
+bulletImage.src = "./bullet.png";
 
 function Bullet(options) {
     MovingObject.call(this, 

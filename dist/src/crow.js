@@ -6,7 +6,9 @@ const Util = require("./utils.js");
 
 
 const crowImage = new Image ();
-crowImage.src = "../dist/crow_bad_OPT.png";
+// crowImage.src = "../dist/crow_bad_OPT.png";
+// crowImage.src = "../crow_bad_OPT.png";
+crowImage.src = "crow_bad_OPT.png";
 const CONSTANTS = {
     MAX_X: 10,
     MAX_Y: 10,
@@ -43,6 +45,7 @@ Crow.prototype.collideWith = function (otherObject) {
         // this.game.removeCrow(this);
     } else if (otherObject instanceof Corn) {
         if (otherObject.hp === 10) {
+            console.log("crow to corn")
             this.game.gameMap[otherObject.pos[1]/40][otherObject.pos[0]/40] = 0;
             this.game.removeCorn(otherObject);
         } else {
