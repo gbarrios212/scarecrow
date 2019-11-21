@@ -7,18 +7,19 @@ function GameView (ctx) {
 }
 
 GameView.prototype.start = function(){
-    this.bindKeyHandlers();
+    // this.bindKeyHandlers();
     
     setInterval(() => {
-        this.game.step();
+        this.game.step(); 
+        // had this first before.'..
         this.game.draw(this.ctx);
-        // this.scareMove();
+        // this.game.step();
     }, 20);
 }
 
 
-GameView.prototype.bindKeyHandlers = function () {
-    key('space', () => { this.game.scarecrow.fireBullet() });
-}
+// GameView.prototype.bindKeyHandlers = function () {
+//     key('space', () => { this.game.scarecrow.fireBullet() });
+// }
 
 module.exports = GameView;

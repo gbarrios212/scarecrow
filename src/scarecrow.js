@@ -10,8 +10,8 @@ function Scarecrow(options) {
         { 
             pos: [100, 100], 
             vel: [0, 0], 
-            width: 40, 
-            height: 40, 
+            width: 60, 
+            height: 60, 
             image: scarecrowImage, 
             game: options.game, 
             isWrappable: true, 
@@ -24,8 +24,10 @@ Util.inherits(Scarecrow, MovingObject);
 
 
 Scarecrow.prototype.fireBullet = function() {
+    // debugger;
     let bullet = new Bullet({ pos: this.pos, vel: [3, 3], game: this.game, isWrappable: false });
     this.game.bullets.push(bullet);
+    debugger;
 }
 
 const cycleLoop = [
@@ -167,27 +169,27 @@ Scarecrow.prototype.paralyze = function() {
 // Scarecrow.prototype.collideWith = function(movingObject) {
 //     return true;
 // }
-Scarecrow.prototype.collideWith = function (movingObject) {
-    if (this.pos[0] - movingObject.pos[0] < 0) {
+// Scarecrow.prototype.collideWith = function (movingObject) {
+//     if (this.pos[0] - movingObject.pos[0] < 0) {
         
-        rightPressed = false;
-    }
-    else if (this.pos[0] - movingObject.pos[0] === 0) {
-        debugger;
-        leftPressed = false;
-    }
-    else if (this.pos[1] - movingObject.pos[1] > 0) {
-        debugger;
-        upPressed = false;
-    }
-    else if (this.pos[1] - movingObject.pos[1] < 0) {
-        debugger;
-        downPressed = false;
-    }
+//         rightPressed = false;
+//     }
+//     else if (this.pos[0] - movingObject.pos[0] === 0) {
+//         debugger;
+//         leftPressed = false;
+//     }
+//     else if (this.pos[1] - movingObject.pos[1] > 0) {
+//         debugger;
+//         upPressed = false;
+//     }
+//     else if (this.pos[1] - movingObject.pos[1] < 0) {
+//         debugger;
+//         downPressed = false;
+//     }
     // if (this.pos[0] - movingObject.pos[0] < 0) {
     //     debugger;
     //     this.pos[0] = movingObject.pos[0];
     // }
-}
+// }
 
 module.exports = Scarecrow;

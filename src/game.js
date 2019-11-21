@@ -4,14 +4,14 @@ const Bullet = require("./bullet.js");
 const Corn = require("./corn.js");
 
 const CONSTANTS = {
-    DIM_X: 700,
-    DIM_Y: 450,
+    DIM_X: 800,
+    DIM_Y: 400,
     CORN_X: 280,
     CORN_Y: 120,
     VEL_X: 2,
     VEL_Y: 2,
-    NUM_CROWS: 0,
-    NUM_CORNS: 0
+    // NUM_CROWS: 50,
+    NUM_CORNS: 10
 };
 
 const tileWidth = 40, tileHeight = 40;
@@ -35,19 +35,18 @@ function Game() {
     this.crows = [];
     this.bullets = [];
     this.corns = [];
+    this.scarecrow = new Scarecrow({ game: this });
     this.addCrows();
     this.addCorns();
-    this.scarecrow = new Scarecrow({ game: this });
     this.img = new Image();
-    
-    // this.img.src = "green-stuff.jpg";
     this.img.src = "farmland_later_single.png";
     this.gameMap = gameMap;
+    setInterval(() => {
+        console.log(this);
+    }, 3000)
 }
 
 Game.prototype.draw = function (ctx) {
-    // for( let y = 0; y < mapHeight; y ++) {
-    //     for(let x = 0; x < mapWidth; x ++) {
         let pattern = ctx.createPattern(this.img, 'repeat');
         let fieldPattern = new Image();
         fieldPattern.src = "corn_field_later_single.png";
@@ -55,23 +54,18 @@ Game.prototype.draw = function (ctx) {
     
         for(let row = 0; row < 10; row ++ ) {
             for(let col = 0; col < 20; col ++) {
-            // switch(gameMap[((y*mapWidth) + x)]) {
-
                 switch(gameMap[row][col]){
                 case 0: 
-                    // ctx.drawImage(this.img, 0, 0, 40, 40);
                     ctx.fillStyle = pattern;
                     
                     break;
                 default: 
                     ctx.fillStyle = pattern2;
-                    // ctx.fillStyle = "#eeeeee";
             }
             ctx.fillRect(col*tileWidth, row*tileHeight, tileWidth, tileHeight);
-            // ctx.strokeStyle = 'red';
-            // ctx.stroke();
         }
     }
+
     // ctx.clearRect(0, 0, CONSTANTS.DIM_X, CONSTANTS.DIM_Y);
     //looks better 750 x 450, also adjust wrap 
     // ctx.drawImage(this.img, 0, 0, 800, 400);
@@ -93,12 +87,7 @@ Game.prototype.addCorns = function () {
             switch (gameMap[row][col]) {
                 case 1:
                     this.corns.push(new Corn({ pos: [col * 40, row * 40], game: this}))
-                    // ctx.drawImage(this.img, 0, 0, 40, 40);
                     break;
-                default:
-                    break;
-                    // ctx.fillStyle = pattern2;
-                // ctx.fillStyle = "#eeeeee";
             }
             // ctx.fillRect(col * tileWidth, row * tileHeight, tileWidth, tileHeight);
         }
@@ -181,7 +170,13 @@ Game.prototype.checkCollisions = function () {
 }
 
 Game.prototype.step = function(){
+    if (this.bullets.length ){
+        console.log("Present before move")
+    }
     this.moveObjects();
+    if (this.bullets.length ){
+        console.log(" PRESENT AFTER MOVE");
+    }
     this.checkCollisions();
 }
 

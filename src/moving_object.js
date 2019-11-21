@@ -17,7 +17,7 @@ MovingObject.prototype.move = function () {
     if (this.game.isOutOfBounds(this.pos)) {
         if (this.isWrappable) {
             this.pos = this.game.wrap(this.pos);
-        } else {
+        } else if (!this.isWrappable && this.game.bullets.includes(this)) {
             this.game.removeBullet(this);
         }
     }
@@ -39,11 +39,10 @@ MovingObject.prototype.isCollidedWith = function (otherObject) {
     }
 }
 
-MovingObject.prototype.relocate = function(){
-    this.pos = [this.pos[0] + Math.floor(Math.random() * 100), this.pos[1] + Math.floor(Math.random() * 100)];
-    this.vel = [0, 0];
-}
-
+// MovingObject.prototype.relocate = function(){
+//     this.pos = [this.pos[0] + Math.floor(Math.random() * 100), this.pos[1] + Math.floor(Math.random() * 100)];
+//     this.vel = [0, 0];
+// }
 
 // MovingObject.prototype.collideWith = function (otherObject) {
 //   this.game.remove(otherObject);
