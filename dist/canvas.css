@@ -14,3 +14,10 @@
 .crow{
     display: none;
 }
+
+body { 
+    background: #4c1c1c;
+    font-family: 'Kaushan Script', cursive;
+    color: gold;
+    text-align: center;
+}
