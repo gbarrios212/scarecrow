@@ -25,7 +25,7 @@ Util.inherits(Scarecrow, MovingObject);
 
 Scarecrow.prototype.fireBullet = function() {
     // debugger;
-    let bullet = new Bullet({ pos: this.pos, vel: [3, 3], game: this.game, isWrappable: false });
+    let bullet = new Bullet({ pos: [this.pos[0] + 25, this.pos[1] + 10], vel: Util.determineDirection(lastPressed), game: this.game, isWrappable: false });
     this.game.bullets.push(bullet);
     debugger;
 }
@@ -74,6 +74,7 @@ let leftPressed = false;
 let upPressed = false;
 let downPressed = false;
 let spacebarPressed = false; 
+let lastPressed = "";
 document.addEventListener("keydown", keyDownHandler, false);
 document.addEventListener("keyup", keyUpHandler, false);
 
@@ -82,15 +83,19 @@ function keyDownHandler(e) {
     if (e.key == "Right" || e.key == "ArrowRight" || e.key == "d") {
         // debugger;
         rightPressed = true;
+        lastPressed = "right";
     }
     else if (e.key == "Left" || e.key == "ArrowLeft" || e.key == "a") {
         leftPressed = true;
+        lastPressed = "left";
     }
     else if (e.key == "Up" || e.key == "ArrowUp" || e.key == "w") {
         upPressed = true;
+        lastPressed = "up";
     }
     else if (e.key == "Down" || e.key == "ArrowDown" || e.key == "s") {
         downPressed = true;
+        lastPressed = "down";
     }
     else if (e.key == " " || e.key == "Spacebar") {
         spacebarPressed = true;
