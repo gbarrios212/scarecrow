@@ -21,7 +21,8 @@ function Crow(options) {
             height: 30, 
             image: crowImage, 
             game: options.game, 
-            isWrappable: true 
+            isWrappable: true,
+            hp: 80
         })
 }
 
@@ -32,11 +33,21 @@ Crow.prototype.collideWith = function (otherObject) {
         otherObject.paralyze();
         console.log("crow!!!!")
     } else if (otherObject instanceof Bullet) {
-        this.game.removeCrow(this);
-        this.game.removeBullet(otherObject);
+        if (this.hp === 10 ) {
+            this.game.removeCrow(this);
+        } else {
+            this.game.removeBullet(otherObject);
+            this.hp -= 10;
+            console.log(`bird hp is ${this.hp}`)
+        }
+        // this.game.removeCrow(this);
     } else if (otherObject instanceof Corn) {
-        this.game.gameMap[otherObject.pos[1]/40][otherObject.pos[0]/40] = 0;
-        this.game.removeCorn(otherObject);
+        if (otherObject.hp === 10) {
+            this.game.gameMap[otherObject.pos[1]/40][otherObject.pos[0]/40] = 0;
+            this.game.removeCorn(otherObject);
+        } else {
+            otherObject.hp -= 10;
+        }
     }
 }
 

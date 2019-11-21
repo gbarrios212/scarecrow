@@ -10,7 +10,7 @@ const CONSTANTS = {
     CORN_Y: 120,
     VEL_X: 2,
     VEL_Y: 2,
-    NUM_CROWS: 5,
+    NUM_CROWS: 10,
     NUM_CORNS: 1
 };
 
@@ -95,8 +95,8 @@ Game.prototype.randomPosition = function () {
 
 Game.prototype.randomVelocity = function () {
     let velocity = [];
-    velocity.push(Math.floor(Math.random() * CONSTANTS.VEL_X));
-    velocity.push(Math.floor(Math.random() * CONSTANTS.VEL_Y));
+    velocity.push(Math.ceil(Math.random() * CONSTANTS.VEL_X));
+    velocity.push(Math.ceil(Math.random() * CONSTANTS.VEL_Y));
     return velocity;
 }
 

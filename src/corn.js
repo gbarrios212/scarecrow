@@ -14,7 +14,8 @@ function Corn(options) {
             width: 30, 
             image: cornImage, 
             game: options.game, 
-            isWrappable: false 
+            isWrappable: false,
+            hp: 800 
         })
 }
 

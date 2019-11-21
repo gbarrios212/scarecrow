@@ -5,9 +5,6 @@ const Util = require("./utils.js");
 const scarecrowImage = new Image ();
 scarecrowImage.src = "../dist/scarecrow_flying_wide.png";
 
-//test - make sure to comment back in cycles once 6 is back 
-// scarecrowImage.src = "../dist/scarecrow0.png";
-
 function Scarecrow(options) {
     MovingObject.call(this, 
         { 
@@ -18,8 +15,9 @@ function Scarecrow(options) {
             image: scarecrowImage, 
             game: options.game, 
             isWrappable: true, 
-            spooked: false
-        })
+
+        });
+        this.spooked = false
    
 }
 
@@ -27,13 +25,33 @@ Util.inherits(Scarecrow, MovingObject);
 
 Scarecrow.prototype.fireBullet = function() {
     // debugger;
+    if (!this.spooked){
     if (frameCount < 6) {
         return;
     }
-    let bullet = new Bullet({ pos: [this.pos[0] + 25, this.pos[1] + 10], vel: Util.determineDirection(lastPressed), game: this.game, isWrappable: false });
+
+    let bullet = new Bullet({ 
+        pos: [this.pos[0] + 25, this.pos[1] + 10], 
+        vel: Util.determineDirection(lastPressed), 
+        game: this.game, 
+        isWrappable: false 
+    });
     this.game.bullets.push(bullet);
     bulletFrameCount = 0;
 }
+}
+
+let rightPressed = false;
+let leftPressed = false;
+let upPressed = false;
+let downPressed = false;
+let spacebarPressed = false;
+let lastPressed = "";
+
+let leftCollide;
+let rightCollide;
+let upCollide;
+let downCollide;
 
 const cycleLoop = [
     0, 
@@ -52,42 +70,68 @@ let frameCount = 0;
 
 Scarecrow.prototype.draw = function () {
     frameCount ++;
-    this.scareMove();
+
+    if (!this.spooked){
+        this.scareMove();
+    }
+    leftCollide = false;
+    rightCollide = false;
+    upCollide = false;
+    downCollide = false;
     if (this.spooked) {
         let spookedImage = new Image();
-        spookedImage.src = "../dist/scarecrow_spooked.png";
-        return ctx.drawImage(spookedImage, cycleLoop[currentLoopIndex], 0, this.width, this.height, this.pos[0], this.pos[1], this.width, this.height)
-        // ctx.drawImage()
+        spookedImage.src = "../dist/scarecrow_spooked_FINAL.png";
+        return ctx.drawImage(
+            spookedImage, 
+            0, 
+            0, 
+            62, 
+            62,
+            this.pos[0], 
+            this.pos[1], 
+            this.width / 1.7, 
+            this.height / 1.7
+        )
     }
     if (frameCount < 6){
-        return ctx.drawImage(this.image, cycleLoop[currentLoopIndex], 0, this.width, this.height, this.pos[0], this.pos[1], this.width, this.height)
+        return ctx.drawImage(
+            this.image, 
+            cycleLoop[currentLoopIndex], 
+            0, 
+            this.width, 
+            this.height, 
+            this.pos[0], 
+            this.pos[1], 
+            this.width, 
+            this.height
+        )
     }
     frameCount = 0;
 
-    ctx.drawImage(this.image, cycleLoop[currentLoopIndex], 0, this.width, this.height, this.pos[0], this.pos[1], this.width, this.height);
+    ctx.drawImage(
+        this.image, 
+        cycleLoop[currentLoopIndex], 
+        0, 
+        this.width, 
+        this.height, 
+        this.pos[0], 
+        this.pos[1], 
+        this.width, 
+        this.height
+    );
     currentLoopIndex++;
     if (currentLoopIndex >= cycleLoop.length) {
         currentLoopIndex = 0;
     }
-
-    //test
-    // this.scareMove();
-    // ctx.drawImage(this.image, 0, 0, this.width, this.height, this.pos[0], this.pos[1], this.width, this.height);
 }
 
-let rightPressed = false;
-let leftPressed = false;
-let upPressed = false;
-let downPressed = false;
-let spacebarPressed = false; 
-let lastPressed = "";
+
 document.addEventListener("keydown", keyDownHandler, false);
 document.addEventListener("keyup", keyUpHandler, false);
 
 
 function keyDownHandler(e) {
     if (e.key == "Right" || e.key == "ArrowRight" || e.key == "d") {
-        // debugger;
         rightPressed = true;
         lastPressed = "right";
     }
@@ -169,12 +213,22 @@ Scarecrow.prototype.scareMove = function() {
     // // debugger;
     // while (!mapState === 1){
         if (rightPressed) {
-            this.game.scarecrow.pos[0] += 3;
-        } else if (leftPressed) {
+            if (!rightCollide) {
+                this.game.scarecrow.pos[0] += 3;
+            // } else if (rightCollide) {
+            //     this.game.scarecrow.pos[0] += 0;
+            }
+            // this.game.scarecrow.pos[0] += 3;
+        } else if (leftPressed && !leftCollide) {
             this.game.scarecrow.pos[0] -= 3;
-        } else if (downPressed) {
+            // if (!leftCollide){
+            //     this.game.scarecrow.pos[0] -= 3;
+            // } else {
+            //     this.game.scarecrow.pos[0] += 0;
+            // }
+        } else if (downPressed && !downCollide) {
             this.game.scarecrow.pos[1] += 3;
-        } else if (upPressed) {
+        } else if (upPressed && !upCollide) {
             this.game.scarecrow.pos[1] -= 3;
         } else if (spacebarPressed) {
             this.game.scarecrow.fireBullet();
@@ -183,34 +237,29 @@ Scarecrow.prototype.scareMove = function() {
 }    
 
 Scarecrow.prototype.paralyze = function() {
-    // this.pos[0] -= 9; 
-    // this.pos[1] -= 9;
-    // this.spooked = true;
-    // for (let scare = 0; scare < 180; scare ++) {
-    //     rightPressed = false;
-    //     leftPressed = false;
-    //     upPressed = false;
-    //     downPressed = false;
-    //     spacebarPressed = false;
-    //     console.log("EEP!")
-    // }
-    // this.spooked = false;
-    // console.log("EEP!")
+    this.spooked = true;
+    setTimeout(() => {
+        this.spooked = false;
+    }, 3500);
 }
 
 Scarecrow.prototype.collideWith = function(movingObject) {
    if (leftPressed) {
        leftCollide = true;
+       console.log("left")
    } 
-//    else if (rightPressed) {
-//        rightPressed = false;
-//    }
-//    else if (upPressed) {
-//        upPressed = false;
-//    }
-//    else if (downPressed) {
-//        downPressed = false;
-//    }
+   else if (rightPressed) {
+       console.log ("right");
+       rightCollide = true;
+   }
+   else if (upPressed) {
+       console.log("up")
+       upCollide = true;
+   }
+   else if (downPressed) {
+       console.log("down");
+       downCollide = true;
+   }
     // return true;
 }
 // Scarecrow.prototype.collideWith = function (movingObject) {
