@@ -11,9 +11,7 @@ GameView.prototype.start = function(){
     
     setInterval(() => {
         this.game.step(); 
-        // had this first before.'..
         this.game.draw(this.ctx);
-        // this.game.step();
     }, 20);
 }
 
