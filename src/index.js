@@ -11,19 +11,22 @@ document.addEventListener("DOMContentLoaded", function () {
     const ctx = canvas.getContext('2d');
     ctx.imageSmoothingEnabled = false;
 
-   const clock = document.getElementById("clock");
-   clock.innerHTML = "2:00";
+   window.clock = document.getElementById("clock");
+   clock.innerHTML = "2:30";
 
-    let time = 120;
-    setInterval(() => {
+    window.time = 150;
+    window.clockFunc = setInterval(() => {
         time -= 1;
         let convertMins = Math.floor(time / 60);
         let convertSecs = time % 60;
-        clock.innerHTML = convertMins + " : " + convertSecs
-        // clock.innerHTML = {`${convertMins}:${convertSecs}`};
-        if (time === 0) {
-            gameView.end();
-            clearInterval();
+        debugger;
+        if (convertSecs === 0) {
+            clock.innerHTML = convertMins + " : " + convertSecs + "0";
+        } else if (convertSecs < 10) {
+            clock.innerHTML = convertMins + " : " + "0" + convertSecs;
+        } 
+        else {
+            clock.innerHTML = convertMins + " : " + convertSecs;
         }
     }, 1000);
 

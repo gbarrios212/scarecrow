@@ -10,7 +10,8 @@ const CONSTANTS = {
     CORN_Y: 120,
     VEL_X: 2,
     VEL_Y: 2,
-    NUM_CROWS: 10,
+    NUM_CROWS: 100,
+    //NUM_CROWS: 13 seems fine for difficulty
     NUM_CORNS: 1
 };
 
@@ -156,6 +157,12 @@ Game.prototype.checkCollisions = function () {
 Game.prototype.step = function(){
     this.moveObjects();
     this.checkCollisions();
+    let result = this.didLose();
+    if (result){
+        this.end("lose");
+    } else if (window.time === 0) {
+        this.end("win");
+    }
 }
 
 Game.prototype.removeCrow = function(movingObj) {
@@ -172,6 +179,31 @@ Game.prototype.removeCorn = function (movingObj) {
     let idx = this.corns.indexOf(movingObj);
     this.corns.splice(idx, 1);
 }
+
+Game.prototype.didLose = function() {
+    debugger;
+  if (this.corns.length === 0) {
+    return true;
+  } else {
+    return false;
+  }
+};
+
+Game.prototype.end = function(result) {
+    debugger;
+    switch(result) {
+        case "win":
+            clearInterval(window.clockFunc);
+            clearInterval(window.gameFunc);
+            console.log("win");
+            break;
+        case "lose":
+            clearInterval(window.clockFunc);
+            clearInterval(window.gameFunc);
+            console.log("lose");
+            break;
+  }
+};
 
 
 module.exports = Game;
