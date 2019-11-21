@@ -70,16 +70,10 @@ Game.prototype.draw = function (ctx) {
 Game.prototype.addCrows = function () {
     while (this.crows.length < CONSTANTS.NUM_CROWS) {
         this.crows.push(new Crow({ pos: this.randomPosition(), vel: this.randomVelocity(), game: this}))
-        this.crows.push(new Crow({ pos: this.randomPosition(), vel: [0,0], game: this}))
-        // this.crows.push(new Crow({ pos: [200, 240], vel: [0,0], game: this}))
     }
 }
 
 Game.prototype.addCorns = function () {
-    // while (this.corns.length < CONSTANTS.NUM_CORNS) {
-    //     this.corns.push(new Corn({ pos: this.cornPosition(), game: this }))
-    //     //  this.corns.push(new Corn({ pos: [200, 200], game: this }));
-    // }
     for (let row = 0; row < 10; row++) {
         for (let col = 0; col < 20; col++) {
             switch (gameMap[row][col]) {
@@ -87,18 +81,9 @@ Game.prototype.addCorns = function () {
                     this.corns.push(new Corn({ pos: [col * 40, row * 40], game: this}))
                     break;
             }
-            // ctx.fillRect(col * tileWidth, row * tileHeight, tileWidth, tileHeight);
         }
     }
 }
-
-// Game.prototype.cornPosition = function () {
-//     let position = [];
-//     position.push(Math.floor(Math.random() * CONSTANTS.CORN_X) + 200);
-//     position.push(Math.floor(Math.random() * CONSTANTS.CORN_Y) + 120);
-//     return position;
-
-// }
 
 Game.prototype.randomPosition = function () {
     let position = [];
