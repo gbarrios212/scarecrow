@@ -16,6 +16,9 @@
 }
 
 body { 
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     background: #4c1c1c;
     font-family: 'Kaushan Script', cursive;
     color: gold;
