@@ -22,12 +22,14 @@ function Scarecrow(options) {
 
 Util.inherits(Scarecrow, MovingObject);
 
-
 Scarecrow.prototype.fireBullet = function() {
     // debugger;
+    if (frameCount < 6) {
+        return;
+    }
     let bullet = new Bullet({ pos: [this.pos[0] + 25, this.pos[1] + 10], vel: Util.determineDirection(lastPressed), game: this.game, isWrappable: false });
     this.game.bullets.push(bullet);
-    debugger;
+    bulletFrameCount = 0;
 }
 
 const cycleLoop = [
