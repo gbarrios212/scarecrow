@@ -60,14 +60,14 @@
     animation-fill-mode: forwards;
 }
 
-#start-button{
+#start-button, #instruction{
     opacity: 0;
     animation: open 2s;
     animation-delay: 2s;
     animation-fill-mode: forwards;
 }
 
-#start-button:hover{
+#start-button:hover, #instruction:hover{
     cursor: pointer;
     color:  rgb(227, 222, 189);
 }

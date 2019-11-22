@@ -779,8 +779,12 @@ const Game = __webpack_require__(/*! ./game.js */ "./dist/src/game.js");
 function GameView (ctx) {
     this.game = new Game;
     this.ctx = ctx;
+    this.clock = 
     window.ctx = this.ctx;
 }
+
+// window.clock = document.getElementById("clock");
+// clock.innerHTML = "2:30";
 
 
 GameView.prototype.start = function(){
@@ -825,18 +829,27 @@ document.addEventListener("DOMContentLoaded", function () {
     ctx.imageSmoothingEnabled = false;
     
 
+    const mainSheet = document.getElementById("main-content-sheet");
+    document.addEventListener("click", navigate);
+    const start = document.getElementById("start-button");
+    const instructions = document.getElementById("instruction");
+    function navigate (e) {
+        if (e.target === instructions) {
+            console.log('Hello');
+        } else if (e.target === start) {
+            console.log("uh oh");
+        }
+    }
     // document.addEventListener("click", () => {
-        // const mainSheet = document.getElementById("main-content-sheet");
-        // const start = document.getElementById("start-button");
-        // const texts = document.querySelectorAll("#text");
-        // mainSheet.classList.add("story");
-        // start.classList.add("off");
-        // texts.forEach(text => {
-            // text.classList.toggle("off");
-        // })
+    //     const texts = document.querySelectorAll("#text");
+    //     mainSheet.classList.add("story");
+    //     start.classList.add("off");
+    //     texts.forEach(text => {
+    //         text.classList.toggle("off");
+    //     })
             
 
-        // mainSheet.innerHTML = "Two years since they've been gone."
+    //     mainSheet.innerHTML = "Two years since they've been gone."
 
     // })
 

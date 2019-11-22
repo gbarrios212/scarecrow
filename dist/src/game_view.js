@@ -4,8 +4,12 @@ const Game = require("./game.js");
 function GameView (ctx) {
     this.game = new Game;
     this.ctx = ctx;
+    this.clock = 
     window.ctx = this.ctx;
 }
+
+// window.clock = document.getElementById("clock");
+// clock.innerHTML = "2:30";
 
 
 GameView.prototype.start = function(){
