@@ -114,19 +114,27 @@ function AngryTower(options) {
 
   setInterval(() => {
       this.fireBullet();
-  }, 3000)
+  }, 5000)
 }
 
 Util.inherits(AngryTower, MovingObject);
 
 AngryTower.prototype.fireBullet = function() {
-    let bullet = new FatBullet({
+    let rightBullet = new FatBullet({
       pos: [this.pos[0] + 25, this.pos[1]],
       vel: [1,0],
       game: this.game,
       isWrappable: false
     });
-    this.game.bullets.push(bullet);
+    let leftBullet = new FatBullet({
+      pos: [this.pos[0] - 25, this.pos[1]],
+      vel: [-1, 0],
+      game: this.game,
+      isWrappable: false
+    });
+    // this.game.bullets.concat([rightBullet, leftBullet]);
+    this.game.bullets.push(leftBullet);
+    this.game.bullets.push(rightBullet);
 };
 
 
@@ -168,9 +176,7 @@ AngryTower.prototype.draw = function() {
         if (currentLoopIndex >= cycleLoop.length) {
         currentLoopIndex = 0;
 
-    ctx.strokeStyle = "#f00"; // some color/style
-    ctx.lineWidth = 2; // thickness
-    ctx.strokeRect(this.pos[0], this.pos[1], this.width / 2, this.height / 2);
+   
     };
 }
 
@@ -356,7 +362,7 @@ FatBulletImage.src = "./angry_heart.png";
 function FatBullet(options) {
   MovingObject.call(this, {
     pos: options.pos,
-    vel: [1, 0],
+    vel: options.vel,
     height: 30,
     width: 30,
     image: FatBulletImage,
@@ -403,7 +409,7 @@ const CONSTANTS = {
     CORN_Y: 120,
     VEL_X: 2,
     VEL_Y: 2,
-    NUM_CROWS: 1,
+    NUM_CROWS: 10,
     //NUM_CROWS: 13 seems fine for difficulty
     NUM_CORNS: 1
 };
@@ -621,7 +627,11 @@ Game.prototype.checkCollisions = function () {
                     movingObj.collideWith(movingObj2, result);
                 } else if (movingObj instanceof Bullet && movingObj2 instanceof Corn) {
                     movingObj.collideWith(movingObj2);
-                }
+                } 
+                // else if (movingObj instanceof Scarecrow && movingObj2 instanceof AngryTower) {
+                //     let result = movingObj.isCollidedWith(movingObj2);
+                //     movingObj.collideWith(movingObj2, result);
+                // }
             }
         });
     });
@@ -651,6 +661,7 @@ Game.prototype.removeBullet = function (movingObj) {
 Game.prototype.removeCorn = function (movingObj) {
     let idx = this.corns.indexOf(movingObj);
     this.corns.splice(idx, 1);
+    this.scarecrow.courage += 5
 }
 
 Game.prototype.didLose = function() {
@@ -878,7 +889,9 @@ function Scarecrow(options) {
             isWrappable: true, 
 
         });
-        this.spooked = false
+        this.spooked = false;
+        this.fear = 0;
+        this.courage = 0;
    
 }
 
@@ -931,6 +944,25 @@ let frameCount = 0;
 
 Scarecrow.prototype.draw = function () {
     frameCount ++;
+
+    if (this.fear >= 50){
+        let frightenedImage = new Image();
+        frightenedImage.src = "scarecrow_frightened.png";
+        ctx.drawImage(
+            frightenedImage,
+            0,
+            0,
+            64,
+            64,
+            this.pos[0], 
+            this.pos[1], 
+            this.width, 
+            this.height
+        )
+        setTimeout(() => {
+            this.fear = 0;
+        }, 10000)
+    }
 
     if (!this.spooked){
         this.scareMove();
@@ -1097,7 +1129,9 @@ Scarecrow.prototype.paralyze = function() {
     this.spooked = true;
     setTimeout(() => {
         this.spooked = false;
+        this.fear += .15;
     }, 3500);
+    debugger;
 }
 
 Scarecrow.prototype.collideWith = function(movingObject, result) {

@@ -12,7 +12,7 @@ const CONSTANTS = {
     CORN_Y: 120,
     VEL_X: 2,
     VEL_Y: 2,
-    NUM_CROWS: 1,
+    NUM_CROWS: 10,
     //NUM_CROWS: 13 seems fine for difficulty
     NUM_CORNS: 1
 };
@@ -230,7 +230,11 @@ Game.prototype.checkCollisions = function () {
                     movingObj.collideWith(movingObj2, result);
                 } else if (movingObj instanceof Bullet && movingObj2 instanceof Corn) {
                     movingObj.collideWith(movingObj2);
-                }
+                } 
+                // else if (movingObj instanceof Scarecrow && movingObj2 instanceof AngryTower) {
+                //     let result = movingObj.isCollidedWith(movingObj2);
+                //     movingObj.collideWith(movingObj2, result);
+                // }
             }
         });
     });
@@ -260,6 +264,7 @@ Game.prototype.removeBullet = function (movingObj) {
 Game.prototype.removeCorn = function (movingObj) {
     let idx = this.corns.indexOf(movingObj);
     this.corns.splice(idx, 1);
+    this.scarecrow.courage += 5
 }
 
 Game.prototype.didLose = function() {

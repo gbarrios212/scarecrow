@@ -18,7 +18,9 @@ function Scarecrow(options) {
             isWrappable: true, 
 
         });
-        this.spooked = false
+        this.spooked = false;
+        this.fear = 0;
+        this.courage = 0;
    
 }
 
@@ -71,6 +73,25 @@ let frameCount = 0;
 
 Scarecrow.prototype.draw = function () {
     frameCount ++;
+
+    if (this.fear >= 50){
+        let frightenedImage = new Image();
+        frightenedImage.src = "scarecrow_frightened.png";
+        ctx.drawImage(
+            frightenedImage,
+            0,
+            0,
+            64,
+            64,
+            this.pos[0], 
+            this.pos[1], 
+            this.width, 
+            this.height
+        )
+        setTimeout(() => {
+            this.fear = 0;
+        }, 10000)
+    }
 
     if (!this.spooked){
         this.scareMove();
@@ -237,7 +258,9 @@ Scarecrow.prototype.paralyze = function() {
     this.spooked = true;
     setTimeout(() => {
         this.spooked = false;
+        this.fear += .15;
     }, 3500);
+    debugger;
 }
 
 Scarecrow.prototype.collideWith = function(movingObject, result) {

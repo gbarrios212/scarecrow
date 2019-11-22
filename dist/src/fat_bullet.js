@@ -10,7 +10,7 @@ FatBulletImage.src = "./angry_heart.png";
 function FatBullet(options) {
   MovingObject.call(this, {
     pos: options.pos,
-    vel: [1, 0],
+    vel: options.vel,
     height: 30,
     width: 30,
     image: FatBulletImage,

@@ -19,19 +19,27 @@ function AngryTower(options) {
 
   setInterval(() => {
       this.fireBullet();
-  }, 3000)
+  }, 5000)
 }
 
 Util.inherits(AngryTower, MovingObject);
 
 AngryTower.prototype.fireBullet = function() {
-    let bullet = new FatBullet({
+    let rightBullet = new FatBullet({
       pos: [this.pos[0] + 25, this.pos[1]],
       vel: [1,0],
       game: this.game,
       isWrappable: false
     });
-    this.game.bullets.push(bullet);
+    let leftBullet = new FatBullet({
+      pos: [this.pos[0] - 25, this.pos[1]],
+      vel: [-1, 0],
+      game: this.game,
+      isWrappable: false
+    });
+    // this.game.bullets.concat([rightBullet, leftBullet]);
+    this.game.bullets.push(leftBullet);
+    this.game.bullets.push(rightBullet);
 };
 
 
@@ -73,9 +81,7 @@ AngryTower.prototype.draw = function() {
         if (currentLoopIndex >= cycleLoop.length) {
         currentLoopIndex = 0;
 
-    ctx.strokeStyle = "#f00"; // some color/style
-    ctx.lineWidth = 2; // thickness
-    ctx.strokeRect(this.pos[0], this.pos[1], this.width / 2, this.height / 2);
+   
     };
 }
 
