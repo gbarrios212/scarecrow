@@ -473,8 +473,6 @@ function highlight(e) {
       x: e.pageX - elemLeft,
       y: e.pageY - elemTop 
     };
-    console.log(pos.x);
-    console.log(pos.y);
     if (pos.x <= 800 && pos.x >= 0 && pos.y <= 400 && pos.y >= 0){
 
         let tileCol = Math.floor(pos.y / 40);
