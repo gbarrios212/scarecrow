@@ -240,7 +240,7 @@ body {
     background: red;
 }
 
-#win-sheet, #lose-sheet{
+#win-sheet-on, #lose-sheet-on{
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -256,9 +256,13 @@ body {
     border-radius: 2px;
 }
 
-#lose-sheet{
+#lose-sheet-on{
     background: black;
     color:#948f8f;
     border: 1px solid #bcb7b7;
     border-radius: 2px;
+}
+
+#win-sheet, #lose-sheet{
+    display: none;
 }

@@ -68,9 +68,11 @@ function highlight(e) {
     elemLeft = elem.offsetLeft;
     elemTop = elem.offsetTop;
     let pos = {
-      x: e.clientX - elemLeft,
-      y: e.clientY - elemTop 
+      x: e.pageX - elemLeft,
+      y: e.pageY - elemTop 
     };
+    console.log(pos.x);
+    console.log(pos.y);
     if (pos.x <= 800 && pos.x >= 0 && pos.y <= 400 && pos.y >= 0){
 
         let tileCol = Math.floor(pos.y / 40);
@@ -78,6 +80,7 @@ function highlight(e) {
         let tileValue = gameMap[tileCol][tileRow];
         if (tileValue !== 1) {
             grid.classList.add("good");
+            
         } else {
             grid.classList.remove("good");
         }
@@ -93,8 +96,8 @@ Game.prototype.buildTowers = function () {
         elemLeft = elem.offsetLeft;
         elemTop = elem.offsetTop;
         let pos = {
-            x: e.clientX - elemLeft,
-            y: e.clientY - elemTop 
+            x: e.pageX - elemLeft,
+            y: e.pageY - elemTop 
         };
 
         if (pos.x <= 800 && pos.x >= 0 && pos.y <= 400 && pos.y >= 0){
@@ -105,9 +108,11 @@ Game.prototype.buildTowers = function () {
             let tileRow = Math.floor(pos.x / 40)
             let tileValue = that.gameMap[tileCol][tileRow];
             if (tileValue !== 1 && !window.paused) {
+                // angryTower = new AngryTower({ pos: [tileRow * 40 + 2, tileCol * 40 + 40], game: that });
                 angryTower = new AngryTower({ pos: [tileRow * 40 + 2, tileCol * 40], game: that });
                 that.towers.push(angryTower);
                 that.gameMap[tileCol][tileRow] = 1;
+                // that.gameMap[tileCol + 1][tileRow] = 1;
                 that.towersAvail -= 1;
             } else {
                 console.log("NO")
@@ -379,12 +384,22 @@ Game.prototype.end = function(result) {
             win = document.getElementById("win-sheet");
             win.id = "win-sheet-on";
             break;
+            restart = document.getElementById("win-restart")
+            restart.addEventListener("click", () => {
+                win.id = "win-sheet";
+                // window.restart;
+            })
         case "lose":
             clearInterval(window.clockFunc);
             clearInterval(window.gameFunc);
             console.log("lose");
             lose = document.getElementById("lose-sheet");
-            win.id = "lose-sheet-on";
+            lose.id = "lose-sheet-on";
+            restart = document.getElementById("lose-restart");
+            restart.addEventListener("click", () => {
+              lose.id = "lose-sheet";
+            //   window.restart();
+            });
             break;
   }
 };

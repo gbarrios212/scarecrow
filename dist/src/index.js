@@ -150,7 +150,12 @@ document.addEventListener("DOMContentLoaded", function () {
       const pauseSheet = document.getElementById("pause-sheet");
       window.paused = false;
       pauseSheet.classList.remove("on");
+
+      //need to turn on or turn off win sheet and lose sheet no?
+
     }
+
+    // window.restart = restart();
 });
 
 
