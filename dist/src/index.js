@@ -10,6 +10,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const canvas = document.getElementById("scarecrow-canvas");
     const ctx = canvas.getContext('2d');
     ctx.imageSmoothingEnabled = false;
+    
 
     // document.addEventListener("click", () => {
         // const mainSheet = document.getElementById("main-content-sheet");

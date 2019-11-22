@@ -103,7 +103,7 @@ angryImage.src = "angry_boy.png";
 
 function AngryTower(options) {
   MovingObject.call(this, {
-    pos: [350, 50],
+    pos: options.pos,
     vel: [0, 0],
     width: 64,
     height: 64,
@@ -424,22 +424,93 @@ const gameMap = [
     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
 ]
 
+// function build() {
+
+// }
 
 function Game() {
     this.crows = [];
     this.bullets = [];
     this.corns = [];
+    this.towers = [];
+    this.towersAvail = 4;
+    this.buildTowers();
     this.scarecrow = new Scarecrow({ game: this });
-    this.angryTower = new AngryTower({ game: this });
     this.addCrows();
     this.addCorns();
     this.img = new Image();
     this.img.src = "farmland_later_single.png";
     this.gameMap = gameMap;
+    grid = document.getElementById("preview-grid");
+    let ele;
+    for (tile = 0; tile < this.gameMap.length * this.gameMap[0].length; tile ++) {
+        ele = document.createElement("div");
+        ele.innerHTML = tile; 
+        grid.appendChild(ele);
+    }
+    // document.addEventListener("mousemove", highlight);
+    // this.build = build.bind(this);
     // setInterval(() => {
     //     console.log(this);
     // }, 3000)
 }
+
+function highlight(e) {
+    elem = document.getElementById("scarecrow-canvas");
+    grid = document.getElementById("grid"); 
+    elemLeft = elem.offsetLeft;
+    elemTop = elem.offsetTop;
+    let pos = {
+      x: e.clientX - elemLeft,
+      y: e.clientY - elemTop
+    };
+    let tileCol = Math.floor(pos.y / 40);
+    let tileRow = Math.floor(pos.x / 40);
+    let tileValue = gameMap[tileCol][tileRow];
+    if (tileValue !== 1) {
+
+        console.log("ok");
+    }
+    // console.log(pos);
+}
+
+//constructor listener 
+//top level build
+//^ bind in cons.
+
+Game.prototype.buildTowers = function () {
+    let that = this;
+   
+    document.addEventListener("click", build);
+    function build(e) {
+        elem = document.getElementById("scarecrow-canvas");
+        elemLeft = elem.offsetLeft;
+        elemTop = elem.offsetTop;
+        let pos = {
+            x: e.clientX - elemLeft,
+            y: e.clientY - elemTop
+        };
+        // console.log(pos);
+        let tileCol = Math.floor(pos.y / 40)
+        let tileRow = Math.floor(pos.x / 40)
+        let tileValue = that.gameMap[tileCol][tileRow];
+        if (tileValue !== 1) {
+            angryTower = new AngryTower({ pos: [pos.x, pos.y], game: that });
+            that.towers.push(angryTower);
+            tileValue = 1;
+            that.towersAvail -= 1;
+        } else {
+            console.log("NO")
+        }
+        if (that.towersAvail === 0) {
+            document.removeEventListener("click", build);
+            console.log("done");
+        }
+    }
+}
+
+
+
 
 Game.prototype.draw = function (ctx) {
         let pattern = ctx.createPattern(this.img, 'repeat');
@@ -497,7 +568,7 @@ Game.prototype.randomVelocity = function () {
 
 Game.prototype.allObjects = function () {
     return this.crows
-    .concat(this.scarecrow, this.bullets, this.corns, this.angryTower);
+    .concat(this.scarecrow, this.bullets, this.corns, this.towers);
 }
 
 
@@ -535,6 +606,9 @@ Game.prototype.checkCollisions = function () {
                 } else if (movingObj instanceof Crow && movingObj2 instanceof Bullet ) {
                     movingObj.collideWith(movingObj2)
                 } else if (movingObj instanceof Crow && movingObj2 instanceof FatBullet ) {
+                    movingObj.collideWith(movingObj2)
+                }
+                else if (movingObj instanceof FatBullet && movingObj2 instanceof Corn) {
                     movingObj.collideWith(movingObj2)
                 }
                 else if (movingObj instanceof Crow && movingObj2 instanceof Corn) {
@@ -618,6 +692,7 @@ const Game = __webpack_require__(/*! ./game.js */ "./dist/src/game.js");
 function GameView (ctx) {
     this.game = new Game;
     this.ctx = ctx;
+    window.ctx = this.ctx;
 }
 
 
@@ -658,6 +733,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const canvas = document.getElementById("scarecrow-canvas");
     const ctx = canvas.getContext('2d');
     ctx.imageSmoothingEnabled = false;
+    
 
     // document.addEventListener("click", () => {
         // const mainSheet = document.getElementById("main-content-sheet");

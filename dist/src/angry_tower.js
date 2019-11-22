@@ -8,7 +8,7 @@ angryImage.src = "angry_boy.png";
 
 function AngryTower(options) {
   MovingObject.call(this, {
-    pos: [350, 50],
+    pos: options.pos,
     vel: [0, 0],
     width: 64,
     height: 64,
