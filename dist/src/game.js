@@ -66,13 +66,16 @@ function highlight(e) {
       x: e.clientX - elemLeft,
       y: e.clientY - elemTop
     };
-    let tileCol = Math.ceil(pos.y / 40);
-    let tileRow = Math.ceil(pos.x / 40) - 1;
-    let tileValue = gameMap[tileCol][tileRow];
-    if (tileValue !== 1) {
-        grid.classList.add("good");
-    } else {
-        grid.classList.remove("good");
+    if (pos.x <= 800 && pos.x >= 0 && pos.y <= 400 && pos.y >= 0){
+
+        let tileCol = Math.ceil(pos.y / 40);
+        let tileRow = Math.ceil(pos.x / 40) - 1;
+        let tileValue = gameMap[tileCol][tileRow];
+        if (tileValue !== 1) {
+            grid.classList.add("good");
+        } else {
+            grid.classList.remove("good");
+        }
     }
 }
 
@@ -103,7 +106,6 @@ Game.prototype.buildTowers = function () {
             tileValue = 1;
             that.towersAvail -= 1;
         } else {
-           
             console.log("NO")
         }
         if (that.towersAvail === 0) {
