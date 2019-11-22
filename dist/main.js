@@ -839,11 +839,12 @@ document.addEventListener("DOMContentLoaded", function () {
   
     const clock = document.getElementById("clock");
     function navigate (e) {
-        if (e.target === instructions) {
-           instructionsSheet.id = "instructions-sheet-on";
-        } else if (e.target === start) {
+        // if (e.target === instructions) {
+          //  instructionsSheet.id = "instructions-sheet-on";
+        // } else 
+        if (e.target === start) {
             mainSheet.id = "main-content-sheet-off";
-            instructionsSheet.id = "instructions-sheet";
+            // instructionsSheet.id = "instructions-sheet";
             // gameView = new GameView(ctx);
             // gameView.start();
             // // clock.innerHTML = ""

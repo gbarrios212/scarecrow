@@ -38,7 +38,10 @@
     background: #4c1c1c;
     z-index: 1;
     border: 1px solid #4c1c1c;
-    border-radius: 2px;
+
+
+    outline: 6px solid black;
+
 }
 
 /* .main-content-sheet.story{
@@ -72,15 +75,19 @@
 
 #instructions-sheet-on{
     display: block;
+    opacity: 0;
     /* background: black; */
     transition: all 1s; 
     color: #d7d096;
     font-family: initial;
-
+    animation: open 2s;
+    animation-delay: 4s;
+    animation-fill-mode: forwards;
 }
 
 #instructions-sheet-on div {
     color: #d7d096;
+    font-size: 12px;
     font-family: initial;
 }
 
@@ -102,7 +109,7 @@
     animation-fill-mode: forwards;
 }
 
-#start-button:hover, #instruction:hover{
+#start-button:hover{
     cursor: pointer;
     color:  rgb(227, 222, 189);
 }
