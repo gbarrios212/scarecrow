@@ -40,7 +40,8 @@
     border: 1px solid #4c1c1c;
 
 
-    outline: 6px solid black;
+    /* outline: 6px solid black; */
+    outline: 6px solid #4c1c1c;
 
 }
 
@@ -186,7 +187,7 @@ body {
 }
 
 
-#restart-button:hover{
+#restart-button:hover, #lose-restart:hover, #win-restart:hover{
     cursor: pointer;
     color:  rgb(227, 222, 189);
 }
@@ -237,4 +238,27 @@ body {
 .preview-show-bad{
     opacity: .5;
     background: red;
+}
+
+#win-sheet, #lose-sheet{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 140px;
+    width: 800px;
+    height: 400px;
+    z-index: 300;
+    background: white;
+    color: #9c8a27;
+    border: 1px solid #9c8a27;
+    border-radius: 2px;
+}
+
+#lose-sheet{
+    background: black;
+    color:#948f8f;
+    border: 1px solid #bcb7b7;
+    border-radius: 2px;
 }

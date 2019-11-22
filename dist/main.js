@@ -778,11 +778,15 @@ Game.prototype.end = function(result) {
             clearInterval(window.clockFunc);
             clearInterval(window.gameFunc);
             console.log("win");
+            win = document.getElementById("win-sheet");
+            win.id = "win-sheet-on";
             break;
         case "lose":
             clearInterval(window.clockFunc);
             clearInterval(window.gameFunc);
             console.log("lose");
+            lose = document.getElementById("lose-sheet");
+            win.id = "lose-sheet-on";
             break;
   }
 };
