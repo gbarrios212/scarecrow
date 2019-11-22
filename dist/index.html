@@ -11,20 +11,64 @@
 <body>
   <h1 class="title">Scarecrow's Last Stand</h1>
   <div id="clock" class="clock">CLOCK HERE</div>
+  
   <!-- <canvas id="scarecrow-canvas" width=700 height=450></canvas> -->
   <div class="main-content">
-    <!-- <div id="main-content-sheet" class="main-content-sheet"> -->
-      <!-- <p id="start-button">Start</p> -->
-      <!-- <p id="start-button">Instructions</p> -->
+    <div id="main-content-sheet" class="main-content-sheet">
+      <p id="start-button">Start</p>
+      <p id="instruction">Instructions</p>
+      <div id="instructions-sheet-on">
+        <div id="instruction-buttons"></div>
+        <!-- <div>The birds around this farm are starving...for attention!</div> -->
+        <!-- <div>Every night, the birds come for your corn.</div> -->
+        <div>They come at sundown.</div>
+        <br>
+        <!-- <div>You are the last line of defense.</div> -->
+        <div>Since the farmer's passing, you have been the last ray of hope for the maize people.</div>
+        <!-- <div>Since the farmhands passed, it's been up to you to protect the farm's legacy.</div> -->
+        <div>Teach the crows that loves tastes better than corn.</div>
+        <div>But don't get too close!  Even scarecrows get spooked.</div>
+        <!-- <div>You're the last line of defense on the farm against the murder of crows.  Shower the birds with affection until they leave you alone. </div> -->
+        <!-- <div> Don't get too close!  This scarecrow's mildly terrified of birds and will freeze temporarily.</div> -->
+        <!-- <div> But watch out for status changes! Scarecrow's terrified of birds.</div> -->
+        <br>
+        <div>Too much fright will slow you down.  Too much courage, on the other hand...</div>
+        <br>
+        <br>
+        <div id="instruction-buttons">
+          <p>WASD - run </p>
+          <!-- <p>WASD - run </p> -->
+          <p>Spacebar - shoot hearts/heal corn</p>
+          <!-- <p>Spacebar - shoot hearts</p> -->
+          <p>P - pause/play</p>
+          <!-- <p>P - pause/play</p> -->
+          <p>Click - create tower</p>
+        </div>
+        <!-- <div>Start</div> -->
+      </div>
       <!-- <p id="text" class="off">Skip</p> -->
       <!-- <p id="text" class="off">Two years since they've been gone.</p> -->
       <!-- <p id="text" class="off">All they've left me is this corn.</p> -->
       <!-- <p id="text" class="off">Soon enough, the crows'll come by to take them all...</p> -->
       <!-- <p id="text" class="off">...all I've got left.</p> -->
     </div>
-    <div id="preview-grid">
+    <div id="preview-grid"></div>
+    <div id="pause-sheet">
+      <div id="paused-text">Paused</div>
+      <div id="restart-button">Restart</div>
     </div>
+    <!-- <div id="paused">Paused</div> -->
     <canvas id="scarecrow-canvas" width=800 height=400></canvas>
+    <div id="win-sheet">
+      <div>The corn lives another day.</div>
+      <img src="scarecrow03.png" />
+      <div id="win-restart">Play again</div>
+    </div>
+    <div id="lose-sheet">
+      <div>Alone again.</div>
+      <img src="scarecrow_frightened.png"/>
+      <div id="lose-restart">Restart</div>
+    </div>
   </div>
 
  

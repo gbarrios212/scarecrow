@@ -12,13 +12,12 @@ const CONSTANTS = {
     CORN_Y: 120,
     VEL_X: 2,
     VEL_Y: 2,
-    NUM_CROWS: 10,
-    //NUM_CROWS: 13 seems fine for difficulty
-    NUM_CORNS: 1
 };
 
 const tileWidth = 40, tileHeight = 40;
 const mapWidth = 20, mapHeight = 10;
+const goodCrowImage = new Image ();
+goodCrowImage.src = "crow_good.png";
 
 const gameMap = [
     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
@@ -33,6 +32,7 @@ const gameMap = [
     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
 ]
 
+
 function Game() {
     this.crows = [];
     this.bullets = [];
@@ -42,10 +42,11 @@ function Game() {
     this.buildTowers();
     this.scarecrow = new Scarecrow({ game: this });
     // this.addCrows();
-    this.addCorns();
     this.img = new Image();
     this.img.src = "farmland_later_single.png";
-    this.gameMap = gameMap;
+    // this.gameMap = gameMap
+    this.gameMap = JSON.parse(JSON.stringify(gameMap));
+    this.addCorns();
     this.crowSpawn = 5;
     grid = document.getElementById("preview-grid");
     let ele;
@@ -67,10 +68,9 @@ function highlight(e) {
     elemLeft = elem.offsetLeft;
     elemTop = elem.offsetTop;
     let pos = {
-      x: e.clientX - elemLeft,
-      y: e.clientY - elemTop 
+      x: e.pageX - elemLeft,
+      y: e.pageY - elemTop 
     };
-    console.log(pos.y);
     if (pos.x <= 800 && pos.x >= 0 && pos.y <= 400 && pos.y >= 0){
 
         let tileCol = Math.floor(pos.y / 40);
@@ -78,15 +78,12 @@ function highlight(e) {
         let tileValue = gameMap[tileCol][tileRow];
         if (tileValue !== 1) {
             grid.classList.add("good");
+            
         } else {
             grid.classList.remove("good");
         }
     }
 }
-
-//constructor listener 
-//top level build
-//^ bind in cons.
 
 Game.prototype.buildTowers = function () {
     let that = this;
@@ -97,45 +94,63 @@ Game.prototype.buildTowers = function () {
         elemLeft = elem.offsetLeft;
         elemTop = elem.offsetTop;
         let pos = {
-            x: e.clientX - elemLeft,
-            y: e.clientY - elemTop 
+            x: e.pageX - elemLeft,
+            y: e.pageY - elemTop 
         };
-        // console.log(pos);
-        let tileCol = Math.floor(pos.y / 40)
-        let tileRow = Math.floor(pos.x / 40)
-        let tileValue = that.gameMap[tileCol][tileRow];
-        if (tileValue !== 1) {
-            
-           
-            angryTower = new AngryTower({ pos: [tileRow * 40 + 2, tileCol * 40], game: that });
-            that.towers.push(angryTower);
-            that.gameMap[tileCol][tileRow] = 1;
-            that.towersAvail -= 1;
-        } else {
-            console.log("NO")
-        }
-        if (that.towersAvail === 0) {
-            document.removeEventListener("click", build);
-            document.removeEventListener("mousemove", highlight);
-            grid.classList.remove("good");
-            grid.id = "preview-grid-off";
-            console.log("done");
+
+        if (pos.x <= 800 && pos.x >= 0 && pos.y <= 400 && pos.y >= 0){
+        // if (Math.abs(pos.x) <= 800 && Math.abs(pos.y) <= 400){
+
+            // console.log(pos);
+            let tileCol = Math.floor(pos.y / 40)
+            let tileRow = Math.floor(pos.x / 40)
+            let tileValue = that.gameMap[tileCol][tileRow];
+            if (tileValue !== 1 && !window.paused) {
+                // angryTower = new AngryTower({ pos: [tileRow * 40 + 2, tileCol * 40 + 40], game: that });
+                angryTower = new AngryTower({ pos: [tileRow * 40 + 2, tileCol * 40], game: that });
+                that.towers.push(angryTower);
+                that.gameMap[tileCol][tileRow] = 1;
+                // that.gameMap[tileCol + 1][tileRow] = 1;
+                that.towersAvail -= 1;
+            } else {
+                console.log("NO")
+            }
+            if (that.towersAvail === 0) {
+                document.removeEventListener("click", build);
+                document.removeEventListener("mousemove", highlight);
+                grid.classList.remove("good");
+                grid.id = "preview-grid-off";
+                console.log("done");
+            // }
         }
     }
 }
+}
 
 
-
+ let fieldPattern = new Image();
+ fieldPattern.src = "corn_field_later_single.png";
 
 Game.prototype.draw = function (ctx) {
         let pattern = ctx.createPattern(this.img, 'repeat');
-        let fieldPattern = new Image();
-        fieldPattern.src = "corn_field_later_single.png";
         let pattern2 = ctx.createPattern(fieldPattern, 'repeat');
     
+        if (window.time < 90) {
+            this.img.src = "farmland_later_1.5_single.png";
+            fieldPattern.src = "corn_field_later_2_single.png";
+        }
+        if (window.time < 60) {
+            // this.img.src = "farmland_later_2_single.png";
+            fieldPattern.src = "corn_field_later_3_single.png";
+        }
+        if (window.time < 30) {
+            this.img.src = "farmland_later_4_single.png";
+            fieldPattern.src = "corn_field_later_4_single.png";
+        }
+
         for(let row = 0; row < 10; row ++ ) {
             for(let col = 0; col < 20; col ++) {
-                switch(gameMap[row][col]){
+                switch(this.gameMap[row][col]){
                 case 0: 
                     ctx.fillStyle = pattern;
                     break;
@@ -152,12 +167,17 @@ Game.prototype.addCrows = function () {
     // while (this.crows.length < CONSTANTS.NUM_CROWS) {
     //     this.crows.push(new Crow({ pos: this.randomPosition(), vel: this.randomVelocity(), game: this}))
     // }
+    if (window.time === 0) {
+       this.crows.push(new Crow({ pos: this.randomPosition(), vel: this.randomVelocity(), game: this, image: goodCrowImage})) 
+    }
 
     while (this.crows.length < this.crowSpawn) {
         this.crows.push(new Crow({ pos: this.randomPosition(), vel: this.randomVelocity(), game: this}))
     }
 
+
     this.crowSpawn *= 1.2;
+    // this.crowSpawn *= 1.3;
 
     // if (window.time === 120) {
 
@@ -167,7 +187,7 @@ Game.prototype.addCrows = function () {
 Game.prototype.addCorns = function () {
     for (let row = 0; row < 10; row++) {
         for (let col = 0; col < 20; col++) {
-            switch (gameMap[row][col]) {
+            switch (this.gameMap[row][col]) {
                 case 1:
                     this.corns.push(new Corn({ pos: [col * 40, row * 40], game: this}))
                     break;
@@ -178,8 +198,25 @@ Game.prototype.addCorns = function () {
 
 Game.prototype.randomPosition = function () {
     let position = [];
-    position.push(Math.floor(Math.random() * CONSTANTS.DIM_X));
-    position.push(Math.floor(Math.random() * CONSTANTS.DIM_Y));
+
+    switch(Math.floor((Math.random()) * 10) % 4){
+        case 0: 
+            position.push(Math.floor(Math.random() * CONSTANTS.DIM_X));
+            position.push(750);
+            break;
+        case 1: 
+            position.push(Math.floor(Math.random() * CONSTANTS.DIM_X));
+            position.push(2);
+            break;
+        case 2: 
+            position.push(0);
+            position.push(Math.floor(Math.random() * CONSTANTS.DIM_Y));
+            break;
+        case 3: 
+            position.push(0);
+            position.push(Math.floor(Math.random() * CONSTANTS.DIM_Y));
+            break;
+    }
     return position;
 }
 
@@ -187,45 +224,42 @@ Game.prototype.randomPosition = function () {
 
 Game.prototype.randomVelocity = function () {
     let velocity = [];
-    // velocity.push(Math.ceil(Math.random() * CONSTANTS.VEL_X));
-    // velocity.push(Math.ceil(Math.random() * CONSTANTS.VEL_Y));
-
      switch(window.time){
         case 135: 
-            velocity.push(Math.random() * 0.5);
-            velocity.push(Math.random() * 0.5);
+            velocity.push(Math.random() * 0.5 * this.sign());
+            velocity.push(Math.random() * 0.5 * this.sign());
             break;
         case 120: 
-            velocity.push(Math.random() * 1);
-            velocity.push(Math.random() * 1);
+            velocity.push(Math.random() * 1 * this.sign());
+            velocity.push(Math.random() * 1 * this.sign());
             break;
         case 105: 
-            velocity.push(Math.random() * 1.5);
-            velocity.push(Math.random() * 1.5);
+            velocity.push(Math.random() * 1.5 * this.sign());
+            velocity.push(Math.random() * 1.5 * this.sign());
             break;
         case 90:
-            velocity.push(Math.random());
-            velocity.push(Math.random() * 2);
+            velocity.push(Math.random() * this.sign());
+            velocity.push(Math.random() * 2 * this.sign());
             break;
         case 75: 
-            velocity.push(Math.random() * -1);
-            velocity.push(Math.random()* 1.5);
+            velocity.push(Math.random() * -1 * this.sign());
+            velocity.push(Math.random()* 1.5 * this.sign());
             break;
         case 60: 
-            velocity.push(Math.random() * 2);
-            velocity.push(Math.random() * 2);
+            velocity.push(Math.random() * 2 * this.sign());
+            velocity.push(Math.random() * 2 * this.sign());
             break;
         case 45: 
-            velocity.push(Math.random() * -2.5);
-            velocity.push(Math.random() * 2.5);
+            velocity.push(Math.random() * -2.5 * this.sign());
+            velocity.push(Math.random() * 2.5 * this.sign());
             break;
         case 30: 
-            velocity.push(Math.random() * 3);
-            velocity.push(Math.random() * - 3);
+            velocity.push(Math.random() * 3 * this.sign());
+            velocity.push(Math.random() * - 3 * this.sign());
             break;
         case 15: 
-            velocity.push(Math.random() * - 4);
-            velocity.push(Math.random() * 4);
+            velocity.push(Math.random() * - 4 * this.sign());
+            velocity.push(Math.random() * 4 * this.sign());
             break;
         case 0:
             velocity = [0,0];
@@ -238,6 +272,14 @@ Game.prototype.allObjects = function () {
     .concat(this.scarecrow, this.bullets, this.corns, this.towers);
 }
 
+Game.prototype.sign = function () {
+    switch(Math.floor((Math.random()) * 10) % 2){
+        case 0:
+            return -1;
+        default: 
+            return 1;
+    } 
+}
 
 
 Game.prototype.moveObjects = function () {
@@ -320,8 +362,8 @@ Game.prototype.removeBullet = function (movingObj) {
 Game.prototype.removeCorn = function (movingObj) {
     let idx = this.corns.indexOf(movingObj);
     this.corns.splice(idx, 1);
-    this.scarecrow.courage += 5
-}
+    this.scarecrow.courage += 1
+}, 
 
 Game.prototype.didLose = function() {
   if (this.corns.length === 0) {
@@ -337,11 +379,25 @@ Game.prototype.end = function(result) {
             clearInterval(window.clockFunc);
             clearInterval(window.gameFunc);
             console.log("win");
+            win = document.getElementById("win-sheet");
+            win.id = "win-sheet-on";
             break;
+            restart = document.getElementById("win-restart")
+            restart.addEventListener("click", () => {
+                win.id = "win-sheet";
+                // window.restart;
+            })
         case "lose":
             clearInterval(window.clockFunc);
             clearInterval(window.gameFunc);
             console.log("lose");
+            lose = document.getElementById("lose-sheet");
+            lose.id = "lose-sheet-on";
+            restart = document.getElementById("lose-restart");
+            restart.addEventListener("click", () => {
+              lose.id = "lose-sheet";
+            //   window.restart();
+            });
             break;
   }
 };
