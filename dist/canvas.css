@@ -105,6 +105,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-direction: column;
     opacity: 0.8;
     position: absolute;
     top: 140px;
@@ -114,6 +115,23 @@ body {
     border: 2px solid #a99215;
     border-radius: 2px;
     z-index: -10;
+}
+
+#pause-sheet > div {
+    position: relative;
+    top: -40px;
+    margin-bottom: 10px;
+}
+
+
+#paused-text {
+    font-size: 40px;
+}
+
+
+#restart-button:hover{
+    cursor: pointer;
+    color:  rgb(227, 222, 189);
 }
 
 #pause-sheet.on{
@@ -144,7 +162,7 @@ body {
     opacity: 5;
 }
 
-#preview-grd-off {
+#preview-grid-off {
     display: none;
     z-index: -100;
 }
