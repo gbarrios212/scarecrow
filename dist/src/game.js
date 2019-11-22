@@ -12,7 +12,7 @@ const CONSTANTS = {
     CORN_Y: 120,
     VEL_X: 2,
     VEL_Y: 2,
-    NUM_CROWS: 10,
+    NUM_CROWS: 30,
     //NUM_CROWS: 13 seems fine for difficulty
     NUM_CORNS: 1
 };

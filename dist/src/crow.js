@@ -36,11 +36,11 @@ Crow.prototype.collideWith = function (otherObject) {
         otherObject.paralyze();
         console.log("crow!!!!")
     } else if (otherObject instanceof Bullet) {
-        if (this.hp === 10 ) {
+        if (this.hp <= 20 ) {
             this.game.removeCrow(this);
         } else {
             this.game.removeBullet(otherObject);
-            this.hp -= 10;
+            this.hp -= 20;
             console.log(`bird hp is ${this.hp}`)
         }
     } else if (otherObject instanceof FatBullet) {

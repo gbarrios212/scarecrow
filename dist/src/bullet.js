@@ -13,7 +13,7 @@ function Bullet(options) {
             vel: options.vel, 
             height: 30, 
             width: 30, 
-            image: bulletImage, 
+            image: options.image || bulletImage, 
             game: options.game, 
             isWrappable: options.isWrappable 
         });

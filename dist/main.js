@@ -207,7 +207,7 @@ function Bullet(options) {
             vel: options.vel, 
             height: 30, 
             width: 30, 
-            image: bulletImage, 
+            image: options.image || bulletImage, 
             game: options.game, 
             isWrappable: options.isWrappable 
         });
@@ -311,11 +311,11 @@ Crow.prototype.collideWith = function (otherObject) {
         otherObject.paralyze();
         console.log("crow!!!!")
     } else if (otherObject instanceof Bullet) {
-        if (this.hp === 10 ) {
+        if (this.hp <= 20 ) {
             this.game.removeCrow(this);
         } else {
             this.game.removeBullet(otherObject);
-            this.hp -= 10;
+            this.hp -= 20;
             console.log(`bird hp is ${this.hp}`)
         }
     } else if (otherObject instanceof FatBullet) {
@@ -409,7 +409,7 @@ const CONSTANTS = {
     CORN_Y: 120,
     VEL_X: 2,
     VEL_Y: 2,
-    NUM_CROWS: 10,
+    NUM_CROWS: 30,
     //NUM_CROWS: 13 seems fine for difficulty
     NUM_CORNS: 1
 };
@@ -876,6 +876,8 @@ const Util = __webpack_require__(/*! ./utils.js */ "./dist/src/utils.js");
 const scarecrowImage = new Image ();
 // scarecrowImage.src = "../dist/scarecrow_flying_wide.png";
 scarecrowImage.src = "scarecrow_flying_OPT.png";
+const blueBullet = new Image();
+blueBullet.src = "blue_heart.png";
 
 function Scarecrow(options) {
     MovingObject.call(this, 
@@ -904,15 +906,26 @@ Scarecrow.prototype.fireBullet = function() {
         return;
     }
 
-    let bullet = new Bullet({ 
-        pos: [this.pos[0] + 25, this.pos[1] + 10], 
-        vel: Util.determineDirection(lastPressed), 
-        game: this.game, 
-        isWrappable: false 
-    });
-    this.game.bullets.push(bullet);
-    bulletFrameCount = 0;
-}
+    let bullet;
+    if (this.fear < 50) {
+
+        bullet = new Bullet({ 
+            pos: [this.pos[0] + 25, this.pos[1] + 10], 
+            vel: Util.determineDirection(lastPressed), 
+            game: this.game, 
+            isWrappable: false 
+        });
+    } else {
+        bullet = new Bullet({
+            pos: [this.pos[0] + 25, this.pos[1] + 10],
+            vel: Util.determineDirection(lastPressed),
+            game: this.game,
+            image: blueBullet,
+            isWrappable: false
+        });
+    }
+        this.game.bullets.push(bullet);
+    }
 }
 
 let rightPressed = false;
@@ -945,24 +958,7 @@ let frameCount = 0;
 Scarecrow.prototype.draw = function () {
     frameCount ++;
 
-    if (this.fear >= 50){
-        let frightenedImage = new Image();
-        frightenedImage.src = "scarecrow_frightened.png";
-        ctx.drawImage(
-            frightenedImage,
-            0,
-            0,
-            64,
-            64,
-            this.pos[0], 
-            this.pos[1], 
-            this.width, 
-            this.height
-        )
-        setTimeout(() => {
-            this.fear = 0;
-        }, 10000)
-    }
+    
 
     if (!this.spooked){
         this.scareMove();
@@ -986,6 +982,25 @@ Scarecrow.prototype.draw = function () {
             this.width / 1.7, 
             this.height / 1.7
         )
+    }
+    if (this.fear >= 50){
+        let frightenedImage = new Image();
+        frightenedImage.src = "scarecrow_frightened.png";
+        setTimeout(() => {
+          this.fear = 0;
+        }, 10000);
+        return ctx.drawImage(
+            frightenedImage,
+            0,
+            0,
+            64,
+            64,
+            this.pos[0], 
+            this.pos[1], 
+            this.width, 
+            this.height
+        )
+        
     }
     if (frameCount < 6){
         return ctx.drawImage(
@@ -1111,14 +1126,30 @@ Scarecrow.prototype.scareMove = function() {
     // // debugger;
     // while (!mapState === 1){
         if (rightPressed & !rightCollide) {
-            this.game.scarecrow.pos[0] += 3;
+            if (this.fear < 50){
+                this.game.scarecrow.pos[0] += 3;
+            } else {
+                this.game.scarecrow.pos[0] += 0.5;
+            }
         }
         else if (leftPressed && !leftCollide) {
-            this.game.scarecrow.pos[0] -= 3;
+            if (this.fear < 50){
+                this.game.scarecrow.pos[0] -= 3;
+            } else {
+                this.game.scarecrow.pos[0] -= 0.5;
+            }
         } else if (downPressed && !downCollide) {
-            this.game.scarecrow.pos[1] += 3;
+            if (this.fear < 50){
+                this.game.scarecrow.pos[1] += 3;
+            } else {
+                this.game.scarecrow.pos[1] += 0.5;
+            }
         } else if (upPressed && !upCollide) {
-            this.game.scarecrow.pos[1] -= 3;
+            if (this.fear < 50){
+                this.game.scarecrow.pos[1] -= 3;
+            } else {
+                this.game.scarecrow.pos[1] -= 0.5;
+            }
         } else if (spacebarPressed) {
             this.game.scarecrow.fireBullet();
         }
