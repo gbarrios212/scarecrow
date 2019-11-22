@@ -66,10 +66,11 @@ Game.prototype.fillInventory = function(){
     const inventory = document.getElementById("inventory");
     console.log(this.towersAvail);
     for (i = 0; i < 4; i ++) {
-        invSlot = document.createElement("div");
-        invSlot.id = `inv-${i + 1}`;
+        // invSlot = document.createElement("div");
+        invSlot = document.getElementById(`inv-${i + 1}`);
+        // invSlot.id = `inv-${i + 1}`;
         invSlot.innerHTML = `<img src="angry_boy_single.png"/>`
-        inventory.appendChild(invSlot);
+        // inventory.appendChild(invSlot);
     }
 }
 
@@ -124,7 +125,6 @@ Game.prototype.buildTowers = function () {
                 that.gameMap[tileCol][tileRow] = 1;
                 // that.gameMap[tileCol + 1][tileRow] = 1;
                 invSlot = document.getElementById(`inv-${that.towersAvail}`);
-                debugger;
                 that.towersAvail -= 1;
                 // this.fillInventory();
                 invSlot.innerHTML = "";
