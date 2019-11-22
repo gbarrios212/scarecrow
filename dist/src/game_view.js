@@ -11,9 +11,12 @@ function GameView (ctx) {
 GameView.prototype.start = function(){
     this.bindKeyHandlers();
     
+    
     window.gameFunc = setInterval(() => {
-        this.game.step(); 
-        this.game.draw(this.ctx);
+        if (!window.paused){
+            this.game.step(); 
+            this.game.draw(this.ctx);
+        }
     }, 20);
 }
 

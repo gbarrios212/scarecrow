@@ -12,9 +12,6 @@ const CONSTANTS = {
     CORN_Y: 120,
     VEL_X: 2,
     VEL_Y: 2,
-    NUM_CROWS: 10,
-    //NUM_CROWS: 13 seems fine for difficulty
-    NUM_CORNS: 1
 };
 
 const tileWidth = 40, tileHeight = 40;
@@ -84,10 +81,6 @@ function highlight(e) {
     }
 }
 
-//constructor listener 
-//top level build
-//^ bind in cons.
-
 Game.prototype.buildTowers = function () {
     let that = this;
     grid = document.getElementById("preview-grid");
@@ -100,26 +93,28 @@ Game.prototype.buildTowers = function () {
             x: e.clientX - elemLeft,
             y: e.clientY - elemTop 
         };
-        // console.log(pos);
-        let tileCol = Math.floor(pos.y / 40)
-        let tileRow = Math.floor(pos.x / 40)
-        let tileValue = that.gameMap[tileCol][tileRow];
-        if (tileValue !== 1) {
-            
-           
-            angryTower = new AngryTower({ pos: [tileRow * 40 + 2, tileCol * 40], game: that });
-            that.towers.push(angryTower);
-            that.gameMap[tileCol][tileRow] = 1;
-            that.towersAvail -= 1;
-        } else {
-            console.log("NO")
-        }
-        if (that.towersAvail === 0) {
-            document.removeEventListener("click", build);
-            document.removeEventListener("mousemove", highlight);
-            grid.classList.remove("good");
-            grid.id = "preview-grid-off";
-            console.log("done");
+
+        // if (Math.abs(pos.x) <= 800 && Math.abs(pos.y) <= 400){
+
+            // console.log(pos);
+            let tileCol = Math.floor(pos.y / 40)
+            let tileRow = Math.floor(pos.x / 40)
+            let tileValue = that.gameMap[tileCol][tileRow];
+            if (tileValue !== 1 && !window.paused) {
+                angryTower = new AngryTower({ pos: [tileRow * 40 + 2, tileCol * 40], game: that });
+                that.towers.push(angryTower);
+                that.gameMap[tileCol][tileRow] = 1;
+                that.towersAvail -= 1;
+            } else {
+                console.log("NO")
+            }
+            if (that.towersAvail === 0) {
+                document.removeEventListener("click", build);
+                document.removeEventListener("mousemove", highlight);
+                grid.classList.remove("good");
+                grid.id = "preview-grid-off";
+                console.log("done");
+            // }
         }
     }
 }
@@ -197,18 +192,6 @@ Game.prototype.randomPosition = function () {
             position.push(Math.floor(Math.random() * CONSTANTS.DIM_Y));
             break;
     }
-
-    // position.push(Math.floor(Math.random() * CONSTANTS.DIM_X));
-    // // position.push(Math.floor(Math.random() * CONSTANTS.DIM_Y));
-    // switch(Math.floor((Math.random()) * 10) % 2){
-    //     case 0:
-    //         position.push(750);
-    //         break;
-    //     default:
-    //         position.push(2);
-    //         break;
-
-    // }
     return position;
 }
 
@@ -216,9 +199,6 @@ Game.prototype.randomPosition = function () {
 
 Game.prototype.randomVelocity = function () {
     let velocity = [];
-    // velocity.push(Math.ceil(Math.random() * CONSTANTS.VEL_X));
-    // velocity.push(Math.ceil(Math.random() * CONSTANTS.VEL_Y));
-
      switch(window.time){
         case 135: 
             velocity.push(Math.random() * 0.5 * this.sign());

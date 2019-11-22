@@ -279,11 +279,13 @@ Scarecrow.prototype.scareMove = function() {
 }    
 
 Scarecrow.prototype.paralyze = function() {
-    this.spooked = true;
-    setTimeout(() => {
-        this.spooked = false;
-        this.fear += .15;
-    }, 3500);
+    if (this.fear < 50){
+        this.spooked = true;
+        setTimeout(() => {
+            this.spooked = false;
+            this.fear += .15;
+        }, 3000);
+    }
 }
 
 Scarecrow.prototype.collideWith = function(movingObject, result) {

@@ -27,23 +27,51 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // })
 
+    window.paused;
+
+    // window.paused = paused;
+
+    // const pauseButton = document.getElementById("pause");
+    document.addEventListener("keydown", pause);
+
+    function pause(e) {
+        const pauseSheet = document.getElementById("pause-sheet");
+        if (e.key === "p" || e.key === "P") {
+            if (!window.paused) {
+                window.paused = true; 
+                pauseSheet.classList.add("on");
+            } else if (window.paused) {
+                window.paused = false;
+                pauseSheet.classList.remove("on");
+            }
+        }
+    }
+
    window.clock = document.getElementById("clock");
    clock.innerHTML = "2:30";
 
     window.time = 150;
-    window.clockFunc = setInterval(() => {
-        time -= 1;
-        let convertMins = Math.floor(time / 60);
-        let convertSecs = time % 60;
-        if (convertSecs === 0) {
-            clock.innerHTML = convertMins + " : " + convertSecs + "0";
-        } else if (convertSecs < 10) {
-            clock.innerHTML = convertMins + " : " + "0" + convertSecs;
-        } 
-        else {
-            clock.innerHTML = convertMins + " : " + convertSecs;
-        }
-    }, 1000);
+
+    // if (!paused){
+        // debugger
+
+        window.clockFunc = setInterval(() => {
+            if (!window.paused) {
+
+                time -= 1;
+                let convertMins = Math.floor(time / 60);
+                let convertSecs = time % 60;
+                if (convertSecs === 0) {
+                    clock.innerHTML = convertMins + " : " + convertSecs + "0";
+                } else if (convertSecs < 10) {
+                    clock.innerHTML = convertMins + " : " + "0" + convertSecs;
+                } 
+                else {
+                    clock.innerHTML = convertMins + " : " + convertSecs;
+                }
+            }
+        }, 1000);
+    // }
 
     gameView = new GameView(ctx);
     gameView.start();
