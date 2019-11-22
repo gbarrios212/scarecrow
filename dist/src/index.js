@@ -12,18 +12,21 @@ document.addEventListener("DOMContentLoaded", function () {
     ctx.imageSmoothingEnabled = false;
     
 
-    // const mainSheet = document.getElementById("main-content-sheet");
-    // document.addEventListener("click", navigate);
-    // const start = document.getElementById("start-button");
-    // const instructions = document.getElementById("instruction");
-    // const instructionsSheet = document.getElementById("instructions-sheet");
-    // function navigate (e) {
-    //     if (e.target === instructions) {
-    //        instructionsSheet.id = "instructions-sheet-on";
-    //     } else if (e.target === start) {
-    //         console.log("uh oh");
-    //     }
-    // }
+    const mainSheet = document.getElementById("main-content-sheet");
+    document.addEventListener("click", navigate);
+    const start = document.getElementById("start-button");
+    const instructions = document.getElementById("instruction");
+    const instructionsSheet = document.getElementById("instructions-sheet");
+    function navigate (e) {
+        if (e.target === instructions) {
+           instructionsSheet.id = "instructions-sheet-on";
+        } else if (e.target === start) {
+            mainSheet.id = "main-content-sheet-off";
+            instructionsSheet.id = "instructions-sheet";
+        }
+    }
+
+
     // instructions.addEventListener("click", () => {
     //     const texts = document.querySelectorAll("#text");
     //     mainSheet.classList.add("story");
@@ -114,7 +117,7 @@ document.addEventListener("DOMContentLoaded", function () {
       // pauseSheet.appendChild(confEle);
       // // confEle.appendChild("div");
       // // confEle.appendChild("div");
-      debugger;
+      // debugger;
       clearInterval(window.clockFunc);
       clearInterval(window.gameFunc);
       clock.innerHTML = "2:30";
