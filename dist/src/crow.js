@@ -10,6 +10,9 @@ const crowImage = new Image ();
 // crowImage.src = "../dist/crow_bad_OPT.png";
 // crowImage.src = "../crow_bad_OPT.png";
 crowImage.src = "crow_bad_OPT.png";
+const goodCrowImage = new Image ();
+goodCrowImage.src = "crow_good.png";
+
 const CONSTANTS = {
     MAX_X: 10,
     MAX_Y: 10,
@@ -37,7 +40,9 @@ Crow.prototype.collideWith = function (otherObject) {
         console.log("crow!!!!")
     } else if (otherObject instanceof Bullet) {
         if (this.hp <= 20 ) {
+            // this.image.src = "crow_good.png";
             this.game.removeCrow(this);
+            // let newCrow = 
         } else {
             this.game.removeBullet(otherObject);
             this.hp -= 20;

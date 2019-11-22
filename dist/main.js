@@ -285,6 +285,9 @@ const crowImage = new Image ();
 // crowImage.src = "../dist/crow_bad_OPT.png";
 // crowImage.src = "../crow_bad_OPT.png";
 crowImage.src = "crow_bad_OPT.png";
+const goodCrowImage = new Image ();
+goodCrowImage.src = "crow_good.png";
+
 const CONSTANTS = {
     MAX_X: 10,
     MAX_Y: 10,
@@ -312,7 +315,9 @@ Crow.prototype.collideWith = function (otherObject) {
         console.log("crow!!!!")
     } else if (otherObject instanceof Bullet) {
         if (this.hp <= 20 ) {
+            // this.image.src = "crow_good.png";
             this.game.removeCrow(this);
+            // let newCrow = 
         } else {
             this.game.removeBullet(otherObject);
             this.hp -= 20;
@@ -737,7 +742,7 @@ Game.prototype.removeBullet = function (movingObj) {
 Game.prototype.removeCorn = function (movingObj) {
     let idx = this.corns.indexOf(movingObj);
     this.corns.splice(idx, 1);
-    this.scarecrow.courage += 5
+    this.scarecrow.courage += 1
 }, 
 
 Game.prototype.didLose = function() {
@@ -1047,6 +1052,8 @@ const scarecrowImage = new Image ();
 scarecrowImage.src = "scarecrow_flying_OPT.png";
 const blueBullet = new Image();
 blueBullet.src = "blue_heart.png";
+const superBullet = new Image();
+superBullet.src = "super_heart.png";
 
 function Scarecrow(options) {
     MovingObject.call(this, 
@@ -1076,7 +1083,27 @@ Scarecrow.prototype.fireBullet = function() {
     }
 
     let bullet;
-    if (this.fear < 50) {
+    if (this.courage >= 40) {
+        let vel1 = Util.determineDirection(lastPressed);
+        let vel2 = [vel1[0] * -1, vel1[1] * -1];
+
+        bullet = new Bullet({
+          pos: [this.pos[0] + 25, this.pos[1] + 10],
+          vel: vel1,
+          game: this.game,
+          isWrappable: true,
+          image: superBullet
+        });
+        bullet2 = new Bullet({
+          pos: [this.pos[0] + 25, this.pos[1] + 10],
+          vel: vel2,
+          game: this.game,
+          isWrappable: true,
+          image: superBullet
+        });
+        this.game.bullets.push(bullet2);
+    }
+    else if (this.fear < 50) {
 
         bullet = new Bullet({ 
             pos: [this.pos[0] + 25, this.pos[1] + 10], 
@@ -1166,8 +1193,14 @@ Scarecrow.prototype.draw = function () {
             this.pos[1], 
             this.width, 
             this.height
-        )
-        
+        ) 
+    }
+    if (this.courage >= 40) {
+        scarecrowImage.src = "super_scarecrow.png";
+        setTimeout(() => {
+            this.courage = 0;
+            scarecrowImage.src = "scarecrow_flying_OPT.png";
+        }, 15000); 
     }
     if (frameCount < 6){
         return ctx.drawImage(
@@ -1289,29 +1322,37 @@ Scarecrow.prototype.scareMove = function() {
     // // debugger;
     // while (!mapState === 1){
         if (rightPressed & !rightCollide) {
-            if (this.fear < 50){
+            if (this.fear < 50 && this.courage < 40){
                 this.game.scarecrow.pos[0] += 3;
+            } else if (this.courage >= 40){
+                this.game.scarecrow.pos[0] += 9;
             } else {
                 this.game.scarecrow.pos[0] += 0.5;
             }
         }
         else if (leftPressed && !leftCollide) {
-            if (this.fear < 50){
-                this.game.scarecrow.pos[0] -= 3;
+            if (this.fear < 50 && this.courage < 40) {
+              this.game.scarecrow.pos[0] -= 3;
+            } else if (this.courage >= 40) {
+              this.game.scarecrow.pos[0] -= 9;
             } else {
-                this.game.scarecrow.pos[0] -= 0.5;
+              this.game.scarecrow.pos[0] -= 0.5;
             }
         } else if (downPressed && !downCollide) {
-            if (this.fear < 50){
-                this.game.scarecrow.pos[1] += 3;
+            if (this.fear < 50 && this.courage < 40) {
+              this.game.scarecrow.pos[1] += 3;
+            } else if (this.courage >= 40) {
+              this.game.scarecrow.pos[1] += 9;
             } else {
-                this.game.scarecrow.pos[1] += 0.5;
+              this.game.scarecrow.pos[1] += 0.5;
             }
         } else if (upPressed && !upCollide) {
-            if (this.fear < 50){
-                this.game.scarecrow.pos[1] -= 3;
+            if (this.fear < 50 && this.courage < 40) {
+              this.game.scarecrow.pos[1] -= 3;
+            } else if (this.courage >= 40) {
+              this.game.scarecrow.pos[1] -= 9;
             } else {
-                this.game.scarecrow.pos[1] -= 0.5;
+              this.game.scarecrow.pos[1] -= 0.5;
             }
         } else if (spacebarPressed) {
             this.game.scarecrow.fireBullet();
@@ -1320,7 +1361,7 @@ Scarecrow.prototype.scareMove = function() {
 }    
 
 Scarecrow.prototype.paralyze = function() {
-    if (this.fear < 50){
+    if (this.fear < 50 && this.courage < 40){
         this.spooked = true;
         setTimeout(() => {
             this.spooked = false;
@@ -1331,69 +1372,72 @@ Scarecrow.prototype.paralyze = function() {
 
 Scarecrow.prototype.collideWith = function(movingObject, result) {
 
-//    if (leftPressed && Math.abs(result.left) <= 3 && Math.abs(result.down) > 3 ) {
-    if (leftPressed && Math.abs(result.left) <= 3 && Math.abs(result.left) < Math.abs(result.down)) {
-       
-        leftCollide = true;
-   } 
-//    else if (leftPressed && Math.abs(result.left) <= 3 && Math.abs(result.down) <= 3 ) {
-     else if (leftPressed && Math.abs(result.left) <= 3 && Math.abs(result.left) > Math.abs(result.down)) {
-       console.log(result.left, result.down);
-        leftCollide = false;
-        console.log(leftCollide)
-        console.log(leftPressed)
-   }
-   if (leftPressed && Math.abs(result.left) <= 3 && Math.abs(result.up) >=3 ) {
-       leftCollide = true;
-   } 
-   else if (leftPressed && Math.abs(result.left) <= 3 && Math.abs(result.up) <=3 ) {
-       leftCollide = false;
-   }
+    if (this.courage < 40) {
 
-
-
-   else if (rightPressed && Math.abs(result.right) <= 3  && Math.abs(result.down) >3 ) {
-       rightCollide = true;
-   }
-   else if (rightPressed && Math.abs(result.right) <= 3 && Math.abs(result.down) <=3 ) {
-       rightCollide = false;
-   }
-   else if (rightPressed && Math.abs(result.right) <= 3  && Math.abs(result.up) >3 ) {
-       rightCollide = true;
-   }
-   else if (rightPressed && Math.abs(result.right) <= 3 && Math.abs(result.up) <=3 ) {
-       rightCollide = false;
-   }
-
-   
-
-   else if (upPressed && Math.abs(result.up) <= 3 && Math.abs(result.up) < Math.abs(result.left)) {
-       upCollide = true;
-   }
-   else if (upPressed && Math.abs(result.up) <= 3 && Math.abs(result.up) > Math.abs(result.left)) {
-       upCollide = false;
-   }
-   else if (upPressed && Math.abs(result.up) <= 3 && Math.abs(result.up) < Math.abs(result.right)) {
-       upCollide = true;
-   }
-   else if (upPressed && Math.abs(result.up) <= 3 && Math.abs(result.up) > Math.abs(result.right)) {
-       upCollide = false;
-   }
-
-
-   else if (downPressed && Math.abs(result.down) <= 3 && Math.abs(result.down) < Math.abs(result.left)) {
-       downCollide = true;
-   }
-   else if (downPressed && Math.abs(result.down) <= 3 && Math.abs(result.down) > Math.abs(result.left)) {
-       downCollide = false;
-   }
-   else if (downPressed && Math.abs(result.down) <= 3 && Math.abs(result.down) < Math.abs(result.right)) {
-       downCollide = true;
-   }
-   else if (downPressed && Math.abs(result.down) <= 3 && Math.abs(result.down) > Math.abs(result.right)) {
-       downCollide = false;
-   }
-    // return true;
+        //    if (leftPressed && Math.abs(result.left) <= 3 && Math.abs(result.down) > 3 ) {
+            if (leftPressed && Math.abs(result.left) <= 3 && Math.abs(result.left) < Math.abs(result.down)) {
+                
+                leftCollide = true;
+            } 
+            //    else if (leftPressed && Math.abs(result.left) <= 3 && Math.abs(result.down) <= 3 ) {
+                else if (leftPressed && Math.abs(result.left) <= 3 && Math.abs(result.left) > Math.abs(result.down)) {
+                    console.log(result.left, result.down);
+                    leftCollide = false;
+                    console.log(leftCollide)
+                    console.log(leftPressed)
+                }
+                if (leftPressed && Math.abs(result.left) <= 3 && Math.abs(result.up) >=3 ) {
+                    leftCollide = true;
+                } 
+                else if (leftPressed && Math.abs(result.left) <= 3 && Math.abs(result.up) <=3 ) {
+                    leftCollide = false;
+                }
+                
+                
+                
+                else if (rightPressed && Math.abs(result.right) <= 3  && Math.abs(result.down) >3 ) {
+                    rightCollide = true;
+                }
+                else if (rightPressed && Math.abs(result.right) <= 3 && Math.abs(result.down) <=3 ) {
+                    rightCollide = false;
+                }
+                else if (rightPressed && Math.abs(result.right) <= 3  && Math.abs(result.up) >3 ) {
+                    rightCollide = true;
+                }
+                else if (rightPressed && Math.abs(result.right) <= 3 && Math.abs(result.up) <=3 ) {
+                    rightCollide = false;
+                }
+                
+                
+                
+                else if (upPressed && Math.abs(result.up) <= 3 && Math.abs(result.up) < Math.abs(result.left)) {
+                    upCollide = true;
+                }
+                else if (upPressed && Math.abs(result.up) <= 3 && Math.abs(result.up) > Math.abs(result.left)) {
+                    upCollide = false;
+                }
+                else if (upPressed && Math.abs(result.up) <= 3 && Math.abs(result.up) < Math.abs(result.right)) {
+                    upCollide = true;
+                }
+                else if (upPressed && Math.abs(result.up) <= 3 && Math.abs(result.up) > Math.abs(result.right)) {
+                    upCollide = false;
+                }
+                
+                
+                else if (downPressed && Math.abs(result.down) <= 3 && Math.abs(result.down) < Math.abs(result.left)) {
+                    downCollide = true;
+                }
+                else if (downPressed && Math.abs(result.down) <= 3 && Math.abs(result.down) > Math.abs(result.left)) {
+                    downCollide = false;
+                }
+                else if (downPressed && Math.abs(result.down) <= 3 && Math.abs(result.down) < Math.abs(result.right)) {
+                    downCollide = true;
+                }
+                else if (downPressed && Math.abs(result.down) <= 3 && Math.abs(result.down) > Math.abs(result.right)) {
+                    downCollide = false;
+                }
+                // return true;
+            }
 }
 
 module.exports = Scarecrow;

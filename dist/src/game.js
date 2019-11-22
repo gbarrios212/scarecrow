@@ -340,7 +340,7 @@ Game.prototype.removeBullet = function (movingObj) {
 Game.prototype.removeCorn = function (movingObj) {
     let idx = this.corns.indexOf(movingObj);
     this.corns.splice(idx, 1);
-    this.scarecrow.courage += 5
+    this.scarecrow.courage += 1
 }, 
 
 Game.prototype.didLose = function() {
