@@ -12,7 +12,7 @@ const CONSTANTS = {
     CORN_Y: 120,
     VEL_X: 2,
     VEL_Y: 2,
-    NUM_CROWS: 30,
+    NUM_CROWS: 10,
     //NUM_CROWS: 13 seems fine for difficulty
     NUM_CORNS: 1
 };
@@ -41,11 +41,12 @@ function Game() {
     this.towersAvail = 4;
     this.buildTowers();
     this.scarecrow = new Scarecrow({ game: this });
-    this.addCrows();
+    // this.addCrows();
     this.addCorns();
     this.img = new Image();
     this.img.src = "farmland_later_single.png";
     this.gameMap = gameMap;
+    this.crowSpawn = 5;
     grid = document.getElementById("preview-grid");
     let ele;
     for (tile = 1; tile < this.gameMap.length * this.gameMap[0].length + 1; tile ++) {
@@ -54,6 +55,9 @@ function Game() {
         grid.appendChild(ele);
     }
     document.addEventListener("mousemove", highlight);
+    setInterval(() => {
+        this.addCrows();
+    }, 15000);
 }
 
 function highlight(e) {
@@ -145,9 +149,19 @@ Game.prototype.draw = function (ctx) {
 }
 
 Game.prototype.addCrows = function () {
-    while (this.crows.length < CONSTANTS.NUM_CROWS) {
+    // while (this.crows.length < CONSTANTS.NUM_CROWS) {
+    //     this.crows.push(new Crow({ pos: this.randomPosition(), vel: this.randomVelocity(), game: this}))
+    // }
+
+    while (this.crows.length < this.crowSpawn) {
         this.crows.push(new Crow({ pos: this.randomPosition(), vel: this.randomVelocity(), game: this}))
     }
+
+    this.crowSpawn *= 1.2;
+
+    // if (window.time === 120) {
+
+    // }
 }
 
 Game.prototype.addCorns = function () {
@@ -170,10 +184,52 @@ Game.prototype.randomPosition = function () {
 }
 
 
+
 Game.prototype.randomVelocity = function () {
     let velocity = [];
-    velocity.push(Math.ceil(Math.random() * CONSTANTS.VEL_X));
-    velocity.push(Math.ceil(Math.random() * CONSTANTS.VEL_Y));
+    // velocity.push(Math.ceil(Math.random() * CONSTANTS.VEL_X));
+    // velocity.push(Math.ceil(Math.random() * CONSTANTS.VEL_Y));
+
+     switch(window.time){
+        case 135: 
+            velocity.push(Math.random() * 0.5);
+            velocity.push(Math.random() * 0.5);
+            break;
+        case 120: 
+            velocity.push(Math.random() * 1);
+            velocity.push(Math.random() * 1);
+            break;
+        case 105: 
+            velocity.push(Math.random() * 1.5);
+            velocity.push(Math.random() * 1.5);
+            break;
+        case 90:
+            velocity.push(Math.random());
+            velocity.push(Math.random() * 2);
+            break;
+        case 75: 
+            velocity.push(Math.random() * -1);
+            velocity.push(Math.random()* 1.5);
+            break;
+        case 60: 
+            velocity.push(Math.random() * 2);
+            velocity.push(Math.random() * 2);
+            break;
+        case 45: 
+            velocity.push(Math.random() * -2.5);
+            velocity.push(Math.random() * 2.5);
+            break;
+        case 30: 
+            velocity.push(Math.random() * 3);
+            velocity.push(Math.random() * - 3);
+            break;
+        case 15: 
+            velocity.push(Math.random() * - 4);
+            velocity.push(Math.random() * 4);
+            break;
+        case 0:
+            velocity = [0,0];
+    }
     return velocity;
 }
 

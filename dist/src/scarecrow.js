@@ -3,7 +3,6 @@ const Bullet = require("./bullet.js");
 const Util = require("./utils.js");
 
 const scarecrowImage = new Image ();
-// scarecrowImage.src = "../dist/scarecrow_flying_wide.png";
 scarecrowImage.src = "scarecrow_flying_OPT.png";
 const blueBullet = new Image();
 blueBullet.src = "blue_heart.png";
@@ -87,8 +86,6 @@ let frameCount = 0;
 Scarecrow.prototype.draw = function () {
     frameCount ++;
 
-    
-
     if (!this.spooked){
         this.scareMove();
     }
@@ -161,10 +158,6 @@ Scarecrow.prototype.draw = function () {
     if (currentLoopIndex >= cycleLoop.length) {
         currentLoopIndex = 0;
     }
-
-    // ctx.strokeStyle = "#f00"; // some color/style
-    // ctx.lineWidth = 2; // thickness
-    // ctx.strokeRect(this.pos[0], this.pos[1], this.width, this.height);
 }
 
 
@@ -291,7 +284,6 @@ Scarecrow.prototype.paralyze = function() {
         this.spooked = false;
         this.fear += .15;
     }, 3500);
-    debugger;
 }
 
 Scarecrow.prototype.collideWith = function(movingObject, result) {

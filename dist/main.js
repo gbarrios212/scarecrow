@@ -409,7 +409,7 @@ const CONSTANTS = {
     CORN_Y: 120,
     VEL_X: 2,
     VEL_Y: 2,
-    NUM_CROWS: 30,
+    NUM_CROWS: 10,
     //NUM_CROWS: 13 seems fine for difficulty
     NUM_CORNS: 1
 };
@@ -438,11 +438,12 @@ function Game() {
     this.towersAvail = 4;
     this.buildTowers();
     this.scarecrow = new Scarecrow({ game: this });
-    this.addCrows();
+    // this.addCrows();
     this.addCorns();
     this.img = new Image();
     this.img.src = "farmland_later_single.png";
     this.gameMap = gameMap;
+    this.crowSpawn = 5;
     grid = document.getElementById("preview-grid");
     let ele;
     for (tile = 1; tile < this.gameMap.length * this.gameMap[0].length + 1; tile ++) {
@@ -451,6 +452,9 @@ function Game() {
         grid.appendChild(ele);
     }
     document.addEventListener("mousemove", highlight);
+    setInterval(() => {
+        this.addCrows();
+    }, 15000);
 }
 
 function highlight(e) {
@@ -542,9 +546,19 @@ Game.prototype.draw = function (ctx) {
 }
 
 Game.prototype.addCrows = function () {
-    while (this.crows.length < CONSTANTS.NUM_CROWS) {
+    // while (this.crows.length < CONSTANTS.NUM_CROWS) {
+    //     this.crows.push(new Crow({ pos: this.randomPosition(), vel: this.randomVelocity(), game: this}))
+    // }
+
+    while (this.crows.length < this.crowSpawn) {
         this.crows.push(new Crow({ pos: this.randomPosition(), vel: this.randomVelocity(), game: this}))
     }
+
+    this.crowSpawn *= 1.2;
+
+    // if (window.time === 120) {
+
+    // }
 }
 
 Game.prototype.addCorns = function () {
@@ -567,10 +581,52 @@ Game.prototype.randomPosition = function () {
 }
 
 
+
 Game.prototype.randomVelocity = function () {
     let velocity = [];
-    velocity.push(Math.ceil(Math.random() * CONSTANTS.VEL_X));
-    velocity.push(Math.ceil(Math.random() * CONSTANTS.VEL_Y));
+    // velocity.push(Math.ceil(Math.random() * CONSTANTS.VEL_X));
+    // velocity.push(Math.ceil(Math.random() * CONSTANTS.VEL_Y));
+
+     switch(window.time){
+        case 135: 
+            velocity.push(Math.random() * 0.5);
+            velocity.push(Math.random() * 0.5);
+            break;
+        case 120: 
+            velocity.push(Math.random() * 1);
+            velocity.push(Math.random() * 1);
+            break;
+        case 105: 
+            velocity.push(Math.random() * 1.5);
+            velocity.push(Math.random() * 1.5);
+            break;
+        case 90:
+            velocity.push(Math.random());
+            velocity.push(Math.random() * 2);
+            break;
+        case 75: 
+            velocity.push(Math.random() * -1);
+            velocity.push(Math.random()* 1.5);
+            break;
+        case 60: 
+            velocity.push(Math.random() * 2);
+            velocity.push(Math.random() * 2);
+            break;
+        case 45: 
+            velocity.push(Math.random() * -2.5);
+            velocity.push(Math.random() * 2.5);
+            break;
+        case 30: 
+            velocity.push(Math.random() * 3);
+            velocity.push(Math.random() * - 3);
+            break;
+        case 15: 
+            velocity.push(Math.random() * - 4);
+            velocity.push(Math.random() * 4);
+            break;
+        case 0:
+            velocity = [0,0];
+    }
     return velocity;
 }
 
@@ -813,9 +869,6 @@ function MovingObject(options) {
 
 MovingObject.prototype.draw = function (ctx) {
     ctx.drawImage(this.image, this.pos[0], this.pos[1], this.width, this.height);
-    ctx.strokeStyle = "#f00"; // some color/style
-    ctx.lineWidth = 2; // thickness
-    ctx.strokeRect(this.pos[0], this.pos[1], this.width, this.height);
 }
 
 MovingObject.prototype.move = function () {
@@ -830,14 +883,8 @@ MovingObject.prototype.move = function () {
 }
 
 MovingObject.prototype.isCollidedWith = function (otherObject) {
-    // let dist = Math.sqrt((this.pos[0] - 6 - otherObject.pos[0]) ** 2 + (this.pos[1] - otherObject.pos[1]) ** 2);
-    // return dist <= 30;
     let result = {true: "", right: "", left: "", down: "", up: ""}
-    // let result;
-    // let right;
-    // let left;
-    // let down;
-    // let up;
+
     if (this.pos[0] < otherObject.pos[0] + otherObject.width &&
     this.pos[0] + this.width > otherObject.pos[0] &&
     this.pos[1] < otherObject.pos[1] + otherObject.height &&
@@ -850,11 +897,6 @@ MovingObject.prototype.isCollidedWith = function (otherObject) {
         result.up = this.pos[1] - (otherObject.height + otherObject.pos[1]);
         return result;
     }
-
-    // this.pos[1] < otherObject.pos[1] + otherObject.width &&
-    //   this.pos[1] + this.width > otherObject.pos[1] &&
-    //   this.pos[0] < otherObject.pos[0] + otherObject.height &&
-    //   this.pos[0] + this.height > otherObject.pos[0];
 }
 
 
@@ -874,7 +916,6 @@ const Bullet = __webpack_require__(/*! ./bullet.js */ "./dist/src/bullet.js");
 const Util = __webpack_require__(/*! ./utils.js */ "./dist/src/utils.js");
 
 const scarecrowImage = new Image ();
-// scarecrowImage.src = "../dist/scarecrow_flying_wide.png";
 scarecrowImage.src = "scarecrow_flying_OPT.png";
 const blueBullet = new Image();
 blueBullet.src = "blue_heart.png";
@@ -958,8 +999,6 @@ let frameCount = 0;
 Scarecrow.prototype.draw = function () {
     frameCount ++;
 
-    
-
     if (!this.spooked){
         this.scareMove();
     }
@@ -1032,10 +1071,6 @@ Scarecrow.prototype.draw = function () {
     if (currentLoopIndex >= cycleLoop.length) {
         currentLoopIndex = 0;
     }
-
-    // ctx.strokeStyle = "#f00"; // some color/style
-    // ctx.lineWidth = 2; // thickness
-    // ctx.strokeRect(this.pos[0], this.pos[1], this.width, this.height);
 }
 
 
@@ -1162,7 +1197,6 @@ Scarecrow.prototype.paralyze = function() {
         this.spooked = false;
         this.fear += .15;
     }, 3500);
-    debugger;
 }
 
 Scarecrow.prototype.collideWith = function(movingObject, result) {

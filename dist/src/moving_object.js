@@ -11,9 +11,6 @@ function MovingObject(options) {
 
 MovingObject.prototype.draw = function (ctx) {
     ctx.drawImage(this.image, this.pos[0], this.pos[1], this.width, this.height);
-    ctx.strokeStyle = "#f00"; // some color/style
-    ctx.lineWidth = 2; // thickness
-    ctx.strokeRect(this.pos[0], this.pos[1], this.width, this.height);
 }
 
 MovingObject.prototype.move = function () {
@@ -28,14 +25,8 @@ MovingObject.prototype.move = function () {
 }
 
 MovingObject.prototype.isCollidedWith = function (otherObject) {
-    // let dist = Math.sqrt((this.pos[0] - 6 - otherObject.pos[0]) ** 2 + (this.pos[1] - otherObject.pos[1]) ** 2);
-    // return dist <= 30;
     let result = {true: "", right: "", left: "", down: "", up: ""}
-    // let result;
-    // let right;
-    // let left;
-    // let down;
-    // let up;
+
     if (this.pos[0] < otherObject.pos[0] + otherObject.width &&
     this.pos[0] + this.width > otherObject.pos[0] &&
     this.pos[1] < otherObject.pos[1] + otherObject.height &&
@@ -48,11 +39,6 @@ MovingObject.prototype.isCollidedWith = function (otherObject) {
         result.up = this.pos[1] - (otherObject.height + otherObject.pos[1]);
         return result;
     }
-
-    // this.pos[1] < otherObject.pos[1] + otherObject.width &&
-    //   this.pos[1] + this.width > otherObject.pos[1] &&
-    //   this.pos[0] < otherObject.pos[0] + otherObject.height &&
-    //   this.pos[0] + this.height > otherObject.pos[0];
 }
 
 
