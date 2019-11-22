@@ -3,7 +3,8 @@ const Corn = require("./corn.js");
 const Util = require("./utils.js");
 
 const bulletImage = new Image ();
-bulletImage.src = "../dist/bullet.png"
+// bulletImage.src = "../dist/bullet.png"
+bulletImage.src = "./bullet.png";
 
 function Bullet(options) {
     MovingObject.call(this, 
@@ -12,7 +13,7 @@ function Bullet(options) {
             vel: options.vel, 
             height: 30, 
             width: 30, 
-            image: bulletImage, 
+            image: options.image || bulletImage, 
             game: options.game, 
             isWrappable: options.isWrappable 
         });

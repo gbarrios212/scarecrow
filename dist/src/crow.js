@@ -3,10 +3,13 @@ const Scarecrow = require("./scarecrow.js");
 const Bullet = require("./bullet.js");
 const Corn = require("./corn.js");
 const Util = require("./utils.js");
+const FatBullet = require("./fat_bullet.js");
 
 
 const crowImage = new Image ();
-crowImage.src = "../dist/crow_bad_OPT.png";
+// crowImage.src = "../dist/crow_bad_OPT.png";
+// crowImage.src = "../crow_bad_OPT.png";
+crowImage.src = "crow_bad_OPT.png";
 const CONSTANTS = {
     MAX_X: 10,
     MAX_Y: 10,
@@ -33,16 +36,26 @@ Crow.prototype.collideWith = function (otherObject) {
         otherObject.paralyze();
         console.log("crow!!!!")
     } else if (otherObject instanceof Bullet) {
-        if (this.hp === 10 ) {
+        if (this.hp <= 20 ) {
             this.game.removeCrow(this);
         } else {
             this.game.removeBullet(otherObject);
-            this.hp -= 10;
+            this.hp -= 20;
+            console.log(`bird hp is ${this.hp}`)
+        }
+    } else if (otherObject instanceof FatBullet) {
+        if (this.hp <= 50 ) {
+            this.game.removeCrow(this);
+            this.game.removeBullet(this);
+        } else {
+            this.game.removeBullet(otherObject);
+            this.hp -= 50;
             console.log(`bird hp is ${this.hp}`)
         }
         // this.game.removeCrow(this);
     } else if (otherObject instanceof Corn) {
         if (otherObject.hp === 10) {
+            console.log("crow to corn")
             this.game.gameMap[otherObject.pos[1]/40][otherObject.pos[0]/40] = 0;
             this.game.removeCorn(otherObject);
         } else {

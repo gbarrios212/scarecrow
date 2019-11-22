@@ -4,6 +4,7 @@ const Game = require("./game.js");
 function GameView (ctx) {
     this.game = new Game;
     this.ctx = ctx;
+    window.ctx = this.ctx;
 }
 
 

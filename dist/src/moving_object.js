@@ -25,8 +25,20 @@ MovingObject.prototype.move = function () {
 }
 
 MovingObject.prototype.isCollidedWith = function (otherObject) {
-    let dist = Math.sqrt((this.pos[0] - 6 - otherObject.pos[0]) ** 2 + (this.pos[1] - otherObject.pos[1]) ** 2);
-    return dist <= 30;
+    let result = {true: "", right: "", left: "", down: "", up: ""}
+
+    if (this.pos[0] < otherObject.pos[0] + otherObject.width &&
+    this.pos[0] + this.width > otherObject.pos[0] &&
+    this.pos[1] < otherObject.pos[1] + otherObject.height &&
+    this.pos[1] + this.height > otherObject.pos[1])
+    {
+        result.true = true;
+        result.right = this.pos[0] + this.width - otherObject.pos[0];
+        result.left = this.pos[0] - (otherObject.pos[0] + otherObject.width);
+        result.down = this.pos[1] + this.height - otherObject.pos[1]; 
+        result.up = this.pos[1] - (otherObject.height + otherObject.pos[1]);
+        return result;
+    }
 }
 
 

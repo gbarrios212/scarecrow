@@ -3,7 +3,8 @@ const Util = require("./utils.js");
 
 const cornImage = new Image();
 
-cornImage.src = "../dist/corn_late.png";
+// cornImage.src = "../dist/corn_late.png";
+cornImage.src = "./corn_late_FINAL.png";
 
 function Corn(options) {
     MovingObject.call(this, 

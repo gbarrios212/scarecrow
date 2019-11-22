@@ -74,7 +74,7 @@
 .clock{
     opacity: 0;
     margin-bottom: 20px;
-    /* animation: open 2s; */
+    animation: open 2s;
     animation-delay: 2s;
     animation-fill-mode: forwards;
 }
@@ -93,4 +93,48 @@ body {
     font-family: 'Kaushan Script', cursive;
     color: gold;
     text-align: center;
+}
+
+#preview-grid{
+    display: grid;
+    opacity: 0.5;
+    position: absolute;
+    top: 140px;
+    background: transparent;
+    grid-template-columns: repeat(20, 40px);
+    grid-template-rows: repeat(10, 40px);
+    width: 800px;
+    height: 400px;
+    border: 2px solid red;
+    border-radius: 2px;
+}
+
+#preview-grid.good > div:hover{
+    opacity: .5;
+    background: green;
+}
+
+#preview-grid > div:hover{
+    background: red;
+    opacity: 5;
+}
+
+#preview-grd-off {
+    display: none;
+    z-index: -100;
+}
+
+/* #preview-grid.bad > div:hover{
+    opacity: .5;
+    background: red;
+} */
+
+.preview-show-good{
+    opacity: .5;
+    background: green;
+}
+
+.preview-show-bad{
+    opacity: .5;
+    background: red;
 }

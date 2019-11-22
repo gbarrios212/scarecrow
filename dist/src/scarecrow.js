@@ -3,7 +3,9 @@ const Bullet = require("./bullet.js");
 const Util = require("./utils.js");
 
 const scarecrowImage = new Image ();
-scarecrowImage.src = "../dist/scarecrow_flying_wide.png";
+scarecrowImage.src = "scarecrow_flying_OPT.png";
+const blueBullet = new Image();
+blueBullet.src = "blue_heart.png";
 
 function Scarecrow(options) {
     MovingObject.call(this, 
@@ -17,7 +19,9 @@ function Scarecrow(options) {
             isWrappable: true, 
 
         });
-        this.spooked = false
+        this.spooked = false;
+        this.fear = 0;
+        this.courage = 0;
    
 }
 
@@ -30,15 +34,26 @@ Scarecrow.prototype.fireBullet = function() {
         return;
     }
 
-    let bullet = new Bullet({ 
-        pos: [this.pos[0] + 25, this.pos[1] + 10], 
-        vel: Util.determineDirection(lastPressed), 
-        game: this.game, 
-        isWrappable: false 
-    });
-    this.game.bullets.push(bullet);
-    bulletFrameCount = 0;
-}
+    let bullet;
+    if (this.fear < 50) {
+
+        bullet = new Bullet({ 
+            pos: [this.pos[0] + 25, this.pos[1] + 10], 
+            vel: Util.determineDirection(lastPressed), 
+            game: this.game, 
+            isWrappable: false 
+        });
+    } else {
+        bullet = new Bullet({
+            pos: [this.pos[0] + 25, this.pos[1] + 10],
+            vel: Util.determineDirection(lastPressed),
+            game: this.game,
+            image: blueBullet,
+            isWrappable: false
+        });
+    }
+        this.game.bullets.push(bullet);
+    }
 }
 
 let rightPressed = false;
@@ -80,7 +95,8 @@ Scarecrow.prototype.draw = function () {
     downCollide = false;
     if (this.spooked) {
         let spookedImage = new Image();
-        spookedImage.src = "../dist/scarecrow_spooked_FINAL.png";
+        // spookedImage.src = "../dist/scarecrow_spooked_FINAL.png";
+        spookedImage.src = "scarecrow_spooked_FINAL.png";
         return ctx.drawImage(
             spookedImage, 
             0, 
@@ -92,6 +108,25 @@ Scarecrow.prototype.draw = function () {
             this.width / 1.7, 
             this.height / 1.7
         )
+    }
+    if (this.fear >= 50){
+        let frightenedImage = new Image();
+        frightenedImage.src = "scarecrow_frightened.png";
+        setTimeout(() => {
+          this.fear = 0;
+        }, 10000);
+        return ctx.drawImage(
+            frightenedImage,
+            0,
+            0,
+            64,
+            64,
+            this.pos[0], 
+            this.pos[1], 
+            this.width, 
+            this.height
+        )
+        
     }
     if (frameCount < 6){
         return ctx.drawImage(
@@ -212,24 +247,31 @@ Scarecrow.prototype.scareMove = function() {
     // let mapState = this.game.gameMap[Math.ceil(this.pos[0]/40) - 1][Math.ceil(this.pos[1]/40) - 1]
     // // debugger;
     // while (!mapState === 1){
-        if (rightPressed) {
-            if (!rightCollide) {
+        if (rightPressed & !rightCollide) {
+            if (this.fear < 50){
                 this.game.scarecrow.pos[0] += 3;
-            // } else if (rightCollide) {
-            //     this.game.scarecrow.pos[0] += 0;
+            } else {
+                this.game.scarecrow.pos[0] += 0.5;
             }
-            // this.game.scarecrow.pos[0] += 3;
-        } else if (leftPressed && !leftCollide) {
-            this.game.scarecrow.pos[0] -= 3;
-            // if (!leftCollide){
-            //     this.game.scarecrow.pos[0] -= 3;
-            // } else {
-            //     this.game.scarecrow.pos[0] += 0;
-            // }
+        }
+        else if (leftPressed && !leftCollide) {
+            if (this.fear < 50){
+                this.game.scarecrow.pos[0] -= 3;
+            } else {
+                this.game.scarecrow.pos[0] -= 0.5;
+            }
         } else if (downPressed && !downCollide) {
-            this.game.scarecrow.pos[1] += 3;
+            if (this.fear < 50){
+                this.game.scarecrow.pos[1] += 3;
+            } else {
+                this.game.scarecrow.pos[1] += 0.5;
+            }
         } else if (upPressed && !upCollide) {
-            this.game.scarecrow.pos[1] -= 3;
+            if (this.fear < 50){
+                this.game.scarecrow.pos[1] -= 3;
+            } else {
+                this.game.scarecrow.pos[1] -= 0.5;
+            }
         } else if (spacebarPressed) {
             this.game.scarecrow.fireBullet();
         }
@@ -240,49 +282,75 @@ Scarecrow.prototype.paralyze = function() {
     this.spooked = true;
     setTimeout(() => {
         this.spooked = false;
+        this.fear += .15;
     }, 3500);
 }
 
-Scarecrow.prototype.collideWith = function(movingObject) {
-   if (leftPressed) {
-       leftCollide = true;
-       console.log("left")
+Scarecrow.prototype.collideWith = function(movingObject, result) {
+
+//    if (leftPressed && Math.abs(result.left) <= 3 && Math.abs(result.down) > 3 ) {
+    if (leftPressed && Math.abs(result.left) <= 3 && Math.abs(result.left) < Math.abs(result.down)) {
+       
+        leftCollide = true;
    } 
-   else if (rightPressed) {
-       console.log ("right");
+//    else if (leftPressed && Math.abs(result.left) <= 3 && Math.abs(result.down) <= 3 ) {
+     else if (leftPressed && Math.abs(result.left) <= 3 && Math.abs(result.left) > Math.abs(result.down)) {
+       console.log(result.left, result.down);
+        leftCollide = false;
+        console.log(leftCollide)
+        console.log(leftPressed)
+   }
+   if (leftPressed && Math.abs(result.left) <= 3 && Math.abs(result.up) >=3 ) {
+       leftCollide = true;
+   } 
+   else if (leftPressed && Math.abs(result.left) <= 3 && Math.abs(result.up) <=3 ) {
+       leftCollide = false;
+   }
+
+
+
+   else if (rightPressed && Math.abs(result.right) <= 3  && Math.abs(result.down) >3 ) {
        rightCollide = true;
    }
-   else if (upPressed) {
-       console.log("up")
+   else if (rightPressed && Math.abs(result.right) <= 3 && Math.abs(result.down) <=3 ) {
+       rightCollide = false;
+   }
+   else if (rightPressed && Math.abs(result.right) <= 3  && Math.abs(result.up) >3 ) {
+       rightCollide = true;
+   }
+   else if (rightPressed && Math.abs(result.right) <= 3 && Math.abs(result.up) <=3 ) {
+       rightCollide = false;
+   }
+
+   
+
+   else if (upPressed && Math.abs(result.up) <= 3 && Math.abs(result.up) < Math.abs(result.left)) {
        upCollide = true;
    }
-   else if (downPressed) {
-       console.log("down");
+   else if (upPressed && Math.abs(result.up) <= 3 && Math.abs(result.up) > Math.abs(result.left)) {
+       upCollide = false;
+   }
+   else if (upPressed && Math.abs(result.up) <= 3 && Math.abs(result.up) < Math.abs(result.right)) {
+       upCollide = true;
+   }
+   else if (upPressed && Math.abs(result.up) <= 3 && Math.abs(result.up) > Math.abs(result.right)) {
+       upCollide = false;
+   }
+
+
+   else if (downPressed && Math.abs(result.down) <= 3 && Math.abs(result.down) < Math.abs(result.left)) {
        downCollide = true;
+   }
+   else if (downPressed && Math.abs(result.down) <= 3 && Math.abs(result.down) > Math.abs(result.left)) {
+       downCollide = false;
+   }
+   else if (downPressed && Math.abs(result.down) <= 3 && Math.abs(result.down) < Math.abs(result.right)) {
+       downCollide = true;
+   }
+   else if (downPressed && Math.abs(result.down) <= 3 && Math.abs(result.down) > Math.abs(result.right)) {
+       downCollide = false;
    }
     // return true;
 }
-// Scarecrow.prototype.collideWith = function (movingObject) {
-//     if (this.pos[0] - movingObject.pos[0] < 0) {
-        
-//         rightPressed = false;
-//     }
-//     else if (this.pos[0] - movingObject.pos[0] === 0) {
-//         debugger;
-//         leftPressed = false;
-//     }
-//     else if (this.pos[1] - movingObject.pos[1] > 0) {
-//         debugger;
-//         upPressed = false;
-//     }
-//     else if (this.pos[1] - movingObject.pos[1] < 0) {
-//         debugger;
-//         downPressed = false;
-//     }
-    // if (this.pos[0] - movingObject.pos[0] < 0) {
-    //     debugger;
-    //     this.pos[0] = movingObject.pos[0];
-    // }
-
 
 module.exports = Scarecrow;

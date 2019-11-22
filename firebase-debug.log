@@ -1,0 +1,25 @@
+[debug] [2019-11-21T20:00:07.394Z] ----------------------------------------------------------------------
+[debug] [2019-11-21T20:00:07.395Z] Command:       /Users/gabrielbarrios/.nvm/versions/node/v10.13.0/bin/node /Users/gabrielbarrios/.nvm/versions/node/v10.13.0/bin/firebase serve
+[debug] [2019-11-21T20:00:07.395Z] CLI Version:   7.8.1
+[debug] [2019-11-21T20:00:07.395Z] Platform:      darwin
+[debug] [2019-11-21T20:00:07.395Z] Node Version:  v10.13.0
+[debug] [2019-11-21T20:00:07.396Z] Time:          Thu Nov 21 2019 15:00:07 GMT-0500 (Eastern Standard Time)
+[debug] [2019-11-21T20:00:07.396Z] ----------------------------------------------------------------------
+[debug] [2019-11-21T20:00:07.396Z] 
+[debug] [2019-11-21T20:00:07.404Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2019-11-21T20:00:07.404Z] > authorizing via signed-in user
+[debug] [2019-11-21T20:00:07.404Z] [iam] checking project scarecrows-last-stand for permissions ["firebase.projects.get"]
+[debug] [2019-11-21T20:00:07.406Z] >>> HTTP REQUEST POST https://cloudresourcemanager.googleapis.com/v1/projects/scarecrows-last-stand:testIamPermissions  
+
+[debug] [2019-11-21T20:00:07.736Z] <<< HTTP RESPONSE 200
+[debug] [2019-11-21T20:00:07.737Z] >>> HTTP REQUEST GET https://firebase.googleapis.com/v1beta1/projects/scarecrows-last-stand  
+ 
+[debug] [2019-11-21T20:00:08.048Z] <<< HTTP RESPONSE 200
+[info] 
+[info] === Serving from '/Users/gabrielbarrios/Desktop/scarecrow'...
+[info] 
+[debug] [2019-11-21T20:00:08.050Z] >>> HTTP REQUEST GET https://firebase.googleapis.com/v1beta1/projects/scarecrows-last-stand/webApps/-/config  
+ 
+[debug] [2019-11-21T20:00:10.274Z] <<< HTTP RESPONSE 200
+[info] i  hosting: Serving hosting files from: ./dist
+[info] ✔  hosting: Local server: http://localhost:5000
