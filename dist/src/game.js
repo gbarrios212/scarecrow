@@ -64,7 +64,7 @@ function highlight(e) {
     elemTop = elem.offsetTop;
     let pos = {
       x: e.clientX - elemLeft,
-      y: e.clientY - elemTop + 25
+      y: e.clientY - elemTop 
     };
     console.log(pos.y);
     if (pos.x <= 800 && pos.x >= 0 && pos.y <= 400 && pos.y >= 0){
@@ -94,7 +94,7 @@ Game.prototype.buildTowers = function () {
         elemTop = elem.offsetTop;
         let pos = {
             x: e.clientX - elemLeft,
-            y: e.clientY - elemTop + 25
+            y: e.clientY - elemTop 
         };
         // console.log(pos);
         let tileCol = Math.floor(pos.y / 40)
@@ -105,7 +105,7 @@ Game.prototype.buildTowers = function () {
            
             angryTower = new AngryTower({ pos: [tileRow * 40 + 2, tileCol * 40], game: that });
             that.towers.push(angryTower);
-            tileValue = 1;
+            that.gameMap[tileCol][tileRow] = 1;
             that.towersAvail -= 1;
         } else {
             console.log("NO")
