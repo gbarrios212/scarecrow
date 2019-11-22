@@ -424,10 +424,6 @@ const gameMap = [
     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
 ]
 
-// function build() {
-
-// }
-
 function Game() {
     this.crows = [];
     this.bullets = [];
@@ -443,35 +439,32 @@ function Game() {
     this.gameMap = gameMap;
     grid = document.getElementById("preview-grid");
     let ele;
-    for (tile = 0; tile < this.gameMap.length * this.gameMap[0].length; tile ++) {
+    for (tile = 1; tile < this.gameMap.length * this.gameMap[0].length + 1; tile ++) {
         ele = document.createElement("div");
-        ele.innerHTML = tile; 
+        ele.id = tile;
         grid.appendChild(ele);
     }
-    // document.addEventListener("mousemove", highlight);
-    // this.build = build.bind(this);
-    // setInterval(() => {
-    //     console.log(this);
-    // }, 3000)
+    document.addEventListener("mousemove", highlight);
 }
 
 function highlight(e) {
     elem = document.getElementById("scarecrow-canvas");
-    grid = document.getElementById("grid"); 
+    grid = document.getElementById("preview-grid"); 
+
     elemLeft = elem.offsetLeft;
     elemTop = elem.offsetTop;
     let pos = {
       x: e.clientX - elemLeft,
       y: e.clientY - elemTop
     };
-    let tileCol = Math.floor(pos.y / 40);
-    let tileRow = Math.floor(pos.x / 40);
+    let tileCol = Math.ceil(pos.y / 40);
+    let tileRow = Math.ceil(pos.x / 40) - 1;
     let tileValue = gameMap[tileCol][tileRow];
     if (tileValue !== 1) {
-
-        console.log("ok");
+        grid.classList.add("good");
+    } else {
+        grid.classList.remove("good");
     }
-    // console.log(pos);
 }
 
 //constructor listener 
@@ -480,7 +473,7 @@ function highlight(e) {
 
 Game.prototype.buildTowers = function () {
     let that = this;
-   
+    grid = document.getElementById("preview-grid");
     document.addEventListener("click", build);
     function build(e) {
         elem = document.getElementById("scarecrow-canvas");
@@ -495,15 +488,20 @@ Game.prototype.buildTowers = function () {
         let tileRow = Math.floor(pos.x / 40)
         let tileValue = that.gameMap[tileCol][tileRow];
         if (tileValue !== 1) {
+           
             angryTower = new AngryTower({ pos: [pos.x, pos.y], game: that });
             that.towers.push(angryTower);
             tileValue = 1;
             that.towersAvail -= 1;
         } else {
+           
             console.log("NO")
         }
         if (that.towersAvail === 0) {
             document.removeEventListener("click", build);
+            document.removeEventListener("mousemove", highlight);
+            grid.classList.remove("good");
+            grid.id = "preview-grid-off";
             console.log("done");
         }
     }
