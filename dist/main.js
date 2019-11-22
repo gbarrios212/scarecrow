@@ -834,12 +834,31 @@ document.addEventListener("DOMContentLoaded", function () {
     const start = document.getElementById("start-button");
     const instructions = document.getElementById("instruction");
     const instructionsSheet = document.getElementById("instructions-sheet");
+  
+    const clock = document.getElementById("clock");
     function navigate (e) {
         if (e.target === instructions) {
            instructionsSheet.id = "instructions-sheet-on";
         } else if (e.target === start) {
             mainSheet.id = "main-content-sheet-off";
             instructionsSheet.id = "instructions-sheet";
+            // gameView = new GameView(ctx);
+            // gameView.start();
+            // // clock.innerHTML = ""
+            // clock.classList.remove("off");
+            // window.clockFunc = setInterval(countdown, 1000);
+
+
+            clearInterval(window.clockFunc);
+            clearInterval(window.gameFunc);
+            clock.innerHTML = "2:30";
+            window.time = 150;
+            window.clockFunc = setInterval(countdown, 1000);
+            gameView = new GameView(ctx);
+            gameView.start();
+            const pauseSheet = document.getElementById("pause-sheet");
+            window.paused = false;
+            pauseSheet.classList.remove("on");
         }
     }
 
@@ -882,7 +901,7 @@ document.addEventListener("DOMContentLoaded", function () {
    clock.innerHTML = "2:30";
 
     window.time = 150;
-    window.clockFunc = setInterval(countdown, 1000);
+   
     // window.clockFunc = setInterval(() => {
     //     if (!window.paused) {
 
@@ -915,8 +934,9 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-    gameView = new GameView(ctx);
-    gameView.start();
+    // gameView = new GameView(ctx);
+    // gameView.start();
+    
     window.ctx = ctx;
 
 

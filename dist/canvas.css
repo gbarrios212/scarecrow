@@ -110,6 +110,9 @@
     display: none;
 }
 
+.clock.off{
+    opacity: 0;
+}
 
 .clock{
     opacity: 0;
