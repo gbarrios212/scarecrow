@@ -12,18 +12,19 @@ document.addEventListener("DOMContentLoaded", function () {
     ctx.imageSmoothingEnabled = false;
     
 
-    const mainSheet = document.getElementById("main-content-sheet");
-    document.addEventListener("click", navigate);
-    const start = document.getElementById("start-button");
-    const instructions = document.getElementById("instruction");
-    function navigate (e) {
-        if (e.target === instructions) {
-            console.log('Hello');
-        } else if (e.target === start) {
-            console.log("uh oh");
-        }
-    }
-    // document.addEventListener("click", () => {
+    // const mainSheet = document.getElementById("main-content-sheet");
+    // document.addEventListener("click", navigate);
+    // const start = document.getElementById("start-button");
+    // const instructions = document.getElementById("instruction");
+    // const instructionsSheet = document.getElementById("instructions-sheet");
+    // function navigate (e) {
+    //     if (e.target === instructions) {
+    //        instructionsSheet.id = "instructions-sheet-on";
+    //     } else if (e.target === start) {
+    //         console.log("uh oh");
+    //     }
+    // }
+    // instructions.addEventListener("click", () => {
     //     const texts = document.querySelectorAll("#text");
     //     mainSheet.classList.add("story");
     //     start.classList.add("off");

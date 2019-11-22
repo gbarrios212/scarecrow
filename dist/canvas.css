@@ -28,7 +28,8 @@
 
 
 .main-content-sheet{
-    display: flex;
+    /* display: flex; */
+    display: none;
     align-items: center;
     flex-direction: column;
     width: 800px;
@@ -47,6 +48,30 @@
 
 .off{
     display: none;
+}
+
+#instructions-sheet{
+    display: none;
+    position: absolute; 
+    top: -10px;
+    align-items: center;
+    flex-direction: column;
+    width: 810px;
+    height: 390px;
+    position: absolute;
+    background: black;
+    color: #d2d2d2;
+    z-index: 1;
+    border: 1px solid #602b2b;
+    border-radius: 3px;   
+    padding-top: 40px;
+    font-family: initial;
+}
+
+#instructions-sheet-on{
+    display: block;
+    background: black;
+    transition: all 1s; 
 }
 
 #text{
