@@ -236,7 +236,7 @@ const Util = __webpack_require__(/*! ./utils.js */ "./dist/src/utils.js");
 const cornImage = new Image();
 
 // cornImage.src = "../dist/corn_late.png";
-cornImage.src = "./corn_late.png";
+cornImage.src = "./corn_late_FINAL.png";
 
 function Corn(options) {
     MovingObject.call(this, 
@@ -455,12 +455,13 @@ function highlight(e) {
     elemTop = elem.offsetTop;
     let pos = {
       x: e.clientX - elemLeft,
-      y: e.clientY - elemTop
+      y: e.clientY - elemTop + 25
     };
+    console.log(pos.y);
     if (pos.x <= 800 && pos.x >= 0 && pos.y <= 400 && pos.y >= 0){
 
-        let tileCol = Math.ceil(pos.y / 40);
-        let tileRow = Math.ceil(pos.x / 40) - 1;
+        let tileCol = Math.floor(pos.y / 40);
+        let tileRow = Math.floor(pos.x / 40);
         let tileValue = gameMap[tileCol][tileRow];
         if (tileValue !== 1) {
             grid.classList.add("good");
@@ -484,15 +485,16 @@ Game.prototype.buildTowers = function () {
         elemTop = elem.offsetTop;
         let pos = {
             x: e.clientX - elemLeft,
-            y: e.clientY - elemTop
+            y: e.clientY - elemTop + 25
         };
         // console.log(pos);
         let tileCol = Math.floor(pos.y / 40)
         let tileRow = Math.floor(pos.x / 40)
         let tileValue = that.gameMap[tileCol][tileRow];
         if (tileValue !== 1) {
+            
            
-            angryTower = new AngryTower({ pos: [pos.x, pos.y], game: that });
+            angryTower = new AngryTower({ pos: [tileRow * 40 + 2, tileCol * 40], game: that });
             that.towers.push(angryTower);
             tileValue = 1;
             that.towersAvail -= 1;
