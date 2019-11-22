@@ -575,8 +575,37 @@ Game.prototype.addCorns = function () {
 
 Game.prototype.randomPosition = function () {
     let position = [];
-    position.push(Math.floor(Math.random() * CONSTANTS.DIM_X));
-    position.push(Math.floor(Math.random() * CONSTANTS.DIM_Y));
+
+    switch(Math.floor((Math.random()) * 10) % 4){
+        case 0: 
+            position.push(Math.floor(Math.random() * CONSTANTS.DIM_X));
+            position.push(750);
+            break;
+        case 1: 
+            position.push(Math.floor(Math.random() * CONSTANTS.DIM_X));
+            position.push(2);
+            break;
+        case 2: 
+            position.push(0);
+            position.push(Math.floor(Math.random() * CONSTANTS.DIM_Y));
+            break;
+        case 3: 
+            position.push(0);
+            position.push(Math.floor(Math.random() * CONSTANTS.DIM_Y));
+            break;
+    }
+
+    // position.push(Math.floor(Math.random() * CONSTANTS.DIM_X));
+    // // position.push(Math.floor(Math.random() * CONSTANTS.DIM_Y));
+    // switch(Math.floor((Math.random()) * 10) % 2){
+    //     case 0:
+    //         position.push(750);
+    //         break;
+    //     default:
+    //         position.push(2);
+    //         break;
+
+    // }
     return position;
 }
 
@@ -589,40 +618,40 @@ Game.prototype.randomVelocity = function () {
 
      switch(window.time){
         case 135: 
-            velocity.push(Math.random() * 0.5);
-            velocity.push(Math.random() * 0.5);
+            velocity.push(Math.random() * 0.5 * this.sign());
+            velocity.push(Math.random() * 0.5 * this.sign());
             break;
         case 120: 
-            velocity.push(Math.random() * 1);
-            velocity.push(Math.random() * 1);
+            velocity.push(Math.random() * 1 * this.sign());
+            velocity.push(Math.random() * 1 * this.sign());
             break;
         case 105: 
-            velocity.push(Math.random() * 1.5);
-            velocity.push(Math.random() * 1.5);
+            velocity.push(Math.random() * 1.5 * this.sign());
+            velocity.push(Math.random() * 1.5 * this.sign());
             break;
         case 90:
-            velocity.push(Math.random());
-            velocity.push(Math.random() * 2);
+            velocity.push(Math.random() * this.sign());
+            velocity.push(Math.random() * 2 * this.sign());
             break;
         case 75: 
-            velocity.push(Math.random() * -1);
-            velocity.push(Math.random()* 1.5);
+            velocity.push(Math.random() * -1 * this.sign());
+            velocity.push(Math.random()* 1.5 * this.sign());
             break;
         case 60: 
-            velocity.push(Math.random() * 2);
-            velocity.push(Math.random() * 2);
+            velocity.push(Math.random() * 2 * this.sign());
+            velocity.push(Math.random() * 2 * this.sign());
             break;
         case 45: 
-            velocity.push(Math.random() * -2.5);
-            velocity.push(Math.random() * 2.5);
+            velocity.push(Math.random() * -2.5 * this.sign());
+            velocity.push(Math.random() * 2.5 * this.sign());
             break;
         case 30: 
-            velocity.push(Math.random() * 3);
-            velocity.push(Math.random() * - 3);
+            velocity.push(Math.random() * 3 * this.sign());
+            velocity.push(Math.random() * - 3 * this.sign());
             break;
         case 15: 
-            velocity.push(Math.random() * - 4);
-            velocity.push(Math.random() * 4);
+            velocity.push(Math.random() * - 4 * this.sign());
+            velocity.push(Math.random() * 4 * this.sign());
             break;
         case 0:
             velocity = [0,0];
@@ -635,6 +664,14 @@ Game.prototype.allObjects = function () {
     .concat(this.scarecrow, this.bullets, this.corns, this.towers);
 }
 
+Game.prototype.sign = function () {
+    switch(Math.floor((Math.random()) * 10) % 2){
+        case 0:
+            return -1;
+        default: 
+            return 1;
+    } 
+}
 
 
 Game.prototype.moveObjects = function () {
