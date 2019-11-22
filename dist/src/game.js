@@ -16,6 +16,8 @@ const CONSTANTS = {
 
 const tileWidth = 40, tileHeight = 40;
 const mapWidth = 20, mapHeight = 10;
+const goodCrowImage = new Image ();
+goodCrowImage.src = "crow_good.png";
 
 const gameMap = [
     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
@@ -123,14 +125,26 @@ Game.prototype.buildTowers = function () {
 }
 
 
-
+ let fieldPattern = new Image();
+ fieldPattern.src = "corn_field_later_single.png";
 
 Game.prototype.draw = function (ctx) {
         let pattern = ctx.createPattern(this.img, 'repeat');
-        let fieldPattern = new Image();
-        fieldPattern.src = "corn_field_later_single.png";
         let pattern2 = ctx.createPattern(fieldPattern, 'repeat');
     
+        if (window.time < 90) {
+            this.img.src = "farmland_later_1.5_single.png";
+            fieldPattern.src = "corn_field_later_2_single.png";
+        }
+        if (window.time < 60) {
+            // this.img.src = "farmland_later_2_single.png";
+            fieldPattern.src = "corn_field_later_3_single.png";
+        }
+        if (window.time < 30) {
+            this.img.src = "farmland_later_4_single.png";
+            fieldPattern.src = "corn_field_later_4_single.png";
+        }
+
         for(let row = 0; row < 10; row ++ ) {
             for(let col = 0; col < 20; col ++) {
                 switch(this.gameMap[row][col]){
@@ -150,12 +164,17 @@ Game.prototype.addCrows = function () {
     // while (this.crows.length < CONSTANTS.NUM_CROWS) {
     //     this.crows.push(new Crow({ pos: this.randomPosition(), vel: this.randomVelocity(), game: this}))
     // }
+    if (window.time === 0) {
+       this.crows.push(new Crow({ pos: this.randomPosition(), vel: this.randomVelocity(), game: this, image: goodCrowImage})) 
+    }
 
     while (this.crows.length < this.crowSpawn) {
         this.crows.push(new Crow({ pos: this.randomPosition(), vel: this.randomVelocity(), game: this}))
     }
 
+
     this.crowSpawn *= 1.2;
+    // this.crowSpawn *= 1.3;
 
     // if (window.time === 120) {
 

@@ -80,7 +80,7 @@
     transition: all 1s; 
     color: #d7d096;
     font-family: initial;
-    animation: open 2s;
+    animation: open 1s;
     animation-delay: 4s;
     animation-fill-mode: forwards;
 }
@@ -104,8 +104,15 @@
 
 #start-button, #instruction{
     opacity: 0;
-    animation: open 2s;
+    animation: open 1s;
     animation-delay: 2s;
+    animation-fill-mode: forwards;
+}
+
+#instruction{
+    opacity: 0;
+    animation: open 1s;
+    animation-delay: 3s;
     animation-fill-mode: forwards;
 }
 

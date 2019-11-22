@@ -25,7 +25,7 @@ function Crow(options) {
             vel: options.vel, 
             width: 30, 
             height: 30, 
-            image: crowImage, 
+            image: options.image || crowImage, 
             game: options.game, 
             isWrappable: true,
             hp: 80
