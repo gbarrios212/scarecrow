@@ -427,6 +427,7 @@ const gameMap = [
     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
 ]
 
+
 function Game() {
     this.crows = [];
     this.bullets = [];
@@ -436,10 +437,11 @@ function Game() {
     this.buildTowers();
     this.scarecrow = new Scarecrow({ game: this });
     // this.addCrows();
-    this.addCorns();
     this.img = new Image();
     this.img.src = "farmland_later_single.png";
-    this.gameMap = gameMap;
+    // this.gameMap = gameMap
+    this.gameMap = JSON.parse(JSON.stringify(gameMap));
+    this.addCorns();
     this.crowSpawn = 5;
     grid = document.getElementById("preview-grid");
     let ele;
@@ -464,7 +466,6 @@ function highlight(e) {
       x: e.clientX - elemLeft,
       y: e.clientY - elemTop 
     };
-    console.log(pos.y);
     if (pos.x <= 800 && pos.x >= 0 && pos.y <= 400 && pos.y >= 0){
 
         let tileCol = Math.floor(pos.y / 40);
@@ -527,7 +528,7 @@ Game.prototype.draw = function (ctx) {
     
         for(let row = 0; row < 10; row ++ ) {
             for(let col = 0; col < 20; col ++) {
-                switch(gameMap[row][col]){
+                switch(this.gameMap[row][col]){
                 case 0: 
                     ctx.fillStyle = pattern;
                     break;
@@ -559,7 +560,7 @@ Game.prototype.addCrows = function () {
 Game.prototype.addCorns = function () {
     for (let row = 0; row < 10; row++) {
         for (let col = 0; col < 20; col++) {
-            switch (gameMap[row][col]) {
+            switch (this.gameMap[row][col]) {
                 case 1:
                     this.corns.push(new Corn({ pos: [col * 40, row * 40], game: this}))
                     break;
@@ -735,7 +736,7 @@ Game.prototype.removeCorn = function (movingObj) {
     let idx = this.corns.indexOf(movingObj);
     this.corns.splice(idx, 1);
     this.scarecrow.courage += 5
-}
+}, 
 
 Game.prototype.didLose = function() {
   if (this.corns.length === 0) {
@@ -841,10 +842,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
     window.paused;
 
-    // window.paused = paused;
-
-    // const pauseButton = document.getElementById("pause");
     document.addEventListener("keydown", pause);
+    const restartButton = document.getElementById("restart-button")
+    restartButton.addEventListener("click", restart);
+    
+    
 
     function pause(e) {
         const pauseSheet = document.getElementById("pause-sheet");
@@ -863,33 +865,70 @@ document.addEventListener("DOMContentLoaded", function () {
    clock.innerHTML = "2:30";
 
     window.time = 150;
+    window.clockFunc = setInterval(countdown, 1000);
+    // window.clockFunc = setInterval(() => {
+    //     if (!window.paused) {
 
-    // if (!paused){
-        // debugger
+    //         time -= 1;
+    //         let convertMins = Math.floor(time / 60);
+    //         let convertSecs = time % 60;
+    //         if (convertSecs === 0) {
+    //             clock.innerHTML = convertMins + " : " + convertSecs + "0";
+    //         } else if (convertSecs < 10) {
+    //             clock.innerHTML = convertMins + " : " + "0" + convertSecs;
+    //         } 
+    //         else {
+    //             clock.innerHTML = convertMins + " : " + convertSecs;
+    //         }
+    //     }
+    // }, 1000);
 
-        window.clockFunc = setInterval(() => {
-            if (!window.paused) {
-
-                time -= 1;
-                let convertMins = Math.floor(time / 60);
-                let convertSecs = time % 60;
-                if (convertSecs === 0) {
-                    clock.innerHTML = convertMins + " : " + convertSecs + "0";
-                } else if (convertSecs < 10) {
-                    clock.innerHTML = convertMins + " : " + "0" + convertSecs;
-                } 
-                else {
-                    clock.innerHTML = convertMins + " : " + convertSecs;
-                }
-            }
-        }, 1000);
-    // }
+    function countdown(){
+        if (!window.paused) {
+          time -= 1;
+          let convertMins = Math.floor(time / 60);
+          let convertSecs = time % 60;
+          if (convertSecs === 0) {
+            clock.innerHTML = convertMins + " : " + convertSecs + "0";
+          } else if (convertSecs < 10) {
+            clock.innerHTML = convertMins + " : " + "0" + convertSecs;
+          } else {
+            clock.innerHTML = convertMins + " : " + convertSecs;
+          }
+        }
+    }
 
     gameView = new GameView(ctx);
     gameView.start();
-
-
     window.ctx = ctx;
+
+
+    function restart(e) {
+      // restartButton.innerHTML = "Are you sure?"
+      // const pauseSheet = document.getElementById("pause-sheet");
+      // confEle = document.createElement("div");
+      // confEle.id = "confirmation";
+      // // yesEle = document.createElement("div");
+      // // yesEle.id = "yes";
+      // // yesEle.innerHTML = "Yes";
+      // // noEle = document.createElement("div");
+      // // noEle.id = "no";
+      // // noEle.innerHTML = "No";
+      // pauseSheet.appendChild(confEle);
+      // // confEle.appendChild("div");
+      // // confEle.appendChild("div");
+      debugger;
+      clearInterval(window.clockFunc);
+      clearInterval(window.gameFunc);
+      clock.innerHTML = "2:30";
+      window.time = 150;
+      window.clockFunc = setInterval(countdown, 1000);
+      gameView = new GameView(ctx);
+      gameView.start();
+      const pauseSheet = document.getElementById("pause-sheet");
+      window.paused = false;
+      pauseSheet.classList.remove("on");
+    }
 });
 
 

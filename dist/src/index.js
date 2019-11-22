@@ -29,10 +29,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
     window.paused;
 
-    // window.paused = paused;
-
-    // const pauseButton = document.getElementById("pause");
     document.addEventListener("keydown", pause);
+    const restartButton = document.getElementById("restart-button")
+    restartButton.addEventListener("click", restart);
+    
+    
 
     function pause(e) {
         const pauseSheet = document.getElementById("pause-sheet");
@@ -51,33 +52,70 @@ document.addEventListener("DOMContentLoaded", function () {
    clock.innerHTML = "2:30";
 
     window.time = 150;
+    window.clockFunc = setInterval(countdown, 1000);
+    // window.clockFunc = setInterval(() => {
+    //     if (!window.paused) {
 
-    // if (!paused){
-        // debugger
+    //         time -= 1;
+    //         let convertMins = Math.floor(time / 60);
+    //         let convertSecs = time % 60;
+    //         if (convertSecs === 0) {
+    //             clock.innerHTML = convertMins + " : " + convertSecs + "0";
+    //         } else if (convertSecs < 10) {
+    //             clock.innerHTML = convertMins + " : " + "0" + convertSecs;
+    //         } 
+    //         else {
+    //             clock.innerHTML = convertMins + " : " + convertSecs;
+    //         }
+    //     }
+    // }, 1000);
 
-        window.clockFunc = setInterval(() => {
-            if (!window.paused) {
-
-                time -= 1;
-                let convertMins = Math.floor(time / 60);
-                let convertSecs = time % 60;
-                if (convertSecs === 0) {
-                    clock.innerHTML = convertMins + " : " + convertSecs + "0";
-                } else if (convertSecs < 10) {
-                    clock.innerHTML = convertMins + " : " + "0" + convertSecs;
-                } 
-                else {
-                    clock.innerHTML = convertMins + " : " + convertSecs;
-                }
-            }
-        }, 1000);
-    // }
+    function countdown(){
+        if (!window.paused) {
+          time -= 1;
+          let convertMins = Math.floor(time / 60);
+          let convertSecs = time % 60;
+          if (convertSecs === 0) {
+            clock.innerHTML = convertMins + " : " + convertSecs + "0";
+          } else if (convertSecs < 10) {
+            clock.innerHTML = convertMins + " : " + "0" + convertSecs;
+          } else {
+            clock.innerHTML = convertMins + " : " + convertSecs;
+          }
+        }
+    }
 
     gameView = new GameView(ctx);
     gameView.start();
-
-
     window.ctx = ctx;
+
+
+    function restart(e) {
+      // restartButton.innerHTML = "Are you sure?"
+      // const pauseSheet = document.getElementById("pause-sheet");
+      // confEle = document.createElement("div");
+      // confEle.id = "confirmation";
+      // // yesEle = document.createElement("div");
+      // // yesEle.id = "yes";
+      // // yesEle.innerHTML = "Yes";
+      // // noEle = document.createElement("div");
+      // // noEle.id = "no";
+      // // noEle.innerHTML = "No";
+      // pauseSheet.appendChild(confEle);
+      // // confEle.appendChild("div");
+      // // confEle.appendChild("div");
+      debugger;
+      clearInterval(window.clockFunc);
+      clearInterval(window.gameFunc);
+      clock.innerHTML = "2:30";
+      window.time = 150;
+      window.clockFunc = setInterval(countdown, 1000);
+      gameView = new GameView(ctx);
+      gameView.start();
+      const pauseSheet = document.getElementById("pause-sheet");
+      window.paused = false;
+      pauseSheet.classList.remove("on");
+    }
 });
 
 
