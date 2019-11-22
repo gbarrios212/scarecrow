@@ -95,6 +95,7 @@ Game.prototype.buildTowers = function () {
             y: e.clientY - elemTop 
         };
 
+        if (pos.x <= 800 && pos.x >= 0 && pos.y <= 400 && pos.y >= 0){
         // if (Math.abs(pos.x) <= 800 && Math.abs(pos.y) <= 400){
 
             // console.log(pos);
@@ -118,6 +119,7 @@ Game.prototype.buildTowers = function () {
             // }
         }
     }
+}
 }
 
 

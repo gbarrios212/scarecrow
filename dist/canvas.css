@@ -48,6 +48,7 @@
 
 #main-content-sheet-off{
     display: none;
+    /* opacity: 0; */
 }
 
 #instructions-sheet{
@@ -110,15 +111,16 @@
     display: none;
 }
 
-.clock.off{
+.clock{
     opacity: 0;
+    /* color: #4b1c1c; */
+    margin-bottom: 20px;
 }
 
-.clock{
+.clock.on{
     opacity: 0;
     margin-bottom: 20px;
     animation: open 2s;
-    animation-delay: 2s;
     animation-fill-mode: forwards;
 }
 
@@ -127,6 +129,10 @@
   100% { opacity: 1; }  
 }
 
+@keyframes color{
+    0% { color: #4b1c1c}
+    100% { color: gold}
+}
 
 body { 
     display: flex;

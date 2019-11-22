@@ -28,13 +28,14 @@ document.addEventListener("DOMContentLoaded", function () {
             // gameView = new GameView(ctx);
             // gameView.start();
             // // clock.innerHTML = ""
-            // clock.classList.remove("off");
+            
             // window.clockFunc = setInterval(countdown, 1000);
 
 
             clearInterval(window.clockFunc);
             clearInterval(window.gameFunc);
             clock.innerHTML = "2:30";
+            clock.classList.add("on");
             window.time = 150;
             window.clockFunc = setInterval(countdown, 1000);
             gameView = new GameView(ctx);

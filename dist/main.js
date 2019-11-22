@@ -492,6 +492,7 @@ Game.prototype.buildTowers = function () {
             y: e.clientY - elemTop 
         };
 
+        if (pos.x <= 800 && pos.x >= 0 && pos.y <= 400 && pos.y >= 0){
         // if (Math.abs(pos.x) <= 800 && Math.abs(pos.y) <= 400){
 
             // console.log(pos);
@@ -515,6 +516,7 @@ Game.prototype.buildTowers = function () {
             // }
         }
     }
+}
 }
 
 
@@ -845,13 +847,14 @@ document.addEventListener("DOMContentLoaded", function () {
             // gameView = new GameView(ctx);
             // gameView.start();
             // // clock.innerHTML = ""
-            // clock.classList.remove("off");
+            
             // window.clockFunc = setInterval(countdown, 1000);
 
 
             clearInterval(window.clockFunc);
             clearInterval(window.gameFunc);
             clock.innerHTML = "2:30";
+            clock.classList.add("on");
             window.time = 150;
             window.clockFunc = setInterval(countdown, 1000);
             gameView = new GameView(ctx);
