@@ -442,6 +442,7 @@ function Game() {
     this.towers = [];
     this.towersAvail = 4;
     this.buildTowers();
+    this.fillInventory();
     this.scarecrow = new Scarecrow({ game: this });
     // this.addCrows();
     this.img = new Image();
@@ -461,6 +462,17 @@ function Game() {
     setInterval(() => {
         this.addCrows();
     }, 15000);
+}
+
+Game.prototype.fillInventory = function(){
+    const inventory = document.getElementById("inventory");
+    console.log(this.towersAvail);
+    for (i = 0; i < 4; i ++) {
+        invSlot = document.createElement("div");
+        invSlot.id = `inv-${i + 1}`;
+        invSlot.innerHTML = `<img src="angry_boy_single.png"/>`
+        inventory.appendChild(invSlot);
+    }
 }
 
 function highlight(e) {
@@ -513,7 +525,11 @@ Game.prototype.buildTowers = function () {
                 that.towers.push(angryTower);
                 that.gameMap[tileCol][tileRow] = 1;
                 // that.gameMap[tileCol + 1][tileRow] = 1;
+                invSlot = document.getElementById(`inv-${that.towersAvail}`);
+                debugger;
                 that.towersAvail -= 1;
+                // this.fillInventory();
+                invSlot.innerHTML = "";
             } else {
                 console.log("NO")
             }
@@ -534,6 +550,7 @@ Game.prototype.buildTowers = function () {
  fieldPattern.src = "corn_field_later_single.png";
 
 Game.prototype.draw = function (ctx) {
+
         let pattern = ctx.createPattern(this.img, 'repeat');
         let pattern2 = ctx.createPattern(fieldPattern, 'repeat');
     

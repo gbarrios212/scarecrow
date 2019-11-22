@@ -266,3 +266,17 @@ body {
 #win-sheet, #lose-sheet{
     display: none;
 }
+
+#inventory{
+    display: grid;
+    grid-template-columns: repeat(10, 80px);
+    width: 800px;
+    height: 80px;
+    background:#ab6d3d;
+    border-radius: 3px;
+    border: 2px solid #1a1108;
+}
+
+#inventory div{
+    border: 1px solid #292424;
+}
