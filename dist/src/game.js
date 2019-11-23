@@ -380,6 +380,9 @@ Game.prototype.removeCorn = function (movingObj) {
     let idx = this.corns.indexOf(movingObj);
     this.corns.splice(idx, 1);
     this.scarecrow.courage += 1
+    gauge = document.getElementById("courage-color");
+    pixels = ((this.courage) / 40) * 350;
+    gauge.style.width = `${pixels}px`;
 }, 
 
 Game.prototype.didLose = function() {

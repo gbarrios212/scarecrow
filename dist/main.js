@@ -782,6 +782,9 @@ Game.prototype.removeCorn = function (movingObj) {
     let idx = this.corns.indexOf(movingObj);
     this.corns.splice(idx, 1);
     this.scarecrow.courage += 1
+    gauge = document.getElementById("courage-color");
+    pixels = ((this.courage) / 40) * 350;
+    gauge.style.width = `${pixels}px`;
 }, 
 
 Game.prototype.didLose = function() {
@@ -1240,6 +1243,8 @@ Scarecrow.prototype.draw = function () {
         frightenedImage.src = "scarecrow_frightened.png";
         setTimeout(() => {
           this.fear = 0;
+          gauge = document.getElementById("fear-color");
+          gauge.style.width = "0px";
         }, 10000);
         return ctx.drawImage(
             frightenedImage,
@@ -1257,6 +1262,8 @@ Scarecrow.prototype.draw = function () {
         scarecrowImage.src = "super_scarecrow.png";
         setTimeout(() => {
             this.courage = 0;
+            gauge = document.getElementById("courage-color");
+            gauge.style.width = "0px";
             scarecrowImage.src = "scarecrow_flying_OPT.png";
         }, 15000); 
     }
@@ -1425,6 +1432,10 @@ Scarecrow.prototype.paralyze = function() {
             this.spooked = false;
             this.fear += .15;
         }, 3000);
+        debugger;
+        gauge = document.getElementById("fear-color");
+        pixels = (((this.fear + .15)/50) * 350);
+        gauge.style.width = `${pixels}px`;
     }
 }
 
