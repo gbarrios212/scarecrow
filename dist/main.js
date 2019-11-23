@@ -783,7 +783,7 @@ Game.prototype.removeCorn = function (movingObj) {
     this.corns.splice(idx, 1);
     this.scarecrow.courage += 1
     gauge = document.getElementById("courage-color");
-    pixels = ((this.courage) / 40) * 350;
+    pixels = ((this.scarecrow.courage) / 40) * 350;
     gauge.style.width = `${pixels}px`;
 }, 
 
@@ -1432,7 +1432,6 @@ Scarecrow.prototype.paralyze = function() {
             this.spooked = false;
             this.fear += .15;
         }, 3000);
-        debugger;
         gauge = document.getElementById("fear-color");
         pixels = (((this.fear + .15)/50) * 350);
         gauge.style.width = `${pixels}px`;

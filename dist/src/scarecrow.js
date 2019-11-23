@@ -325,7 +325,6 @@ Scarecrow.prototype.paralyze = function() {
             this.spooked = false;
             this.fear += .15;
         }, 3000);
-        debugger;
         gauge = document.getElementById("fear-color");
         pixels = (((this.fear + .15)/50) * 350);
         gauge.style.width = `${pixels}px`;
