@@ -442,6 +442,7 @@ function Game() {
     this.towers = [];
     this.towersAvail = 4;
     this.buildTowers();
+    this.fillInventory();
     this.scarecrow = new Scarecrow({ game: this });
     // this.addCrows();
     this.img = new Image();
@@ -461,6 +462,18 @@ function Game() {
     setInterval(() => {
         this.addCrows();
     }, 15000);
+}
+
+Game.prototype.fillInventory = function(){
+    const inventory = document.getElementById("inventory");
+    console.log(this.towersAvail);
+    for (i = 0; i < 4; i ++) {
+        // invSlot = document.createElement("div");
+        invSlot = document.getElementById(`inv-${i + 1}`);
+        // invSlot.id = `inv-${i + 1}`;
+        invSlot.innerHTML = `<img src="angry_boy_single.png"/>`
+        // inventory.appendChild(invSlot);
+    }
 }
 
 function highlight(e) {
@@ -513,7 +526,10 @@ Game.prototype.buildTowers = function () {
                 that.towers.push(angryTower);
                 that.gameMap[tileCol][tileRow] = 1;
                 // that.gameMap[tileCol + 1][tileRow] = 1;
+                invSlot = document.getElementById(`inv-${that.towersAvail}`);
                 that.towersAvail -= 1;
+                // this.fillInventory();
+                invSlot.innerHTML = "";
             } else {
                 console.log("NO")
             }
@@ -534,6 +550,7 @@ Game.prototype.buildTowers = function () {
  fieldPattern.src = "corn_field_later_single.png";
 
 Game.prototype.draw = function (ctx) {
+
         let pattern = ctx.createPattern(this.img, 'repeat');
         let pattern2 = ctx.createPattern(fieldPattern, 'repeat');
     
@@ -765,6 +782,9 @@ Game.prototype.removeCorn = function (movingObj) {
     let idx = this.corns.indexOf(movingObj);
     this.corns.splice(idx, 1);
     this.scarecrow.courage += 1
+    gauge = document.getElementById("courage-color");
+    pixels = ((this.scarecrow.courage) / 40) * 350;
+    gauge.style.width = `${pixels}px`;
 }, 
 
 Game.prototype.didLose = function() {
@@ -1223,6 +1243,8 @@ Scarecrow.prototype.draw = function () {
         frightenedImage.src = "scarecrow_frightened.png";
         setTimeout(() => {
           this.fear = 0;
+          gauge = document.getElementById("fear-color");
+          gauge.style.width = "0px";
         }, 10000);
         return ctx.drawImage(
             frightenedImage,
@@ -1240,6 +1262,8 @@ Scarecrow.prototype.draw = function () {
         scarecrowImage.src = "super_scarecrow.png";
         setTimeout(() => {
             this.courage = 0;
+            gauge = document.getElementById("courage-color");
+            gauge.style.width = "0px";
             scarecrowImage.src = "scarecrow_flying_OPT.png";
         }, 15000); 
     }
@@ -1408,6 +1432,9 @@ Scarecrow.prototype.paralyze = function() {
             this.spooked = false;
             this.fear += .15;
         }, 3000);
+        gauge = document.getElementById("fear-color");
+        pixels = (((this.fear + .15)/50) * 350);
+        gauge.style.width = `${pixels}px`;
     }
 }
 
