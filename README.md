@@ -38,8 +38,8 @@ In the current iteration of this game, users can
 - This game consists of a single board which will contain all the game's activity.  
 - Below this window, viewers can check their current inventory.
 - Below this, two bars will be present that update in real time to reflect status changes 
-    - The fear bar, colored in purple, will rise as players touch crows and will lead to a "frightened state", in which movement is slowed, though speed of heart release is significantly increased.  This may occur several times in one game and will last ten seconds each.  
-    - The courage bar, colored in orange, wiill rise as players lose corns and will lead to an "emboldened state", in which movement is increased, hearts are released in two directions, and hearts are allowed to wrap continually around the screen.  This will only occur once per game and will last fifteen seconds.  
+    - The fear bar, colored in purple, will rise as players touch crows and will lead to a "frightened state", in which movement is slowed, though speed of heart release is significantly increased.  This may occur several times in one game and will last ten seconds each time.  
+    - The courage bar, colored in orange, will rise as players lose corns and will lead to an "emboldened state", in which movement is increased, hearts are released in two directions, and hearts are allowed to wrap continually around the screen.  This will only occur once per game and will last fifteen seconds.  
 - A clock will be rendered above the game window to keep track of time remaining for the level.
 - A hidden grid is superimposed on the game board to allow for tile selection when tower creation is available. 
 - A pause screen is always accessible on pressing "p", through which players can reset the game. 
