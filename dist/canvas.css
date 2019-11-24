@@ -198,26 +198,24 @@ body {
 
 #preview-grid{
     display: grid;
-    opacity: 0.5;
-    position: absolute;
-    top: 140px;
-    background: transparent;
     grid-template-columns: repeat(20, 40px);
     grid-template-rows: repeat(10, 40px);
+    position: absolute;
     width: 800px;
     height: 400px;
+    opacity: 0.5;
+    top: 140px;
+    background: transparent;
     border: 2px solid red;
     border-radius: 2px;
 }
 
-#preview-grid.good > div:hover{
-    opacity: .5;
-    background: green;
-}
-
 #preview-grid > div:hover{
     background: red;
-    opacity: 5;
+}
+
+#preview-grid.good > div:hover{
+    background: green;
 }
 
 #preview-grid-off {
