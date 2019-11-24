@@ -17,22 +17,15 @@ document.addEventListener("DOMContentLoaded", function () {
     const start = document.getElementById("start-button");
     const instructions = document.getElementById("instruction");
     const instructionsSheet = document.getElementById("instructions-sheet");
+    const inventory = document.getElementById("inventory-off");
+    const bars = document.getElementById("bars-off");
   
     const clock = document.getElementById("clock");
     function navigate (e) {
-        // if (e.target === instructions) {
-          //  instructionsSheet.id = "instructions-sheet-on";
-        // } else 
         if (e.target === start) {
             mainSheet.id = "main-content-sheet-off";
-            // instructionsSheet.id = "instructions-sheet";
-            // gameView = new GameView(ctx);
-            // gameView.start();
-            // // clock.innerHTML = ""
-            
-            // window.clockFunc = setInterval(countdown, 1000);
-
-
+            bars.id = "bars";
+            inventory.id = "inventory";
             clearInterval(window.clockFunc);
             clearInterval(window.gameFunc);
             clock.innerHTML = "2:30";
@@ -44,6 +37,7 @@ document.addEventListener("DOMContentLoaded", function () {
             const pauseSheet = document.getElementById("pause-sheet");
             window.paused = false;
             pauseSheet.classList.remove("on");
+            
         }
     }
 

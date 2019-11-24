@@ -82,7 +82,7 @@
     color: #d7d096;
     font-family: initial;
     animation: open 1s;
-    animation-delay: 4s;
+    animation-delay: 3s;
     animation-fill-mode: forwards;
 }
 
@@ -106,7 +106,7 @@
 #start-button, #instruction{
     opacity: 0;
     animation: open 1s;
-    animation-delay: 2s;
+    animation-delay: 1.5s;
     animation-fill-mode: forwards;
 }
 
@@ -304,7 +304,15 @@ body {
 }
 
 #bars{
-    margin-top: 20px;
     display: flex;
     justify-content: space-around;
+    margin-top: 20px;
+}
+
+#bars-off{
+    display: none;
+}
+
+#inventory-off{
+    display: none;
 }

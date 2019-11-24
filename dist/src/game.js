@@ -39,8 +39,7 @@ function Game() {
     this.corns = [];
     this.towers = [];
     this.towersAvail = 4;
-    this.buildTowers = build.bind(this);
-    this.buildTowers();
+    
     this.fillInventory();
     this.scarecrow = new Scarecrow({ game: this });
     this.img = new Image();
@@ -48,44 +47,66 @@ function Game() {
     this.gameMap = JSON.parse(JSON.stringify(gameMap));
     this.addCorns();
     this.crowSpawn = 5;
-    grid = document.getElementById("preview-grid");
+    this.grid = document.getElementById("preview-grid");
     let ele;
     for (tile = 1; tile < this.gameMap.length * this.gameMap[0].length + 1; tile ++) {
         ele = document.createElement("div");
         ele.id = tile;
-        grid.appendChild(ele);
+        this.grid.appendChild(ele);
     }
+    this.elem = document.getElementById("scarecrow-canvas");
+    highlight = highlight.bind(this);
+    document.addEventListener("mousemove", highlight);
+    build = build.bind(this);
+    document.addEventListener("click", build);
+    // this.buildTowers = build.bind(this);
+    // this.buildTowers();
+    
     setInterval(() => {
         this.addCrows();
     }, 15000);
-    document.addEventListener("mousemove", highlight);
-    document.addEventListener("click", build);
 }
 
-const grid = document.getElementById("preview-grid");
-const elem = document.getElementById("scarecrow-canvas");
-const elemLeft = elem.offsetLeft;
-const elemTop = elem.offsetTop;
-let pos = { x: 0, y: 0};
-let withinBounds = pos.x <= 800 && pos.x >= 0 && pos.y <= 400 && pos.y >= 0;
-let tileCol = Math.floor(pos.y / 40);
-let tileRow = Math.floor(pos.x / 40);
-let tileValue = gameMap[tileCol][tileRow];
 
-function highlight(e) {    
-    pos.x = e.pageX - elemLeft;
-    pos.y = e.pageY - elemTop;
-    if (withinBounds) {
+function withinBounds(x, y) {
+    return x <= 800 && x >= 0 && y <= 400 && y >= 0;
+}
+// function tileValue(x, y) {
+//     let tileCol = Math.floor(pos.y / 40);
+//     let tileRow = Math.floor(pos.x / 40);
+//     return gameMap[tileCol][tileRow];
+// }
+
+function highlight(e) {  
+    const elemLeft = this.elem.offsetLeft;
+    const elemTop = this.elem.offsetTop;  
+    let pos = {
+        x: e.pageX - elemLeft,
+        y: e.pageY - elemTop
+    };
+    if (withinBounds(pos.x, pos.y)) {
+        let tileCol = Math.floor(pos.y / 40);
+        let tileRow = Math.floor(pos.x / 40);
+        let tileValue = gameMap[tileCol][tileRow];
         if (tileValue !== 1) {
-            grid.classList.add("good");
+            this.grid.classList.add("good");
         } else {
-            grid.classList.remove("good");
+            this.grid.classList.remove("good");
         }
     }
 }
 
 function build(e) {
-    if (withinBounds) {
+    const elemLeft = this.elem.offsetLeft;
+    const elemTop = this.elem.offsetTop; 
+    let pos = {
+        x: e.pageX - elemLeft,
+        y: e.pageY - elemTop
+    };
+    if (withinBounds(pos.x, pos.y)) {
+        let tileCol = Math.floor(pos.y / 40);
+        let tileRow = Math.floor(pos.x / 40);
+        let tileValue = gameMap[tileCol][tileRow];
         if (tileValue !== 1 && !window.paused) {
             angryTower = new AngryTower({ pos: [tileRow * 40 + 2, tileCol * 40], game: this });
             this.towers.push(angryTower);
@@ -97,11 +118,13 @@ function build(e) {
         if (this.towersAvail === 0) {
             document.removeEventListener("click", build);
             document.removeEventListener("mousemove", highlight);
-            grid.classList.remove("good");
-            grid.id = "preview-grid-off";
+            this.grid.classList.remove("good");
+            this.grid.id = "preview-grid-off";
         }
     }
 }
+
+
 
 Game.prototype.fillInventory = function(){
     for (i = 0; i < 4; i ++) {
