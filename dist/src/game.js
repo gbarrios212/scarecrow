@@ -46,7 +46,6 @@ function Game() {
     this.gameMap = JSON.parse(JSON.stringify(gameMap));
     this.addCorns();
     this.crowSpawn = 5;
-
     this.grid = document.getElementById("preview-grid");
     let ele;
     for (tile = 1; tile < this.gameMap.length * this.gameMap[0].length + 1; tile ++) {

@@ -448,7 +448,6 @@ function Game() {
     this.gameMap = JSON.parse(JSON.stringify(gameMap));
     this.addCorns();
     this.crowSpawn = 5;
-
     this.grid = document.getElementById("preview-grid");
     let ele;
     for (tile = 1; tile < this.gameMap.length * this.gameMap[0].length + 1; tile ++) {
@@ -985,13 +984,12 @@ document.addEventListener("DOMContentLoaded", function () {
       window.time = 150;
       window.clockFunc = setInterval(countdown, 1000);
       const pauseSheet = document.getElementById("pause-sheet");
-      gameView = new GameView(ctx);
-      gameView.start();
-      const grid = document.getElementById("preview-grid") || document.getElementById("preview-grid-off");
+      const grid = document.getElementById("preview-grid-off") || document.getElementById("preview-grid");
       grid.id = "preview-grid";
       window.paused = false;
       pauseSheet.classList.remove("on");
-
+      gameView = new GameView(ctx);
+      gameView.start();
       //need to turn on or turn off win sheet and lose sheet no?
 
     }
