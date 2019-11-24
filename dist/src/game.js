@@ -15,7 +15,6 @@ const CONSTANTS = {
 };
 
 const tileWidth = 40, tileHeight = 40;
-const mapWidth = 20, mapHeight = 10;
 const goodCrowImage = new Image ();
 goodCrowImage.src = "crow_good.png";
 
@@ -97,6 +96,7 @@ function build(e) {
             angryTower = new AngryTower({ pos: [x, y], game: this });
             this.towers.push(angryTower);
             this.gameMap[this.tileCol][this.tileRow] = 1;
+            debugger;
             invSlot = document.getElementById(`inv-${this.towersAvail}`);
             this.towersAvail -= 1;
             invSlot.innerHTML = "";
