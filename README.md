@@ -61,7 +61,7 @@ The challenges of designing this game arose primarily because of the limitation 
 
 ### Sample Code 
 
-Perhaps one of trickier pieces of logic to implement with these restrictions involved tile selection and board setup.  
+Perhaps one of the trickier pieces of logic to implement with these restrictions involved tile selection and board setup.  
 
 The game itself is an 800px x 400px board represented programmatically by a 2-Dimensional array of length 10 holding subarrays of length 20.  Elements within the subarrays are labeled either 1, to represent an occupied space, or 0, to represent an unoccupied space. 
 
@@ -194,9 +194,8 @@ function build(e) {
     - player movement enabled 
     - add/move towers around farm 
 
-## Day 3 
 
-## Day 4 
+## Day 3 
 - Implement status changes
     - Fear + Courage 
 - Animate scarecrow
