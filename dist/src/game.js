@@ -71,11 +71,6 @@ function Game() {
 function withinBounds(x, y) {
     return x <= 800 && x >= 0 && y <= 400 && y >= 0;
 }
-// function tileValue(x, y) {
-//     let tileCol = Math.floor(pos.y / 40);
-//     let tileRow = Math.floor(pos.x / 40);
-//     return gameMap[tileCol][tileRow];
-// }
 
 function highlight(e) {  
     const elemLeft = this.elem.offsetLeft;
