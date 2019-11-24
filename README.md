@@ -80,7 +80,7 @@ const gameMap = [
 ]
 ```
 
-Above this, a preview-grid spanning 200 elements, each measuring 40px x 40px, is superimposed.  Each div element corresponds with a different tile on the aforementioned array representing the gameMap.   
+A preview-grid spanning 200 elements, each measuring 40px x 40px, is superimposed.  Each div element corresponds with a different tile on the aforementioned array representing the gameMap.   
 
 ```
 #preview-grid{
@@ -104,11 +104,11 @@ Two events were added to the board within the game constructor.
 document.addEventListener("mousemove", highlight);
 document.addEventListener("click", build);
 ```
-A within bounds function was added to limit these two functions to the canvas area. 
+A withinBounds function was added to limit these two functions to the canvas area. 
 
 ```
 function withinBounds(x, y) {
-    return x <= 800 && x >= 0 && y <= 400 && y >= 0;
+    return x < 800 && x >= 0 && y < 400 && y >= 0;
 }
 ```
 

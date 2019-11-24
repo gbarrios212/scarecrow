@@ -474,7 +474,7 @@ function Game() {
 }
 
 function withinBounds(x, y) {
-    return x <= 800 && x >= 0 && y <= 400 && y >= 0;
+    return x < 800 && x >= 0 && y < 400 && y >= 0;
 }
 
 function highlight(e) {  
@@ -483,7 +483,7 @@ function highlight(e) {
     if (withinBounds(this.coords.x, this.coords.y)) {
         this.tileCol = Math.floor(this.coords.y / 40);
         this.tileRow = Math.floor(this.coords.x / 40);
-        let tileValue = gameMap[this.tileCol][this.tileRow];
+        let tileValue = this.gameMap[this.tileCol][this.tileRow];
         if (tileValue !== 1) {
             this.grid.classList.add("good");
         } else {
@@ -494,7 +494,7 @@ function highlight(e) {
 
 function build(e) {
     if (withinBounds(this.coords.x, this.coords.y)) {
-        let tileValue = gameMap[this.tileCol][this.tileRow];
+        let tileValue = this.gameMap[this.tileCol][this.tileRow];
         if (tileValue !== 1 && !window.paused) {
             let x = this.tileRow * 40 + 2;
             let y = this.tileCol * 40;
