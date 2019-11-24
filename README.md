@@ -61,7 +61,7 @@ The challenges of designing this game arose primarily because of the limitation 
 
 ### Sample Code 
 
-Perhaps one of trickier pieces of logic to implement with these restrictions involved tile selection.  
+Perhaps one of trickier pieces of logic to implement with these restrictions involved tile selection and board setup.  
 
 The game itself is an 800px x 400px board represented programmatically by a 2-Dimensional array of length 10 holding subarrays of length 20.  Elements within the subarrays are labeled either 1, to represent an occupied space, or 0, to represent an unoccupied space. 
 
@@ -98,9 +98,78 @@ Above this, a preview-grid spanning 200 elements, each measuring 40px x 40px, is
 }
 ```
 
-Two events were added to the board on game initialization.  
+Two events were added to the board within the game constructor. 
 
-To prevent the player from making any more selections, which would result in no changes to the game, the event is removed once the number of towers matches the number of movements in the game.  
+```
+document.addEventListener("mousemove", highlight);
+document.addEventListener("click", build);
+```
+
+The affected HTML elements and the corresponding math bridging them to our game were set up globally. 
+
+```
+const grid = document.getElementById("preview-grid");
+const elem = document.getElementById("scarecrow-canvas");
+const elemLeft = elem.offsetLeft;
+const elemTop = elem.offsetTop;
+let pos = { x: 0, y: 0};
+let withinBounds = pos.x <= 800 && pos.x >= 0 && pos.y <= 400 && pos.y >= 0;
+let tileCol = Math.floor(pos.y / 40);
+let tileRow = Math.floor(pos.x / 40);
+let tileValue = gameMap[tileCol][tileRow];
+```
+
+The conversion from x and y coordinates into more easily divisible tiles allowed for neater, more precise placement of tower pieces around the board.
+
+The highlight function calculated whether the selected position corresponded with an occupied space on the array, in which case the grid was given a class "good", which itself rendered a green space on the preview-grid. The default setting, which renders a grid square red to represent occupied, is achieved by removing the "good" class.
+
+```
+function highlight(e) {    
+    pos.x = e.pageX - elemLeft;
+    pos.y = e.pageY - elemTop;
+    if (withinBounds) {
+        if (tileValue !== 1) {
+            grid.classList.add("good");
+        } else {
+            grid.classList.remove("good");
+        }
+    }
+}
+```
+The corresponding CSS below: 
+
+```
+#preview-grid > div:hover{
+    background: red;
+}
+
+#preview-grid.clear > div:hover{
+    background: green;
+}
+```
+
+The build function, which is called and bound within our game constructor, is responsible for checking whether the clicked tile is unoccupied and the game is not paused.  If so, a new tower is created, the instance of which is pushed to an array in the constructor.  Additionally, a number representing remaining towers is counted down, our gameMap at that tile position is rendered unoccupied, and, if there are no more towers remaining in the inventory, the event listeners are removed from the document and the preview grid id is changed to an off mode in order to prevent further additions to the board. 
+
+```
+function build(e) {
+    if (withinBounds) {
+        if (tileValue !== 1 && !window.paused) {
+            angryTower = new AngryTower({ pos: [tileRow * 40 + 2, tileCol * 40], game: this });
+            this.towers.push(angryTower);
+            this.gameMap[tileCol][tileRow] = 1;
+            invSlot = document.getElementById(`inv-${this.towersAvail}`);
+            this.towersAvail -= 1;
+            invSlot.innerHTML = "";
+        }
+        if (this.towersAvail === 0) {
+            document.removeEventListener("click", build);
+            document.removeEventListener("mousemove", highlight);
+            grid.classList.remove("good");
+            grid.id = "preview-grid-off";
+        }
+    }
+}
+```
 
 ## Timeline
 

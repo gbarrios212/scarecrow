@@ -210,14 +210,12 @@ body {
     border-radius: 2px;
 }
 
-#preview-grid.good > div:hover{
-    opacity: .5;
-    background: green;
-}
-
 #preview-grid > div:hover{
     background: red;
-    opacity: 5;
+}
+
+#preview-grid.good > div:hover{
+    background: green;
 }
 
 #preview-grid-off {
