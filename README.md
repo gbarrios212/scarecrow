@@ -194,7 +194,6 @@ function build(e) {
     - player movement enabled 
     - add/move towers around farm 
 
-
 ## Day 3 
 - Implement status changes
     - Fear + Courage 
