@@ -39,7 +39,6 @@ function Game() {
     this.corns = [];
     this.towers = [];
     this.towersAvail = 4;
-    
     this.fillInventory();
     this.scarecrow = new Scarecrow({ game: this });
     this.img = new Image();

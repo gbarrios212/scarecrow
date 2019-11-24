@@ -139,9 +139,11 @@ document.addEventListener("DOMContentLoaded", function () {
       clock.innerHTML = "2:30";
       window.time = 150;
       window.clockFunc = setInterval(countdown, 1000);
+      const pauseSheet = document.getElementById("pause-sheet");
       gameView = new GameView(ctx);
       gameView.start();
-      const pauseSheet = document.getElementById("pause-sheet");
+      const grid = document.getElementById("preview-grid") || document.getElementById("preview-grid-off");
+      grid.id = "preview-grid";
       window.paused = false;
       pauseSheet.classList.remove("on");
 

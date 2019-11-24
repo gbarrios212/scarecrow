@@ -441,7 +441,6 @@ function Game() {
     this.corns = [];
     this.towers = [];
     this.towersAvail = 4;
-    
     this.fillInventory();
     this.scarecrow = new Scarecrow({ game: this });
     this.img = new Image();
@@ -807,7 +806,7 @@ const Game = __webpack_require__(/*! ./game.js */ "./dist/src/game.js");
 
 
 function GameView (ctx) {
-    this.game = new Game;
+    this.game = new Game();
     this.ctx = ctx;
     this.clock = 
     window.ctx = this.ctx;
@@ -819,7 +818,6 @@ function GameView (ctx) {
 
 GameView.prototype.start = function(){
     this.bindKeyHandlers();
-    
     
     window.gameFunc = setInterval(() => {
         if (!window.paused){
@@ -986,9 +984,11 @@ document.addEventListener("DOMContentLoaded", function () {
       clock.innerHTML = "2:30";
       window.time = 150;
       window.clockFunc = setInterval(countdown, 1000);
+      const pauseSheet = document.getElementById("pause-sheet");
       gameView = new GameView(ctx);
       gameView.start();
-      const pauseSheet = document.getElementById("pause-sheet");
+      const grid = document.getElementById("preview-grid") || document.getElementById("preview-grid-off");
+      grid.id = "preview-grid";
       window.paused = false;
       pauseSheet.classList.remove("on");
 

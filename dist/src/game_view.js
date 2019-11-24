@@ -2,7 +2,7 @@ const Game = require("./game.js");
 
 
 function GameView (ctx) {
-    this.game = new Game;
+    this.game = new Game();
     this.ctx = ctx;
     this.clock = 
     window.ctx = this.ctx;
@@ -14,7 +14,6 @@ function GameView (ctx) {
 
 GameView.prototype.start = function(){
     this.bindKeyHandlers();
-    
     
     window.gameFunc = setInterval(() => {
         if (!window.paused){
