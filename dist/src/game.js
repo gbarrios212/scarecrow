@@ -39,13 +39,12 @@ function Game() {
     this.corns = [];
     this.towers = [];
     this.towersAvail = 4;
+    this.buildTowers = build.bind(this);
     this.buildTowers();
     this.fillInventory();
     this.scarecrow = new Scarecrow({ game: this });
-    // this.addCrows();
     this.img = new Image();
     this.img.src = "farmland_later_single.png";
-    // this.gameMap = gameMap
     this.gameMap = JSON.parse(JSON.stringify(gameMap));
     this.addCorns();
     this.crowSpawn = 5;
@@ -56,96 +55,64 @@ function Game() {
         ele.id = tile;
         grid.appendChild(ele);
     }
-    document.addEventListener("mousemove", highlight);
     setInterval(() => {
         this.addCrows();
     }, 15000);
+    document.addEventListener("mousemove", highlight);
+    document.addEventListener("click", build);
 }
 
-Game.prototype.fillInventory = function(){
-    const inventory = document.getElementById("inventory");
-    console.log(this.towersAvail);
-    for (i = 0; i < 4; i ++) {
-        // invSlot = document.createElement("div");
-        invSlot = document.getElementById(`inv-${i + 1}`);
-        // invSlot.id = `inv-${i + 1}`;
-        invSlot.innerHTML = `<img src="angry_boy_single.png"/>`
-        // inventory.appendChild(invSlot);
-    }
-}
+const grid = document.getElementById("preview-grid");
+const elem = document.getElementById("scarecrow-canvas");
+const elemLeft = elem.offsetLeft;
+const elemTop = elem.offsetTop;
+let pos = { x: 0, y: 0};
+let withinBounds = pos.x <= 800 && pos.x >= 0 && pos.y <= 400 && pos.y >= 0;
+let tileCol = Math.floor(pos.y / 40);
+let tileRow = Math.floor(pos.x / 40);
+let tileValue = gameMap[tileCol][tileRow];
 
-function highlight(e) {
-    elem = document.getElementById("scarecrow-canvas");
-    grid = document.getElementById("preview-grid"); 
-
-    elemLeft = elem.offsetLeft;
-    elemTop = elem.offsetTop;
-    let pos = {
-      x: e.pageX - elemLeft,
-      y: e.pageY - elemTop 
-    };
-    if (pos.x <= 800 && pos.x >= 0 && pos.y <= 400 && pos.y >= 0){
-
-        let tileCol = Math.floor(pos.y / 40);
-        let tileRow = Math.floor(pos.x / 40);
-        let tileValue = gameMap[tileCol][tileRow];
+function highlight(e) {    
+    pos.x = e.pageX - elemLeft;
+    pos.y = e.pageY - elemTop;
+    if (withinBounds) {
         if (tileValue !== 1) {
             grid.classList.add("good");
-            
         } else {
             grid.classList.remove("good");
         }
     }
 }
 
-Game.prototype.buildTowers = function () {
-    let that = this;
-    grid = document.getElementById("preview-grid");
-    document.addEventListener("click", build);
-    function build(e) {
-        elem = document.getElementById("scarecrow-canvas");
-        elemLeft = elem.offsetLeft;
-        elemTop = elem.offsetTop;
-        let pos = {
-            x: e.pageX - elemLeft,
-            y: e.pageY - elemTop 
-        };
-
-        if (pos.x <= 800 && pos.x >= 0 && pos.y <= 400 && pos.y >= 0){
-        // if (Math.abs(pos.x) <= 800 && Math.abs(pos.y) <= 400){
-
-            // console.log(pos);
-            let tileCol = Math.floor(pos.y / 40)
-            let tileRow = Math.floor(pos.x / 40)
-            let tileValue = that.gameMap[tileCol][tileRow];
-            if (tileValue !== 1 && !window.paused) {
-                // angryTower = new AngryTower({ pos: [tileRow * 40 + 2, tileCol * 40 + 40], game: that });
-                angryTower = new AngryTower({ pos: [tileRow * 40 + 2, tileCol * 40], game: that });
-                that.towers.push(angryTower);
-                that.gameMap[tileCol][tileRow] = 1;
-                // that.gameMap[tileCol + 1][tileRow] = 1;
-                invSlot = document.getElementById(`inv-${that.towersAvail}`);
-                that.towersAvail -= 1;
-                // this.fillInventory();
-                invSlot.innerHTML = "";
-            } else {
-                console.log("NO")
-            }
-            if (that.towersAvail === 0) {
-                document.removeEventListener("click", build);
-                document.removeEventListener("mousemove", highlight);
-                grid.classList.remove("good");
-                grid.id = "preview-grid-off";
-                console.log("done");
-            // }
+function build(e) {
+    if (withinBounds) {
+        if (tileValue !== 1 && !window.paused) {
+            angryTower = new AngryTower({ pos: [tileRow * 40 + 2, tileCol * 40], game: this });
+            this.towers.push(angryTower);
+            this.gameMap[tileCol][tileRow] = 1;
+            invSlot = document.getElementById(`inv-${this.towersAvail}`);
+            this.towersAvail -= 1;
+            invSlot.innerHTML = "";
+        }
+        if (this.towersAvail === 0) {
+            document.removeEventListener("click", build);
+            document.removeEventListener("mousemove", highlight);
+            grid.classList.remove("good");
+            grid.id = "preview-grid-off";
         }
     }
 }
+
+Game.prototype.fillInventory = function(){
+    for (i = 0; i < 4; i ++) {
+        invSlot = document.getElementById(`inv-${i + 1}`);
+        invSlot.innerHTML = `<img src="angry_boy_single.png"/>`
+    }
 }
 
 
- let fieldPattern = new Image();
- fieldPattern.src = "corn_field_later_single.png";
+let fieldPattern = new Image();
+fieldPattern.src = "corn_field_later_single.png";
 
 Game.prototype.draw = function (ctx) {
 
@@ -157,7 +124,6 @@ Game.prototype.draw = function (ctx) {
             fieldPattern.src = "corn_field_later_2_single.png";
         }
         if (window.time < 60) {
-            // this.img.src = "farmland_later_2_single.png";
             fieldPattern.src = "corn_field_later_3_single.png";
         }
         if (window.time < 30) {
@@ -181,9 +147,6 @@ Game.prototype.draw = function (ctx) {
 }
 
 Game.prototype.addCrows = function () {
-    // while (this.crows.length < CONSTANTS.NUM_CROWS) {
-    //     this.crows.push(new Crow({ pos: this.randomPosition(), vel: this.randomVelocity(), game: this}))
-    // }
     if (window.time === 0) {
        this.crows.push(new Crow({ pos: this.randomPosition(), vel: this.randomVelocity(), game: this, image: goodCrowImage})) 
     }
@@ -191,14 +154,7 @@ Game.prototype.addCrows = function () {
     while (this.crows.length < this.crowSpawn) {
         this.crows.push(new Crow({ pos: this.randomPosition(), vel: this.randomVelocity(), game: this}))
     }
-
-
     this.crowSpawn *= 1.2;
-    // this.crowSpawn *= 1.3;
-
-    // if (window.time === 120) {
-
-    // }
 }
 
 Game.prototype.addCorns = function () {
