@@ -449,42 +449,41 @@ function Game() {
     this.gameMap = JSON.parse(JSON.stringify(gameMap));
     this.addCorns();
     this.crowSpawn = 5;
+
     this.grid = document.getElementById("preview-grid");
     let ele;
     for (tile = 1; tile < this.gameMap.length * this.gameMap[0].length + 1; tile ++) {
         ele = document.createElement("div");
         ele.id = tile;
         this.grid.appendChild(ele);
-    }
+    };
+    this.coords = {x: 0, y: 0};
+    this.tileCol;
+    this.tileRow;
     this.elem = document.getElementById("scarecrow-canvas");
+    this.elemLeft = this.elem.offsetLeft;
+    this.elemTop = this.elem.offsetTop;
     highlight = highlight.bind(this);
     document.addEventListener("mousemove", highlight);
     build = build.bind(this);
     document.addEventListener("click", build);
-    // this.buildTowers = build.bind(this);
-    // this.buildTowers();
-    
+
     setInterval(() => {
         this.addCrows();
     }, 15000);
 }
-
 
 function withinBounds(x, y) {
     return x <= 800 && x >= 0 && y <= 400 && y >= 0;
 }
 
 function highlight(e) {  
-    const elemLeft = this.elem.offsetLeft;
-    const elemTop = this.elem.offsetTop;  
-    let pos = {
-        x: e.pageX - elemLeft,
-        y: e.pageY - elemTop
-    };
-    if (withinBounds(pos.x, pos.y)) {
-        let tileCol = Math.floor(pos.y / 40);
-        let tileRow = Math.floor(pos.x / 40);
-        let tileValue = gameMap[tileCol][tileRow];
+    this.coords.x = e.pageX - this.elemLeft;
+    this.coords.y = e.pageY - this.elemTop;
+    if (withinBounds(this.coords.x, this.coords.y)) {
+        this.tileCol = Math.floor(this.coords.y / 40);
+        this.tileRow = Math.floor(this.coords.x / 40);
+        let tileValue = gameMap[this.tileCol][this.tileRow];
         if (tileValue !== 1) {
             this.grid.classList.add("good");
         } else {
@@ -494,20 +493,14 @@ function highlight(e) {
 }
 
 function build(e) {
-    const elemLeft = this.elem.offsetLeft;
-    const elemTop = this.elem.offsetTop; 
-    let pos = {
-        x: e.pageX - elemLeft,
-        y: e.pageY - elemTop
-    };
-    if (withinBounds(pos.x, pos.y)) {
-        let tileCol = Math.floor(pos.y / 40);
-        let tileRow = Math.floor(pos.x / 40);
-        let tileValue = gameMap[tileCol][tileRow];
+    if (withinBounds(this.coords.x, this.coords.y)) {
+        let tileValue = gameMap[this.tileCol][this.tileRow];
         if (tileValue !== 1 && !window.paused) {
-            angryTower = new AngryTower({ pos: [tileRow * 40 + 2, tileCol * 40], game: this });
+            let x = this.tileRow * 40 + 2;
+            let y = this.tileCol * 40;
+            angryTower = new AngryTower({ pos: [x, y], game: this });
             this.towers.push(angryTower);
-            this.gameMap[tileCol][tileRow] = 1;
+            this.gameMap[this.tileCol][this.tileRow] = 1;
             invSlot = document.getElementById(`inv-${this.towersAvail}`);
             this.towersAvail -= 1;
             invSlot.innerHTML = "";

@@ -104,34 +104,49 @@ Two events were added to the board within the game constructor.
 document.addEventListener("mousemove", highlight);
 document.addEventListener("click", build);
 ```
-
-The affected HTML elements and the corresponding math bridging them to our game were set up globally. 
+A within bounds function was added to limit these two functions to the canvas area. 
 
 ```
-const grid = document.getElementById("preview-grid");
-const elem = document.getElementById("scarecrow-canvas");
-const elemLeft = elem.offsetLeft;
-const elemTop = elem.offsetTop;
-let pos = { x: 0, y: 0};
-let withinBounds = pos.x <= 800 && pos.x >= 0 && pos.y <= 400 && pos.y >= 0;
-let tileCol = Math.floor(pos.y / 40);
-let tileRow = Math.floor(pos.x / 40);
-let tileValue = gameMap[tileCol][tileRow];
+function withinBounds(x, y) {
+    return x <= 800 && x >= 0 && y <= 400 && y >= 0;
+}
 ```
+
+The affected HTML elements and variables were set up in the game constructor. 
+
+```
+this.grid = document.getElementById("preview-grid");
+let ele;
+for (tile = 1; tile < this.gameMap.length * this.gameMap[0].length + 1; tile ++) {
+    ele = document.createElement("div");
+    ele.id = tile;
+    this.grid.appendChild(ele);
+};
+this.coords = {x: 0, y: 0};
+this.tileCol;
+this.tileRow;
+this.elem = document.getElementById("scarecrow-canvas");
+this.elemLeft = this.elem.offsetLeft;
+this.elemTop = this.elem.offsetTop;
+
+```
+
+The highlight function calculated whether the hovered over position corresponded with an occupied space on the array, in which case the grid was given a class "good", which itself rendered a green space on the preview-grid. The default setting, which renders a grid square red to represent occupied, is achieved by removing the "good" class.  Math that connects the coordinates to our gameMap was handled here, as well. 
 
 The conversion from x and y coordinates into more easily divisible tiles allowed for neater, more precise placement of tower pieces around the board.
 
-The highlight function calculated whether the selected position corresponded with an occupied space on the array, in which case the grid was given a class "good", which itself rendered a green space on the preview-grid. The default setting, which renders a grid square red to represent occupied, is achieved by removing the "good" class.
-
 ```
-function highlight(e) {    
-    pos.x = e.pageX - elemLeft;
-    pos.y = e.pageY - elemTop;
-    if (withinBounds) {
+function highlight(e) {  
+    this.coords.x = e.pageX - this.elemLeft;
+    this.coords.y = e.pageY - this.elemTop;
+    if (withinBounds(this.coords.x, this.coords.y)) {
+        this.tileCol = Math.floor(this.coords.y / 40);
+        this.tileRow = Math.floor(this.coords.x / 40);
+        let tileValue = gameMap[this.tileCol][this.tileRow];
         if (tileValue !== 1) {
-            grid.classList.add("good");
+            this.grid.classList.add("good");
         } else {
-            grid.classList.remove("good");
+            this.grid.classList.remove("good");
         }
     }
 }
@@ -148,15 +163,18 @@ The corresponding CSS below:
 }
 ```
 
-The build function, which is called and bound within our game constructor, is responsible for checking whether the clicked tile is unoccupied and the game is not paused.  If so, a new tower is created, the instance of which is pushed to an array in the constructor.  Additionally, a number representing remaining towers is counted down, our gameMap at that tile position is rendered unoccupied, and, if there are no more towers remaining in the inventory, the event listeners are removed from the document and the preview grid id is changed to an off mode in order to prevent further additions to the board. 
+The build function, which is called and bound within our game constructor, is responsible for checking whether the clicked tile is unoccupied and the game is not paused.  If so, a new tower is created, the instance of which is pushed to an array in the constructor.  Additionally, a number representing remaining towers is counted down, our gameMap at that tile position is rendered occupied, and, if there are no more towers remaining in the inventory, the event listeners are removed from the document and the preview grid id is changed to an off mode in order to prevent further additions to the board. 
 
 ```
 function build(e) {
-    if (withinBounds) {
+    if (withinBounds(this.coords.x, this.coords.y)) {
+        let tileValue = gameMap[this.tileCol][this.tileRow];
         if (tileValue !== 1 && !window.paused) {
-            angryTower = new AngryTower({ pos: [tileRow * 40 + 2, tileCol * 40], game: this });
+            let x = this.tileRow * 40 + 2;
+            let y = this.tileCol * 40;
+            angryTower = new AngryTower({ pos: [x, y], game: this });
             this.towers.push(angryTower);
-            this.gameMap[tileCol][tileRow] = 1;
+            this.gameMap[this.tileCol][this.tileRow] = 1;
             invSlot = document.getElementById(`inv-${this.towersAvail}`);
             this.towersAvail -= 1;
             invSlot.innerHTML = "";
@@ -164,8 +182,8 @@ function build(e) {
         if (this.towersAvail === 0) {
             document.removeEventListener("click", build);
             document.removeEventListener("mousemove", highlight);
-            grid.classList.remove("good");
-            grid.id = "preview-grid-off";
+            this.grid.classList.remove("good");
+            this.grid.id = "preview-grid-off";
         }
     }
 }
