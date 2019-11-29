@@ -342,10 +342,7 @@ Scarecrow.prototype.collideWith = function(movingObject, result) {
             } 
             //    else if (leftPressed && Math.abs(result.left) <= 3 && Math.abs(result.down) <= 3 ) {
                 else if (leftPressed && Math.abs(result.left) <= 3 && Math.abs(result.left) > Math.abs(result.down)) {
-                    console.log(result.left, result.down);
                     leftCollide = false;
-                    console.log(leftCollide)
-                    console.log(leftPressed)
                 }
                 if (leftPressed && Math.abs(result.left) <= 3 && Math.abs(result.up) >=3 ) {
                     leftCollide = true;

@@ -363,7 +363,6 @@ Game.prototype.end = function(result) {
         case "win":
             clearInterval(window.clockFunc);
             clearInterval(window.gameFunc);
-            console.log("win");
             win = document.getElementById("win-sheet");
             win.id = "win-sheet-on";
             break;
@@ -375,7 +374,6 @@ Game.prototype.end = function(result) {
         case "lose":
             clearInterval(window.clockFunc);
             clearInterval(window.gameFunc);
-            console.log("lose");
             lose = document.getElementById("lose-sheet");
             lose.id = "lose-sheet-on";
             restart = document.getElementById("lose-restart");
