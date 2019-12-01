@@ -96,7 +96,6 @@ function build(e) {
             angryTower = new AngryTower({ pos: [x, y], game: this });
             this.towers.push(angryTower);
             this.gameMap[this.tileCol][this.tileRow] = 1;
-            debugger;
             invSlot = document.getElementById(`inv-${this.towersAvail}`);
             this.towersAvail -= 1;
             invSlot.innerHTML = "";
@@ -119,12 +118,10 @@ Game.prototype.fillInventory = function(){
     }
 }
 
-
 let fieldPattern = new Image();
 fieldPattern.src = "corn_field_later_single.png";
 
 Game.prototype.draw = function (ctx) {
-
         let pattern = ctx.createPattern(this.img, 'repeat');
         let pattern2 = ctx.createPattern(fieldPattern, 'repeat');
     

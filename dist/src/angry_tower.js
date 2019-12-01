@@ -50,7 +50,6 @@ let frameCount = 0;
 
 AngryTower.prototype.draw = function() {
   frameCount++;
-
     if (frameCount < 6) {
         return ctx.drawImage(
             this.image,

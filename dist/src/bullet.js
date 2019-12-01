@@ -25,7 +25,7 @@ Bullet.prototype.collideWith = function(otherObject) {
   if (otherObject instanceof Corn) {
       if (otherObject.hp <= 780 ) {
           otherObject.hp += 20;
-          console.log(`corn hp is ${otherObject.hp}`);
+          // console.log(`corn hp is ${otherObject.hp}`);
         }
     this.game.removeBullet(this);
   } 
