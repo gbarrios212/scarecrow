@@ -17,14 +17,18 @@ function AngryTower(options) {
     isWrappable: false
   });
 
-  setInterval(() => {
-      this.fireBullet();
-  }, 5000)
+  this.frameCount = 0;
+  this.currentLoopIndex = 0;
+  this.cycleLoop = [0, 64, 128, 192, 256, 320, 384, 448];
+  // setInterval(() => {
+  //     this.fireBullet();
+  // }, 5000)
 }
 
 Util.inherits(AngryTower, MovingObject);
 
 AngryTower.prototype.fireBullet = function() {
+  // debugger;
     let rightBullet = new FatBullet({
       pos: [this.pos[0] + 25, this.pos[1]],
       vel: [1,0],
@@ -44,30 +48,25 @@ AngryTower.prototype.fireBullet = function() {
 
 
 
-const cycleLoop = [0, 64, 128, 192, 256, 320, 384, 448];
-let currentLoopIndex = 0;
-let frameCount = 0;
+// const 
 
-AngryTower.prototype.draw = function() {
-  frameCount++;
-    if (frameCount < 6) {
-        return ctx.drawImage(
-            this.image,
-            cycleLoop[currentLoopIndex],
-            0,
-            this.width,
-            this.height,
-            this.pos[0],
-            this.pos[1],
-            this.width / 2,
-            this.height / 2
-        );
+AngryTower.prototype.draw = function(ctx) {
+  // let currentLoopIndex = 0;
+  //mod not < etc 
+  // class framecount vs constr
+  this.frameCount++;
+    if (this.frameCount % 3 === 0) {
+        this.currentLoopIndex++;
         }
-        frameCount = 0;
+
+        if (this.frameCount % 250 === 0) {
+          this.fireBullet();
+        }
+        
 
         ctx.drawImage(
         this.image,
-        cycleLoop[currentLoopIndex],
+        this.cycleLoop[this.currentLoopIndex],
         0,
         this.width,
         this.height,
@@ -76,10 +75,13 @@ AngryTower.prototype.draw = function() {
         this.width / 2,
         this.height / 2
         );
-        currentLoopIndex++;
-        if (currentLoopIndex >= cycleLoop.length) {
-        currentLoopIndex = 0;
+        
+        if (this.currentLoopIndex >= this.cycleLoop.length) {
+        this.currentLoopIndex = 0;
 
+        // if (this.frameCount === 64) {
+        //   this.frameCount = 0;
+        // }
    
     };
 }

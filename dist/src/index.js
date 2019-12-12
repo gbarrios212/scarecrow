@@ -11,49 +11,56 @@ document.addEventListener("DOMContentLoaded", function () {
     const ctx = canvas.getContext('2d');
     ctx.imageSmoothingEnabled = false;
     
-
+    //modals and start elements 
     const mainSheet = document.getElementById("main-content-sheet");
     document.addEventListener("click", navigate);
     const start = document.getElementById("start-button");
-    const instructions = document.getElementById("instruction");
-    const instructionsSheet = document.getElementById("instructions-sheet");
     const inventory = document.getElementById("inventory-off");
     const bars = document.getElementById("bars-off");
-  
     const clock = document.getElementById("clock");
+
+    
+    
     function navigate (e) {
-        if (e.target === start) {
-            mainSheet.id = "main-content-sheet-off";
-            bars.id = "bars";
-            inventory.id = "inventory";
-            clearInterval(window.clockFunc);
-            clearInterval(window.gameFunc);
-            clock.innerHTML = "2:30";
-            clock.classList.add("on");
-            window.time = 150;
-            window.clockFunc = setInterval(countdown, 1000);
-            gameView = new GameView(ctx);
-            gameView.start();
-            const pauseSheet = document.getElementById("pause-sheet");
-            window.paused = false;
-            pauseSheet.classList.remove("on");
-            
+        if (e.target === start) { 
+          startGame();
         }
     }
 
+    function startGame() {
+      //instructions + HUD
+      mainSheet.id = "main-content-sheet-off";
+      bars.id = "bars";
+      inventory.id = "inventory";
 
-    // instructions.addEventListener("click", () => {
-    //     const texts = document.querySelectorAll("#text");
-    //     mainSheet.classList.add("story");
-    //     start.classList.add("off");
-    //     texts.forEach(text => {
-    //         text.classList.toggle("off");
-    //     })
-            
 
-    //     mainSheet.innerHTML = "Two years since they've been gone."
+      //clock
+      clearInterval(window.clockFunc);
+      clearInterval(window.gameFunc);
+      clock.innerHTML = "2:30";
+      clock.classList.add("on");
+      window.time = 150;
+      window.clockFunc = setInterval(countdown, 1000);
+      const pauseSheet = document.getElementById("pause-sheet");
+      
+      //test
+      //preview grid 
+      const grid = document.getElementById("preview-grid-off") || document.getElementById("preview-grid");
+      grid.id = "preview-grid";
 
-    // })
+      // let ctx = canvas.getContext("2d");
+      // ctx.imageSmoothingEnabled = false;
+      //game start 
+      // gameView = new GameView(ctx);
+
+      // gameView.game = new 
+      // gameView.restart();
+      gameView = new GameView(ctx);
+      gameView.start();
+      //unpause 
+      window.paused = false;
+      pauseSheet.classList.remove("on");
+    }
 
     window.paused;
 
@@ -76,28 +83,6 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-   window.clock = document.getElementById("clock");
-   clock.innerHTML = "2:30";
-
-    window.time = 150;
-   
-    // window.clockFunc = setInterval(() => {
-    //     if (!window.paused) {
-
-    //         time -= 1;
-    //         let convertMins = Math.floor(time / 60);
-    //         let convertSecs = time % 60;
-    //         if (convertSecs === 0) {
-    //             clock.innerHTML = convertMins + " : " + convertSecs + "0";
-    //         } else if (convertSecs < 10) {
-    //             clock.innerHTML = convertMins + " : " + "0" + convertSecs;
-    //         } 
-    //         else {
-    //             clock.innerHTML = convertMins + " : " + convertSecs;
-    //         }
-    //     }
-    // }, 1000);
-
     function countdown(){
         if (!window.paused) {
           time -= 1;
@@ -113,44 +98,47 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-    // gameView = new GameView(ctx);
-    // gameView.start();
-    
-    window.ctx = ctx;
-
+    // window.ctx = ctx;
 
     function restart(e) {
-      // restartButton.innerHTML = "Are you sure?"
-      // const pauseSheet = document.getElementById("pause-sheet");
-      // confEle = document.createElement("div");
-      // confEle.id = "confirmation";
-      // // yesEle = document.createElement("div");
-      // // yesEle.id = "yes";
-      // // yesEle.innerHTML = "Yes";
-      // // noEle = document.createElement("div");
-      // // noEle.id = "no";
-      // // noEle.innerHTML = "No";
-      // pauseSheet.appendChild(confEle);
-      // // confEle.appendChild("div");
-      // // confEle.appendChild("div");
-      // debugger;
+      // document.removeEventListener("click", gameView.game.build);
+      // document.removeEventListener("mousemove", gameView.game.highlight);
+      // startGame();
+      mainSheet.id = "main-content-sheet-off";
+      bars.id = "bars";
+      inventory.id = "inventory";
+
       clearInterval(window.clockFunc);
       clearInterval(window.gameFunc);
       clock.innerHTML = "2:30";
+      clock.classList.add("on");
       window.time = 150;
       window.clockFunc = setInterval(countdown, 1000);
       const pauseSheet = document.getElementById("pause-sheet");
-      const grid = document.getElementById("preview-grid-off") || document.getElementById("preview-grid");
+
+      const grid =
+      document.getElementById("preview-grid-off") ||
+      document.getElementById("preview-grid");
       grid.id = "preview-grid";
+
+      gameView.restart();
+
       window.paused = false;
       pauseSheet.classList.remove("on");
-      gameView = new GameView(ctx);
-      gameView.start();
-      //need to turn on or turn off win sheet and lose sheet no?
-
+      
+      // clearInterval(window.clockFunc);
+      // clearInterval(window.gameFunc);
+      // clock.innerHTML = "2:30";
+      // window.time = 150;
+      // window.clockFunc = setInterval(countdown, 1000);
+      // const pauseSheet = document.getElementById("pause-sheet");
+      // const grid = document.getElementById("preview-grid-off") || document.getElementById("preview-grid");
+      // grid.id = "preview-grid";
+      // window.paused = false;
+      // pauseSheet.classList.remove("on");
+      // gameView = new GameView(ctx);
+      // gameView.start();
     }
-
-    // window.restart = restart();
 });
 
 

@@ -2,18 +2,19 @@ const Game = require("./game.js");
 
 
 function GameView (ctx) {
-    this.game = new Game();
+    // this.game = new Game();
+    this.game = new Game(this.ctx);
+    // debugger;
     this.ctx = ctx;
-    this.clock = 
-    window.ctx = this.ctx;
+    // this.clock = 
+    // window.ctx = this.ctx;
 }
-
-// window.clock = document.getElementById("clock");
-// clock.innerHTML = "2:30";
 
 
 GameView.prototype.start = function(){
     this.bindKeyHandlers();
+    // this.game = new Game(this.ctx);
+    // debugger;
     
     window.gameFunc = setInterval(() => {
         if (!window.paused){
@@ -26,6 +27,12 @@ GameView.prototype.start = function(){
 
 GameView.prototype.bindKeyHandlers = function () {
     key('space', () => { this.game.scarecrow.fireBullet() });
+}
+
+GameView.prototype.restart = function() {
+    this.game.restart();
+    this.start();
+    // this.game = new Game ();
 }
 
 module.exports = GameView;

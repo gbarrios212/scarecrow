@@ -18,34 +18,48 @@ const tileWidth = 40, tileHeight = 40;
 const goodCrowImage = new Image ();
 goodCrowImage.src = "crow_good.png";
 
-const gameMap = [
-    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
-]
+// const gameMap = [
+//     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+//     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+//     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+//     [0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0],
+//     [0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0],
+//     [0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0],
+//     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+//     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+//     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+//     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+// ]
 
 
 function Game() {
+    this.gameMap = [
+        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+    ];
     this.crows = [];
     this.bullets = [];
     this.corns = [];
     this.towers = [];
     this.towersAvail = 4;
+    this.grid = document.getElementById("preview-grid");
     this.fillInventory();
     this.scarecrow = new Scarecrow({ game: this });
     this.img = new Image();
     this.img.src = "farmland_later_single.png";
-    this.gameMap = JSON.parse(JSON.stringify(gameMap));
+    // this.gameMap = JSON.parse(JSON.stringify(gameMap));
     this.addCorns();
     this.crowSpawn = 5;
-    this.grid = document.getElementById("preview-grid");
+
+    
     let ele;
     for (tile = 1; tile < this.gameMap.length * this.gameMap[0].length + 1; tile ++) {
         ele = document.createElement("div");
@@ -63,9 +77,10 @@ function Game() {
     build = build.bind(this);
     document.addEventListener("click", build);
 
-    setInterval(() => {
-        this.addCrows();
-    }, 15000);
+    // setInterval(() => {
+    //     this.addCrows();
+    // }, 15000);
+    this.frameCount = 0;
 }
 
 function withinBounds(x, y) {
@@ -89,6 +104,7 @@ function highlight(e) {
 
 function build(e) {
     if (withinBounds(this.coords.x, this.coords.y)) {
+        debugger;
         let tileValue = this.gameMap[this.tileCol][this.tileRow];
         if (tileValue !== 1 && !window.paused) {
             let x = this.tileRow * 40 + 2;
@@ -101,6 +117,7 @@ function build(e) {
             invSlot.innerHTML = "";
         }
         if (this.towersAvail === 0) {
+            debugger;
             document.removeEventListener("click", build);
             document.removeEventListener("mousemove", highlight);
             this.grid.classList.remove("good");
@@ -109,7 +126,10 @@ function build(e) {
     }
 }
 
-
+// Game.prototype.removeEvents = function(){
+    // document.removeEventListener("click", build);
+    // document.removeEventListener("mousemove", highlight);
+// }
 
 Game.prototype.fillInventory = function(){
     for (i = 0; i < 4; i ++) {
@@ -122,6 +142,12 @@ let fieldPattern = new Image();
 fieldPattern.src = "corn_field_later_single.png";
 
 Game.prototype.draw = function (ctx) {
+    // debugger;
+
+    this.frameCount ++;
+    if (this.frameCount % 750 === 0) {
+        this.addCrows();
+    }
         let pattern = ctx.createPattern(this.img, 'repeat');
         let pattern2 = ctx.createPattern(fieldPattern, 'repeat');
     
@@ -145,10 +171,10 @@ Game.prototype.draw = function (ctx) {
                     break;
                 default: 
                     ctx.fillStyle = pattern2;
-            }
+                }
             ctx.fillRect(col*tileWidth, row*tileHeight, tileWidth, tileHeight);
+            }
         }
-    }
     this.allObjects().forEach(movingObj => movingObj.draw(ctx));
 }
 
@@ -345,7 +371,53 @@ Game.prototype.removeCorn = function (movingObj) {
     gauge = document.getElementById("courage-color");
     pixels = ((this.scarecrow.courage) / 40) * 350;
     gauge.style.width = `${pixels}px`;
-}, 
+} 
+
+Game.prototype.restart = function() {
+    document.removeEventListener("click", build);
+    document.removeEventListener("mousemove", highlight);
+
+     this.gameMap = [
+        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+    ];
+    this.crows = [];
+    this.bullets = [];
+    this.corns = [];
+    this.towers = [];
+    this.towersAvail = 4;
+    this.grid = document.getElementById("preview-grid");
+    this.fillInventory();
+    this.scarecrow = new Scarecrow({ game: this });
+    this.img = new Image();
+    this.img.src = "farmland_later_single.png";
+    this.addCorns();
+    this.crowSpawn = 5;
+    this.coords = {x: 0, y: 0};
+    this.tileCol;
+    this.tileRow;
+    this.elem = document.getElementById("scarecrow-canvas");
+    this.elemLeft = this.elem.offsetLeft;
+    this.elemTop = this.elem.offsetTop;
+    highlight = highlight.bind(this);
+    document.addEventListener("mousemove", highlight);
+    build = build.bind(this);
+    document.addEventListener("click", build);
+
+    // setInterval(() => {
+    //     this.addCrows();
+    // }, 15000);
+
+    this.frameCount = 0;
+}
 
 Game.prototype.didLose = function() {
   if (this.corns.length === 0) {
