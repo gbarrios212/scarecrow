@@ -20,6 +20,8 @@
     margin-bottom: 40px;
 }
 
+
+
 /* #paused{
     display: block;
     position: absolute;
@@ -334,4 +336,29 @@ body {
 
 #inventory-off{
     display: none;
+}
+
+footer{
+    padding-top: 40px;
+}
+
+footer a{
+    text-decoration: none;
+    color: #bca297;
+    font-family: auto;
+    margin-right: 20px;
+}
+
+footer a:hover{
+    color: white;
+}
+
+.fa-github, .fa-angellist, .fa-linkedin{
+    color: white;
+    font-family: 'Times New Roman', Times, serif;
+}
+.gb{
+    height: 14px;
+    text-decoration: none;
+    font-weight: 50;
 }
