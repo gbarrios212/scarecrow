@@ -548,12 +548,15 @@ Game.prototype.draw = function (ctx) {
     // debugger;
 
     this.frameCount ++;
-    if (this.frameCount % 750 === 0) {
+    if (this.frameCount === 1 || this.frameCount % 750 === 0) {
         this.addCrows();
     }
         let pattern = ctx.createPattern(this.img, 'repeat');
         let pattern2 = ctx.createPattern(fieldPattern, 'repeat');
     
+        if (window.time >= 90) {
+            this.img.src = "farmland_later_single.png";
+        }
         if (window.time < 90) {
             this.img.src = "farmland_later_1.5_single.png";
             fieldPattern.src = "corn_field_later_2_single.png";
