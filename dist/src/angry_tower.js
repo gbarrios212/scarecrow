@@ -55,7 +55,7 @@ AngryTower.prototype.draw = function(ctx) {
   //mod not < etc 
   // class framecount vs constr
   this.frameCount++;
-    if (this.frameCount % 3 === 0) {
+    if (this.frameCount % 6 === 0) {
         this.currentLoopIndex++;
         }
 
@@ -76,7 +76,7 @@ AngryTower.prototype.draw = function(ctx) {
         this.height / 2
         );
         
-        if (this.currentLoopIndex >= this.cycleLoop.length) {
+        if (this.currentLoopIndex >= this.cycleLoop.length - 1) {
         this.currentLoopIndex = 0;
 
         // if (this.frameCount === 64) {
