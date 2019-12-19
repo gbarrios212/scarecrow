@@ -205,6 +205,23 @@ function build(e) {
 }
 ```
 
+By maintaining a dynamic draw method in the game class, the board visuals are updated in realtime.  In the below code, pattern refers to the lighter, moveable space in the board while pattern2 corresponds to the darker tile.  As towers are added or corns are removed, the map updates to reflect the changes in the landscape.  
+
+```
+for(let row = 0; row < 10; row ++ ) {
+   for(let col = 0; col < 20; col ++) {
+       switch(this.gameMap[row][col]){
+             case 0: 
+                ctx.fillStyle = pattern;
+                break;
+             default: 
+                ctx.fillStyle = pattern2;
+              }
+        ctx.fillRect(col*tileWidth, row*tileHeight, tileWidth, tileHeight);
+   }
+}
+```
+
 ## Timeline
 
 ### Day 1
