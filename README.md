@@ -37,6 +37,7 @@ In the current iteration of this game, users can
 
 - This game consists of a single board which will contain all the game's activity.  
 - Below this window, viewers can check their current inventory.
+![alt text](https://imgur.com/mGSkD13.png)
 - Below this, two bars will be present that update in real time to reflect status changes 
     ![alt text](https://imgur.com/1EPhTE7.png)
     - The fear bar, colored in purple, will rise as players touch crows and will lead to a "frightened state", in which movement is slowed, though speed of heart release is significantly increased.  This may occur several times in one game and will last ten seconds each time.  
@@ -84,6 +85,8 @@ const gameMap = [
 ```
 
 A preview-grid spanning 200 elements, each measuring 40px x 40px, is superimposed.  Each div element corresponds with a different tile on the aforementioned array representing the gameMap.   
+
+![alt text](https://imgur.com/GzHmDKa.png)
 
 ```
 #preview-grid{
