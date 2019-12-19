@@ -37,7 +37,7 @@ Util.inherits(Crow, MovingObject);
 Crow.prototype.collideWith = function (otherObject) {
     if (otherObject instanceof Scarecrow) {
         otherObject.paralyze();
-        console.log("crow!!!!")
+        // console.log("crow!!!!")
     } else if (otherObject instanceof Bullet) {
         if (this.hp <= 20 ) {
             // this.image.src = "crow_good.png";
@@ -46,7 +46,7 @@ Crow.prototype.collideWith = function (otherObject) {
         } else {
             this.game.removeBullet(otherObject);
             this.hp -= 20;
-            console.log(`bird hp is ${this.hp}`)
+            // console.log(`bird hp is ${this.hp}`)
         }
     } else if (otherObject instanceof FatBullet) {
         if (this.hp <= 50 ) {
@@ -55,12 +55,12 @@ Crow.prototype.collideWith = function (otherObject) {
         } else {
             this.game.removeBullet(otherObject);
             this.hp -= 50;
-            console.log(`bird hp is ${this.hp}`)
+            // console.log(`bird hp is ${this.hp}`)
         }
         // this.game.removeCrow(this);
     } else if (otherObject instanceof Corn) {
         if (otherObject.hp === 10) {
-            console.log("crow to corn")
+            // console.log("crow to corn")
             this.game.gameMap[otherObject.pos[1]/40][otherObject.pos[0]/40] = 0;
             this.game.removeCorn(otherObject);
         } else {

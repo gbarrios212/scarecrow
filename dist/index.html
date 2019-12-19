@@ -8,6 +8,7 @@
   <script type="text/javascript" src="./main.js"></script>
   <title>Scarecrow's Last Stand</title>
   <link rel="shortcut icon" type="image/jpg" href="scarecrow03.png" />
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.12/css/all.css" integrity="sha384-G0fIWCsCzJIMAVNQPfjH08cyYaUtMwjJwqiRKxxE/rx96Uroj1BtIQ6MLJuheaO9" crossorigin="anonymous">
 </head>
 <body>
   <h1 class="title">Scarecrow's Last Stand</h1>
@@ -28,11 +29,12 @@
         <br>
         <br>
         <div id="instruction-buttons">
-          <p>WASD - run </p>
+          <p>WASD - move </p>
           <p>Spacebar - shoot hearts/heal corn</p>
           <p>P - pause/play</p>
           <p>Click - create tower</p>
         </div>
+        <img src="./crow_bad_splash.png" class="crow"/>
       </div>
     </div>
     <div id="preview-grid"></div>
@@ -43,7 +45,7 @@
     <canvas id="scarecrow-canvas" width=800 height=400></canvas>
     <div id="win-sheet">
       <div>The corn lives another day.</div>
-      <img src="scarecrow03.png" />
+      <img src="scarecrow03.png"/>
       <div id="win-restart">Play again</div>
     </div>
     <div id="lose-sheet">
@@ -64,18 +66,34 @@
       <div id="inv-10"></div>
     </div>
     <div id="bars-off">
-      <div id="fear-gauge">
-        <div id="fear-color"></div>
+      <div>
+        <div id="fear-gauge">
+          <div id="fear-color"></div>
+        </div>
+        <p id="fear-text">Fear</p>
       </div>
       
-      <div id="courage-gauge">
-        <div id="courage-color"></div>
+      <div>
+        <div id="courage-gauge">
+          <div id="courage-color"></div>
+        </div>
+        <p id="courage-text">Courage</p>
       </div>
     </div>
     
   </div>
 
-
+  <footer>
+    <div class="footer-container-outer">
+      <div class="footer-container-inner">
+        <div class="created-by">Created by Gabriel Barrios</div>
+        <a href="https://github.com/gbarrios212" class="devLink"><i class="fab fa-github devLink"></i>    GitHub</a>
+        <a href="https://www.linkedin.com/in/gabriel-antonio-barrios" class="devLink"><i class="fab fa-linkedin devLink"></i>    LinkedIn</a>
+        <a href="https://angel.co/gabriel-barrios-2" class="devLink"><i class="fab fa-angellist devLink"></i>    AngelList</a>
+        <a href="https://gbarrios.com/" class="devLink"><img class="gb" src="./Gtrans.svg"/>    Portfolio</a>
+      </div>
+    </div>
+  </footer>
   <script src="/__/firebase/7.4.0/firebase-app.js"></script>
   <script src="/__/firebase/7.4.0/firebase-analytics.js"></script>
   <script src="/__/firebase/init.js"></script>

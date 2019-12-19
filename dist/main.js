@@ -112,14 +112,18 @@ function AngryTower(options) {
     isWrappable: false
   });
 
-  setInterval(() => {
-      this.fireBullet();
-  }, 5000)
+  this.frameCount = 0;
+  this.currentLoopIndex = 0;
+  this.cycleLoop = [0, 64, 128, 192, 256, 320, 384, 448];
+  // setInterval(() => {
+  //     this.fireBullet();
+  // }, 5000)
 }
 
 Util.inherits(AngryTower, MovingObject);
 
 AngryTower.prototype.fireBullet = function() {
+  // debugger;
     let rightBullet = new FatBullet({
       pos: [this.pos[0] + 25, this.pos[1]],
       vel: [1,0],
@@ -139,31 +143,25 @@ AngryTower.prototype.fireBullet = function() {
 
 
 
-const cycleLoop = [0, 64, 128, 192, 256, 320, 384, 448];
-let currentLoopIndex = 0;
-let frameCount = 0;
+// const 
 
-AngryTower.prototype.draw = function() {
-  frameCount++;
-
-    if (frameCount < 6) {
-        return ctx.drawImage(
-            this.image,
-            cycleLoop[currentLoopIndex],
-            0,
-            this.width,
-            this.height,
-            this.pos[0],
-            this.pos[1],
-            this.width / 2,
-            this.height / 2
-        );
+AngryTower.prototype.draw = function(ctx) {
+  // let currentLoopIndex = 0;
+  //mod not < etc 
+  // class framecount vs constr
+  this.frameCount++;
+    if (this.frameCount % 6 === 0) {
+        this.currentLoopIndex++;
         }
-        frameCount = 0;
+
+        if (this.frameCount % 250 === 0) {
+          this.fireBullet();
+        }
+        
 
         ctx.drawImage(
         this.image,
-        cycleLoop[currentLoopIndex],
+        this.cycleLoop[this.currentLoopIndex],
         0,
         this.width,
         this.height,
@@ -172,10 +170,13 @@ AngryTower.prototype.draw = function() {
         this.width / 2,
         this.height / 2
         );
-        currentLoopIndex++;
-        if (currentLoopIndex >= cycleLoop.length) {
-        currentLoopIndex = 0;
+        
+        if (this.currentLoopIndex >= this.cycleLoop.length - 1) {
+        this.currentLoopIndex = 0;
 
+        // if (this.frameCount === 64) {
+        //   this.frameCount = 0;
+        // }
    
     };
 }
@@ -219,7 +220,7 @@ Bullet.prototype.collideWith = function(otherObject) {
   if (otherObject instanceof Corn) {
       if (otherObject.hp <= 780 ) {
           otherObject.hp += 20;
-          console.log(`corn hp is ${otherObject.hp}`);
+          // console.log(`corn hp is ${otherObject.hp}`);
         }
     this.game.removeBullet(this);
   } 
@@ -312,7 +313,7 @@ Util.inherits(Crow, MovingObject);
 Crow.prototype.collideWith = function (otherObject) {
     if (otherObject instanceof Scarecrow) {
         otherObject.paralyze();
-        console.log("crow!!!!")
+        // console.log("crow!!!!")
     } else if (otherObject instanceof Bullet) {
         if (this.hp <= 20 ) {
             // this.image.src = "crow_good.png";
@@ -321,7 +322,7 @@ Crow.prototype.collideWith = function (otherObject) {
         } else {
             this.game.removeBullet(otherObject);
             this.hp -= 20;
-            console.log(`bird hp is ${this.hp}`)
+            // console.log(`bird hp is ${this.hp}`)
         }
     } else if (otherObject instanceof FatBullet) {
         if (this.hp <= 50 ) {
@@ -330,12 +331,12 @@ Crow.prototype.collideWith = function (otherObject) {
         } else {
             this.game.removeBullet(otherObject);
             this.hp -= 50;
-            console.log(`bird hp is ${this.hp}`)
+            // console.log(`bird hp is ${this.hp}`)
         }
         // this.game.removeCrow(this);
     } else if (otherObject instanceof Corn) {
         if (otherObject.hp === 10) {
-            console.log("crow to corn")
+            // console.log("crow to corn")
             this.game.gameMap[otherObject.pos[1]/40][otherObject.pos[0]/40] = 0;
             this.game.removeCorn(otherObject);
         } else {
@@ -382,7 +383,7 @@ FatBullet.prototype.collideWith = function(otherObject) {
   if (otherObject instanceof Corn) {
     if (otherObject.hp <= 780) {
       otherObject.hp += 100;
-      console.log(`corn hp is ${otherObject.hp}`);
+      // console.log(`corn hp is ${otherObject.hp}`);
     }
     this.game.removeBullet(this);
   }
@@ -420,34 +421,48 @@ const tileWidth = 40, tileHeight = 40;
 const goodCrowImage = new Image ();
 goodCrowImage.src = "crow_good.png";
 
-const gameMap = [
-    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
-]
+// const gameMap = [
+//     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+//     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+//     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+//     [0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0],
+//     [0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0],
+//     [0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0],
+//     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+//     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+//     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+//     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+// ]
 
 
 function Game() {
+    this.gameMap = [
+        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+    ];
     this.crows = [];
     this.bullets = [];
     this.corns = [];
     this.towers = [];
     this.towersAvail = 4;
+    this.grid = document.getElementById("preview-grid");
     this.fillInventory();
     this.scarecrow = new Scarecrow({ game: this });
     this.img = new Image();
     this.img.src = "farmland_later_single.png";
-    this.gameMap = JSON.parse(JSON.stringify(gameMap));
+    // this.gameMap = JSON.parse(JSON.stringify(gameMap));
     this.addCorns();
     this.crowSpawn = 5;
-    this.grid = document.getElementById("preview-grid");
+
+    
     let ele;
     for (tile = 1; tile < this.gameMap.length * this.gameMap[0].length + 1; tile ++) {
         ele = document.createElement("div");
@@ -465,9 +480,10 @@ function Game() {
     build = build.bind(this);
     document.addEventListener("click", build);
 
-    setInterval(() => {
-        this.addCrows();
-    }, 15000);
+    // setInterval(() => {
+    //     this.addCrows();
+    // }, 15000);
+    this.frameCount = 0;
 }
 
 function withinBounds(x, y) {
@@ -498,12 +514,11 @@ function build(e) {
             angryTower = new AngryTower({ pos: [x, y], game: this });
             this.towers.push(angryTower);
             this.gameMap[this.tileCol][this.tileRow] = 1;
-            debugger;
             invSlot = document.getElementById(`inv-${this.towersAvail}`);
             this.towersAvail -= 1;
             invSlot.innerHTML = "";
         }
-        if (this.towersAvail === 0) {
+        if (this.towersAvail === 0) {    
             document.removeEventListener("click", build);
             document.removeEventListener("mousemove", highlight);
             this.grid.classList.remove("good");
@@ -512,7 +527,10 @@ function build(e) {
     }
 }
 
-
+// Game.prototype.removeEvents = function(){
+    // document.removeEventListener("click", build);
+    // document.removeEventListener("mousemove", highlight);
+// }
 
 Game.prototype.fillInventory = function(){
     for (i = 0; i < 4; i ++) {
@@ -521,26 +539,33 @@ Game.prototype.fillInventory = function(){
     }
 }
 
-
 let fieldPattern = new Image();
 fieldPattern.src = "corn_field_later_single.png";
 
 Game.prototype.draw = function (ctx) {
-
+    this.frameCount ++;
+    if (this.frameCount === 250 || this.frameCount % 750 === 0) {
+        this.addCrows();
+    }
         let pattern = ctx.createPattern(this.img, 'repeat');
+        fieldPattern.src = "corn_field_later_2_single.png";
         let pattern2 = ctx.createPattern(fieldPattern, 'repeat');
     
-        if (window.time < 90) {
-            this.img.src = "farmland_later_1.5_single.png";
-            fieldPattern.src = "corn_field_later_2_single.png";
-        }
-        if (window.time < 60) {
-            fieldPattern.src = "corn_field_later_3_single.png";
-        }
-        if (window.time < 30) {
-            this.img.src = "farmland_later_4_single.png";
-            fieldPattern.src = "corn_field_later_4_single.png";
-        }
+        //temp removal day to night changes
+        // if (window.time >= 90) {
+        //     this.img.src = "farmland_later_single.png";
+        // }
+        // if (window.time < 90) {
+        //     this.img.src = "farmland_later_1.5_single.png";
+        //     fieldPattern.src = "corn_field_later_2_single.png";
+        // }
+        // if (window.time < 60) {
+        //     fieldPattern.src = "corn_field_later_3_single.png";
+        // }
+        // if (window.time < 30) {
+        //     this.img.src = "farmland_later_4_single.png";
+        //     fieldPattern.src = "corn_field_later_4_single.png";
+        // }
 
         for(let row = 0; row < 10; row ++ ) {
             for(let col = 0; col < 20; col ++) {
@@ -550,10 +575,10 @@ Game.prototype.draw = function (ctx) {
                     break;
                 default: 
                     ctx.fillStyle = pattern2;
-            }
+                }
             ctx.fillRect(col*tileWidth, row*tileHeight, tileWidth, tileHeight);
+            }
         }
-    }
     this.allObjects().forEach(movingObj => movingObj.draw(ctx));
 }
 
@@ -609,6 +634,10 @@ Game.prototype.randomPosition = function () {
 Game.prototype.randomVelocity = function () {
     let velocity = [];
      switch(window.time){
+        case 145: 
+            velocity.push(Math.random() * 0.35 * this.sign());
+            velocity.push(Math.random() * 0.35 * this.sign());
+            break;
         case 135: 
             velocity.push(Math.random() * 0.5 * this.sign());
             velocity.push(Math.random() * 0.5 * this.sign());
@@ -750,7 +779,53 @@ Game.prototype.removeCorn = function (movingObj) {
     gauge = document.getElementById("courage-color");
     pixels = ((this.scarecrow.courage) / 40) * 350;
     gauge.style.width = `${pixels}px`;
-}, 
+} 
+
+Game.prototype.restart = function() {
+    document.removeEventListener("click", build);
+    document.removeEventListener("mousemove", highlight);
+
+     this.gameMap = [
+        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+    ];
+    this.crows = [];
+    this.bullets = [];
+    this.corns = [];
+    this.towers = [];
+    this.towersAvail = 4;
+    this.grid = document.getElementById("preview-grid");
+    this.fillInventory();
+    this.scarecrow = new Scarecrow({ game: this });
+    this.img = new Image();
+    this.img.src = "farmland_later_single.png";
+    this.addCorns();
+    this.crowSpawn = 5;
+    this.coords = {x: 0, y: 0};
+    this.tileCol;
+    this.tileRow;
+    this.elem = document.getElementById("scarecrow-canvas");
+    this.elemLeft = this.elem.offsetLeft;
+    this.elemTop = this.elem.offsetTop;
+    highlight = highlight.bind(this);
+    document.addEventListener("mousemove", highlight);
+    build = build.bind(this);
+    document.addEventListener("click", build);
+
+    // setInterval(() => {
+    //     this.addCrows();
+    // }, 15000);
+
+    this.frameCount = 0;
+}
 
 Game.prototype.didLose = function() {
   if (this.corns.length === 0) {
@@ -761,30 +836,26 @@ Game.prototype.didLose = function() {
 };
 
 Game.prototype.end = function(result) {
+    let pauseSheet;
+    let pauseText;
     switch(result) {
         case "win":
             clearInterval(window.clockFunc);
             clearInterval(window.gameFunc);
-            console.log("win");
-            win = document.getElementById("win-sheet");
-            win.id = "win-sheet-on";
+            window.paused = true;
+            pauseSheet = document.getElementById("pause-sheet");
+            pauseText = document.getElementById("paused-text");
+            pauseText.innerHTML = "You win. Play again?";
+            pauseSheet.classList.add("on");
             break;
-            restart = document.getElementById("win-restart")
-            restart.addEventListener("click", () => {
-                win.id = "win-sheet";
-                // window.restart;
-            })
         case "lose":
             clearInterval(window.clockFunc);
             clearInterval(window.gameFunc);
-            console.log("lose");
-            lose = document.getElementById("lose-sheet");
-            lose.id = "lose-sheet-on";
-            restart = document.getElementById("lose-restart");
-            restart.addEventListener("click", () => {
-              lose.id = "lose-sheet";
-            //   window.restart();
-            });
+            window.paused = true;
+            pauseSheet = document.getElementById("pause-sheet");
+            pauseText = document.getElementById("paused-text");
+            pauseText.innerHTML = "You lose. Play again?"
+            pauseSheet.classList.add("on");
             break;
   }
 };
@@ -805,18 +876,19 @@ const Game = __webpack_require__(/*! ./game.js */ "./dist/src/game.js");
 
 
 function GameView (ctx) {
-    this.game = new Game();
+    // this.game = new Game();
+    this.game = new Game(this.ctx);
+    // debugger;
     this.ctx = ctx;
-    this.clock = 
-    window.ctx = this.ctx;
+    // this.clock = 
+    // window.ctx = this.ctx;
 }
-
-// window.clock = document.getElementById("clock");
-// clock.innerHTML = "2:30";
 
 
 GameView.prototype.start = function(){
     this.bindKeyHandlers();
+    // this.game = new Game(this.ctx);
+    // debugger;
     
     window.gameFunc = setInterval(() => {
         if (!window.paused){
@@ -829,6 +901,12 @@ GameView.prototype.start = function(){
 
 GameView.prototype.bindKeyHandlers = function () {
     key('space', () => { this.game.scarecrow.fireBullet() });
+}
+
+GameView.prototype.restart = function() {
+    this.game.restart();
+    this.start();
+    // this.game = new Game ();
 }
 
 module.exports = GameView;
@@ -855,49 +933,56 @@ document.addEventListener("DOMContentLoaded", function () {
     const ctx = canvas.getContext('2d');
     ctx.imageSmoothingEnabled = false;
     
-
+    //modals and start elements 
     const mainSheet = document.getElementById("main-content-sheet");
     document.addEventListener("click", navigate);
     const start = document.getElementById("start-button");
-    const instructions = document.getElementById("instruction");
-    const instructionsSheet = document.getElementById("instructions-sheet");
     const inventory = document.getElementById("inventory-off");
     const bars = document.getElementById("bars-off");
-  
     const clock = document.getElementById("clock");
+
+    
+    
     function navigate (e) {
-        if (e.target === start) {
-            mainSheet.id = "main-content-sheet-off";
-            bars.id = "bars";
-            inventory.id = "inventory";
-            clearInterval(window.clockFunc);
-            clearInterval(window.gameFunc);
-            clock.innerHTML = "2:30";
-            clock.classList.add("on");
-            window.time = 150;
-            window.clockFunc = setInterval(countdown, 1000);
-            gameView = new GameView(ctx);
-            gameView.start();
-            const pauseSheet = document.getElementById("pause-sheet");
-            window.paused = false;
-            pauseSheet.classList.remove("on");
-            
+        if (e.target === start) { 
+          startGame();
         }
     }
 
+    function startGame() {
+      //instructions + HUD
+      mainSheet.id = "main-content-sheet-off";
+      bars.id = "bars";
+      inventory.id = "inventory";
 
-    // instructions.addEventListener("click", () => {
-    //     const texts = document.querySelectorAll("#text");
-    //     mainSheet.classList.add("story");
-    //     start.classList.add("off");
-    //     texts.forEach(text => {
-    //         text.classList.toggle("off");
-    //     })
-            
 
-    //     mainSheet.innerHTML = "Two years since they've been gone."
+      //clock
+      clearInterval(window.clockFunc);
+      clearInterval(window.gameFunc);
+      clock.innerHTML = "2:30";
+      clock.classList.add("on");
+      window.time = 150;
+      window.clockFunc = setInterval(countdown, 1000);
+      const pauseSheet = document.getElementById("pause-sheet");
+      
+      //test
+      //preview grid 
+      const grid = document.getElementById("preview-grid-off") || document.getElementById("preview-grid");
+      grid.id = "preview-grid";
 
-    // })
+      // let ctx = canvas.getContext("2d");
+      // ctx.imageSmoothingEnabled = false;
+      //game start 
+      // gameView = new GameView(ctx);
+
+      // gameView.game = new 
+      // gameView.restart();
+      gameView = new GameView(ctx);
+      gameView.start();
+      //unpause 
+      window.paused = false;
+      pauseSheet.classList.remove("on");
+    }
 
     window.paused;
 
@@ -905,8 +990,6 @@ document.addEventListener("DOMContentLoaded", function () {
     const restartButton = document.getElementById("restart-button")
     restartButton.addEventListener("click", restart);
     
-    
-
     function pause(e) {
         const pauseSheet = document.getElementById("pause-sheet");
         if (e.key === "p" || e.key === "P") {
@@ -919,28 +1002,6 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         }
     }
-
-   window.clock = document.getElementById("clock");
-   clock.innerHTML = "2:30";
-
-    window.time = 150;
-   
-    // window.clockFunc = setInterval(() => {
-    //     if (!window.paused) {
-
-    //         time -= 1;
-    //         let convertMins = Math.floor(time / 60);
-    //         let convertSecs = time % 60;
-    //         if (convertSecs === 0) {
-    //             clock.innerHTML = convertMins + " : " + convertSecs + "0";
-    //         } else if (convertSecs < 10) {
-    //             clock.innerHTML = convertMins + " : " + "0" + convertSecs;
-    //         } 
-    //         else {
-    //             clock.innerHTML = convertMins + " : " + convertSecs;
-    //         }
-    //     }
-    // }, 1000);
 
     function countdown(){
         if (!window.paused) {
@@ -957,44 +1018,39 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-    // gameView = new GameView(ctx);
-    // gameView.start();
-    
-    window.ctx = ctx;
-
-
     function restart(e) {
-      // restartButton.innerHTML = "Are you sure?"
-      // const pauseSheet = document.getElementById("pause-sheet");
-      // confEle = document.createElement("div");
-      // confEle.id = "confirmation";
-      // // yesEle = document.createElement("div");
-      // // yesEle.id = "yes";
-      // // yesEle.innerHTML = "Yes";
-      // // noEle = document.createElement("div");
-      // // noEle.id = "no";
-      // // noEle.innerHTML = "No";
-      // pauseSheet.appendChild(confEle);
-      // // confEle.appendChild("div");
-      // // confEle.appendChild("div");
-      // debugger;
+      // document.removeEventListener("click", gameView.game.build);
+      // document.removeEventListener("mousemove", gameView.game.highlight);
+      // startGame();
+      mainSheet.id = "main-content-sheet-off";
+      bars.id = "bars";
+      inventory.id = "inventory";
+
       clearInterval(window.clockFunc);
       clearInterval(window.gameFunc);
       clock.innerHTML = "2:30";
+      clock.classList.add("on");
       window.time = 150;
       window.clockFunc = setInterval(countdown, 1000);
       const pauseSheet = document.getElementById("pause-sheet");
-      const grid = document.getElementById("preview-grid-off") || document.getElementById("preview-grid");
+      const winSheet = document.getElementById("win-sheet-on") || document.getElementById("win-sheet");
+      const loseSheet = document.getElementById("lose-sheet-on") || document.getElementById("lose-sheet");
+      winSheet.id = "win-sheet";
+      loseSheet.id = "lose-sheet";
+
+
+      const grid =
+      document.getElementById("preview-grid-off") ||
+      document.getElementById("preview-grid");
       grid.id = "preview-grid";
+
+      gameView.restart();
+
       window.paused = false;
       pauseSheet.classList.remove("on");
-      gameView = new GameView(ctx);
-      gameView.start();
-      //need to turn on or turn off win sheet and lose sheet no?
-
     }
 
-    // window.restart = restart();
+    window.restart = restart;
 });
 
 
@@ -1171,7 +1227,7 @@ const cycleLoop = [
 let currentLoopIndex = 0;
 let frameCount = 0;
 
-Scarecrow.prototype.draw = function () {
+Scarecrow.prototype.draw = function (ctx) {
     frameCount ++;
 
     if (!this.spooked){
@@ -1342,9 +1398,6 @@ function keyUpHandler(e) {
 
 
 Scarecrow.prototype.scareMove = function() {
-    // let mapState = this.game.gameMap[Math.ceil(this.pos[0]/40) - 1][Math.ceil(this.pos[1]/40) - 1]
-    // // debugger;
-    // while (!mapState === 1){
         if (rightPressed & !rightCollide) {
             if (this.fear < 50 && this.courage < 40){
                 this.game.scarecrow.pos[0] += 3;
@@ -1402,18 +1455,14 @@ Scarecrow.prototype.collideWith = function(movingObject, result) {
     if (this.courage < 40) {
 
         //    if (leftPressed && Math.abs(result.left) <= 3 && Math.abs(result.down) > 3 ) {
-            if (leftPressed && Math.abs(result.left) <= 3 && Math.abs(result.left) < Math.abs(result.down)) {
-                
+            if (leftPressed && Math.abs(result.left) <= 3 && Math.abs(result.down) > 3) {
                 leftCollide = true;
             } 
             //    else if (leftPressed && Math.abs(result.left) <= 3 && Math.abs(result.down) <= 3 ) {
-                else if (leftPressed && Math.abs(result.left) <= 3 && Math.abs(result.left) > Math.abs(result.down)) {
-                    console.log(result.left, result.down);
+                else if (leftPressed && Math.abs(result.left) <= 3 && Math.abs(result.down) <= 3) {
                     leftCollide = false;
-                    console.log(leftCollide)
-                    console.log(leftPressed)
                 }
-                if (leftPressed && Math.abs(result.left) <= 3 && Math.abs(result.up) >=3 ) {
+                else if (leftPressed && Math.abs(result.left) <= 3 && Math.abs(result.up) > 3 ) {
                     leftCollide = true;
                 } 
                 else if (leftPressed && Math.abs(result.left) <= 3 && Math.abs(result.up) <=3 ) {
@@ -1428,10 +1477,10 @@ Scarecrow.prototype.collideWith = function(movingObject, result) {
                 else if (rightPressed && Math.abs(result.right) <= 3 && Math.abs(result.down) <=3 ) {
                     rightCollide = false;
                 }
-                else if (rightPressed && Math.abs(result.right) <= 3  && Math.abs(result.up) >3 ) {
+                else if (rightPressed && Math.abs(result.right) <= 3  && Math.abs(result.up) >=3 ) {
                     rightCollide = true;
                 }
-                else if (rightPressed && Math.abs(result.right) <= 3 && Math.abs(result.up) <=3 ) {
+                else if (rightPressed && Math.abs(result.right) <= 3 && Math.abs(result.up) < 3 ) {
                     rightCollide = false;
                 }
                 

@@ -105,7 +105,7 @@ const cycleLoop = [
 let currentLoopIndex = 0;
 let frameCount = 0;
 
-Scarecrow.prototype.draw = function () {
+Scarecrow.prototype.draw = function (ctx) {
     frameCount ++;
 
     if (!this.spooked){
@@ -276,9 +276,6 @@ function keyUpHandler(e) {
 
 
 Scarecrow.prototype.scareMove = function() {
-    // let mapState = this.game.gameMap[Math.ceil(this.pos[0]/40) - 1][Math.ceil(this.pos[1]/40) - 1]
-    // // debugger;
-    // while (!mapState === 1){
         if (rightPressed & !rightCollide) {
             if (this.fear < 50 && this.courage < 40){
                 this.game.scarecrow.pos[0] += 3;
@@ -336,15 +333,14 @@ Scarecrow.prototype.collideWith = function(movingObject, result) {
     if (this.courage < 40) {
 
         //    if (leftPressed && Math.abs(result.left) <= 3 && Math.abs(result.down) > 3 ) {
-            if (leftPressed && Math.abs(result.left) <= 3 && Math.abs(result.left) < Math.abs(result.down)) {
-                
+            if (leftPressed && Math.abs(result.left) <= 3 && Math.abs(result.down) > 3) {
                 leftCollide = true;
             } 
             //    else if (leftPressed && Math.abs(result.left) <= 3 && Math.abs(result.down) <= 3 ) {
-                else if (leftPressed && Math.abs(result.left) <= 3 && Math.abs(result.left) > Math.abs(result.down)) {
+                else if (leftPressed && Math.abs(result.left) <= 3 && Math.abs(result.down) <= 3) {
                     leftCollide = false;
                 }
-                if (leftPressed && Math.abs(result.left) <= 3 && Math.abs(result.up) >=3 ) {
+                else if (leftPressed && Math.abs(result.left) <= 3 && Math.abs(result.up) > 3 ) {
                     leftCollide = true;
                 } 
                 else if (leftPressed && Math.abs(result.left) <= 3 && Math.abs(result.up) <=3 ) {
@@ -359,10 +355,10 @@ Scarecrow.prototype.collideWith = function(movingObject, result) {
                 else if (rightPressed && Math.abs(result.right) <= 3 && Math.abs(result.down) <=3 ) {
                     rightCollide = false;
                 }
-                else if (rightPressed && Math.abs(result.right) <= 3  && Math.abs(result.up) >3 ) {
+                else if (rightPressed && Math.abs(result.right) <= 3  && Math.abs(result.up) >=3 ) {
                     rightCollide = true;
                 }
-                else if (rightPressed && Math.abs(result.right) <= 3 && Math.abs(result.up) <=3 ) {
+                else if (rightPressed && Math.abs(result.right) <= 3 && Math.abs(result.up) < 3 ) {
                     rightCollide = false;
                 }
                 
