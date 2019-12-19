@@ -338,8 +338,13 @@ body {
     display: none;
 }
 
+.created-by{
+    margin-bottom: 20px;
+}
+
 footer{
     padding-top: 40px;
+     margin-bottom: 20px;
 }
 
 footer a{
@@ -347,6 +352,7 @@ footer a{
     color: #bca297;
     font-family: auto;
     margin-right: 20px;
+    margin-top: 20px;
 }
 
 footer a:hover{
@@ -361,4 +367,8 @@ footer a:hover{
     height: 14px;
     text-decoration: none;
     font-weight: 50;
+}
+
+.crow{
+    height: 70px;
 }

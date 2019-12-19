@@ -507,7 +507,6 @@ function highlight(e) {
 
 function build(e) {
     if (withinBounds(this.coords.x, this.coords.y)) {
-        debugger;
         let tileValue = this.gameMap[this.tileCol][this.tileRow];
         if (tileValue !== 1 && !window.paused) {
             let x = this.tileRow * 40 + 2;
@@ -519,8 +518,7 @@ function build(e) {
             this.towersAvail -= 1;
             invSlot.innerHTML = "";
         }
-        if (this.towersAvail === 0) {
-            debugger;
+        if (this.towersAvail === 0) {    
             document.removeEventListener("click", build);
             document.removeEventListener("mousemove", highlight);
             this.grid.classList.remove("good");
@@ -545,29 +543,29 @@ let fieldPattern = new Image();
 fieldPattern.src = "corn_field_later_single.png";
 
 Game.prototype.draw = function (ctx) {
-    // debugger;
-
     this.frameCount ++;
-    if (this.frameCount === 1 || this.frameCount % 750 === 0) {
+    if (this.frameCount === 250 || this.frameCount % 750 === 0) {
         this.addCrows();
     }
         let pattern = ctx.createPattern(this.img, 'repeat');
+        fieldPattern.src = "corn_field_later_2_single.png";
         let pattern2 = ctx.createPattern(fieldPattern, 'repeat');
     
-        if (window.time >= 90) {
-            this.img.src = "farmland_later_single.png";
-        }
-        if (window.time < 90) {
-            this.img.src = "farmland_later_1.5_single.png";
-            fieldPattern.src = "corn_field_later_2_single.png";
-        }
-        if (window.time < 60) {
-            fieldPattern.src = "corn_field_later_3_single.png";
-        }
-        if (window.time < 30) {
-            this.img.src = "farmland_later_4_single.png";
-            fieldPattern.src = "corn_field_later_4_single.png";
-        }
+        //temp removal day to night changes
+        // if (window.time >= 90) {
+        //     this.img.src = "farmland_later_single.png";
+        // }
+        // if (window.time < 90) {
+        //     this.img.src = "farmland_later_1.5_single.png";
+        //     fieldPattern.src = "corn_field_later_2_single.png";
+        // }
+        // if (window.time < 60) {
+        //     fieldPattern.src = "corn_field_later_3_single.png";
+        // }
+        // if (window.time < 30) {
+        //     this.img.src = "farmland_later_4_single.png";
+        //     fieldPattern.src = "corn_field_later_4_single.png";
+        // }
 
         for(let row = 0; row < 10; row ++ ) {
             for(let col = 0; col < 20; col ++) {
@@ -636,6 +634,10 @@ Game.prototype.randomPosition = function () {
 Game.prototype.randomVelocity = function () {
     let velocity = [];
      switch(window.time){
+        case 145: 
+            velocity.push(Math.random() * 0.35 * this.sign());
+            velocity.push(Math.random() * 0.35 * this.sign());
+            break;
         case 135: 
             velocity.push(Math.random() * 0.5 * this.sign());
             velocity.push(Math.random() * 0.5 * this.sign());
@@ -834,28 +836,26 @@ Game.prototype.didLose = function() {
 };
 
 Game.prototype.end = function(result) {
+    let pauseSheet;
+    let pauseText;
     switch(result) {
         case "win":
             clearInterval(window.clockFunc);
             clearInterval(window.gameFunc);
-            win = document.getElementById("win-sheet");
-            win.id = "win-sheet-on";
+            window.paused = true;
+            pauseSheet = document.getElementById("pause-sheet");
+            pauseText = document.getElementById("paused-text");
+            pauseText.innerHTML = "You win. Play again?";
+            pauseSheet.classList.add("on");
             break;
-            restart = document.getElementById("win-restart")
-            restart.addEventListener("click", () => {
-                win.id = "win-sheet";
-                // window.restart;
-            })
         case "lose":
             clearInterval(window.clockFunc);
             clearInterval(window.gameFunc);
-            lose = document.getElementById("lose-sheet");
-            lose.id = "lose-sheet-on";
-            restart = document.getElementById("lose-restart");
-            restart.addEventListener("click", () => {
-              lose.id = "lose-sheet";
-            //   window.restart();
-            });
+            window.paused = true;
+            pauseSheet = document.getElementById("pause-sheet");
+            pauseText = document.getElementById("paused-text");
+            pauseText.innerHTML = "You lose. Play again?"
+            pauseSheet.classList.add("on");
             break;
   }
 };
@@ -990,8 +990,6 @@ document.addEventListener("DOMContentLoaded", function () {
     const restartButton = document.getElementById("restart-button")
     restartButton.addEventListener("click", restart);
     
-    
-
     function pause(e) {
         const pauseSheet = document.getElementById("pause-sheet");
         if (e.key === "p" || e.key === "P") {
@@ -1020,8 +1018,6 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-    // window.ctx = ctx;
-
     function restart(e) {
       // document.removeEventListener("click", gameView.game.build);
       // document.removeEventListener("mousemove", gameView.game.highlight);
@@ -1037,6 +1033,11 @@ document.addEventListener("DOMContentLoaded", function () {
       window.time = 150;
       window.clockFunc = setInterval(countdown, 1000);
       const pauseSheet = document.getElementById("pause-sheet");
+      const winSheet = document.getElementById("win-sheet-on") || document.getElementById("win-sheet");
+      const loseSheet = document.getElementById("lose-sheet-on") || document.getElementById("lose-sheet");
+      winSheet.id = "win-sheet";
+      loseSheet.id = "lose-sheet";
+
 
       const grid =
       document.getElementById("preview-grid-off") ||
@@ -1047,20 +1048,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
       window.paused = false;
       pauseSheet.classList.remove("on");
-      
-      // clearInterval(window.clockFunc);
-      // clearInterval(window.gameFunc);
-      // clock.innerHTML = "2:30";
-      // window.time = 150;
-      // window.clockFunc = setInterval(countdown, 1000);
-      // const pauseSheet = document.getElementById("pause-sheet");
-      // const grid = document.getElementById("preview-grid-off") || document.getElementById("preview-grid");
-      // grid.id = "preview-grid";
-      // window.paused = false;
-      // pauseSheet.classList.remove("on");
-      // gameView = new GameView(ctx);
-      // gameView.start();
     }
+
+    window.restart = restart;
 });
 
 
@@ -1465,15 +1455,14 @@ Scarecrow.prototype.collideWith = function(movingObject, result) {
     if (this.courage < 40) {
 
         //    if (leftPressed && Math.abs(result.left) <= 3 && Math.abs(result.down) > 3 ) {
-            if (leftPressed && Math.abs(result.left) <= 3 && Math.abs(result.left) < Math.abs(result.down)) {
-                
+            if (leftPressed && Math.abs(result.left) <= 3 && Math.abs(result.down) > 3) {
                 leftCollide = true;
             } 
             //    else if (leftPressed && Math.abs(result.left) <= 3 && Math.abs(result.down) <= 3 ) {
-                else if (leftPressed && Math.abs(result.left) <= 3 && Math.abs(result.left) > Math.abs(result.down)) {
+                else if (leftPressed && Math.abs(result.left) <= 3 && Math.abs(result.down) <= 3) {
                     leftCollide = false;
                 }
-                if (leftPressed && Math.abs(result.left) <= 3 && Math.abs(result.up) >=3 ) {
+                else if (leftPressed && Math.abs(result.left) <= 3 && Math.abs(result.up) > 3 ) {
                     leftCollide = true;
                 } 
                 else if (leftPressed && Math.abs(result.left) <= 3 && Math.abs(result.up) <=3 ) {
@@ -1488,10 +1477,10 @@ Scarecrow.prototype.collideWith = function(movingObject, result) {
                 else if (rightPressed && Math.abs(result.right) <= 3 && Math.abs(result.down) <=3 ) {
                     rightCollide = false;
                 }
-                else if (rightPressed && Math.abs(result.right) <= 3  && Math.abs(result.up) >3 ) {
+                else if (rightPressed && Math.abs(result.right) <= 3  && Math.abs(result.up) >=3 ) {
                     rightCollide = true;
                 }
-                else if (rightPressed && Math.abs(result.right) <= 3 && Math.abs(result.up) <=3 ) {
+                else if (rightPressed && Math.abs(result.right) <= 3 && Math.abs(result.up) < 3 ) {
                     rightCollide = false;
                 }
                 

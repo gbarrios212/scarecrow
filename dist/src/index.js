@@ -68,8 +68,6 @@ document.addEventListener("DOMContentLoaded", function () {
     const restartButton = document.getElementById("restart-button")
     restartButton.addEventListener("click", restart);
     
-    
-
     function pause(e) {
         const pauseSheet = document.getElementById("pause-sheet");
         if (e.key === "p" || e.key === "P") {
@@ -98,8 +96,6 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-    // window.ctx = ctx;
-
     function restart(e) {
       // document.removeEventListener("click", gameView.game.build);
       // document.removeEventListener("mousemove", gameView.game.highlight);
@@ -115,6 +111,11 @@ document.addEventListener("DOMContentLoaded", function () {
       window.time = 150;
       window.clockFunc = setInterval(countdown, 1000);
       const pauseSheet = document.getElementById("pause-sheet");
+      const winSheet = document.getElementById("win-sheet-on") || document.getElementById("win-sheet");
+      const loseSheet = document.getElementById("lose-sheet-on") || document.getElementById("lose-sheet");
+      winSheet.id = "win-sheet";
+      loseSheet.id = "lose-sheet";
+
 
       const grid =
       document.getElementById("preview-grid-off") ||
@@ -125,20 +126,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
       window.paused = false;
       pauseSheet.classList.remove("on");
-      
-      // clearInterval(window.clockFunc);
-      // clearInterval(window.gameFunc);
-      // clock.innerHTML = "2:30";
-      // window.time = 150;
-      // window.clockFunc = setInterval(countdown, 1000);
-      // const pauseSheet = document.getElementById("pause-sheet");
-      // const grid = document.getElementById("preview-grid-off") || document.getElementById("preview-grid");
-      // grid.id = "preview-grid";
-      // window.paused = false;
-      // pauseSheet.classList.remove("on");
-      // gameView = new GameView(ctx);
-      // gameView.start();
     }
+
+    window.restart = restart;
 });
 
 
