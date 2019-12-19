@@ -134,7 +134,13 @@ this.elemTop = this.elem.offsetTop;
 
 ```
 
-The highlight function calculated whether the hovered over position corresponded with an occupied space on the array, in which case the grid was given a class "good", which itself rendered a green space on the preview-grid. The default setting, which renders a grid square red to represent occupied, is achieved by removing the "good" class.  Math that connects the coordinates to our gameMap was handled here, as well. 
+The highlight function calculated whether the hovered over position corresponded with an occupied space on the array, in which case the grid was given a class "good", which itself rendered a green space on the preview-grid. 
+
+![alt text](https://imgur.com/IkSXbc8.png)
+
+The default setting, which renders a grid square red to represent occupied, is achieved by removing the "good" class.  Math that connects the coordinates to our gameMap was handled here, as well. 
+
+![alt text](https://imgur.com/wz4DRur.png)
 
 The conversion from x and y coordinates into more easily divisible tiles allowed for neater, more precise placement of tower pieces around the board.
 
@@ -166,7 +172,11 @@ The corresponding CSS below:
 }
 ```
 
-The build function, which is called and bound within our game constructor, is responsible for checking whether the clicked tile is unoccupied and the game is not paused.  If so, a new tower is created, the instance of which is pushed to an array in the constructor.  Additionally, a number representing remaining towers is counted down, our gameMap at that tile position is rendered occupied, and, if there are no more towers remaining in the inventory, the event listeners are removed from the document and the preview grid id is changed to an off mode in order to prevent further additions to the board. 
+The build function, which is called and bound within our game constructor, is responsible for checking whether the clicked tile is unoccupied and the game is not paused.  If so, a new tower is created, the instance of which is pushed to an array in the constructor.  
+
+![alt text](https://imgur.com/v6HjDlx.png)
+
+Additionally, a number representing remaining towers is counted down, our gameMap at that tile position is rendered occupied, and, if there are no more towers remaining in the inventory, the event listeners are removed from the document and the preview grid id is changed to an off mode in order to prevent further additions to the board. 
 
 ```
 function build(e) {
